@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "gleano/": "./build/dev/javascript/gleano/gleano/",
+    "gleam": "./build/dev/javascript/gleam_stdlib/gleam.mjs",
+    "gleam/": "./build/dev/javascript/gleam_stdlib/gleam/"
+  }
+}

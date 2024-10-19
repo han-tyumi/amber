@@ -1,0 +1,8 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "denoland.vscode-deno",
+
+  "[gleam]": {
+    "editor.defaultFormatter": "gleam.gleam"
+  }
+}
