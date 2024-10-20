@@ -1,5 +1,5 @@
 name = "amber"
-version = "1.0.0"
+version = "0.1.0"
 description = "Deno bindings for Gleam."
 licences = ["Apache-2.0"]
 repository = { type = "github", user = "han-tyumi", repo = "amber" }
