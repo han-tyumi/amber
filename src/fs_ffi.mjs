@@ -1,18 +1,20 @@
 import { toList } from "gleam";
 
+import * as $dir_entry from "gleano/fs/dir_entry.mjs";
+import * as $file_info from "gleano/fs/file_info.mjs";
 import * as $make_temp from "gleano/fs/make_temp.mjs";
 import * as $mkdir from "gleano/fs/mkdir.mjs";
 import * as $open from "gleano/fs/open.mjs";
-import * as $symlink from "gleano/fs/symlink.mjs";
-import * as $write_file from "gleano/fs/write_file.mjs";
 import * as $remove from "gleano/fs/remove.mjs";
-import * as $dir_entry from "gleano/fs/dir_entry.mjs";
-import * as $file_info from "gleano/fs/file_info.mjs";
+import * as $symlink from "gleano/fs/symlink.mjs";
+import * as $watch_fs from "gleano/fs/watch_fs.mjs";
+import * as $write_file from "gleano/fs/write_file.mjs";
 
 import {
   enumToString,
   flag,
   lazyMap,
+  listToArray,
   objectToCustomType,
   optionFromNullable,
   unwrapArg,
@@ -156,9 +158,10 @@ export const truncate_sync = withArgTransform(
   [null, unwrapArg()],
 );
 
-export const watch_fs = () => {
-  throw new Error("watch_fs not implemented");
-};
+export const watch_fs = withOptions(
+  withArgTransform(Deno.watchFs, [listToArray, null]),
+  lazyMap([$watch_fs.Recursive, wrapped("recursive")]),
+);
 
 export const symlink_sync = withOptions(
   Deno.symlinkSync,

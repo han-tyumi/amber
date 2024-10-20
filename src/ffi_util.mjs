@@ -8,6 +8,11 @@ export function wrapped(name, fn = id) {
   return (option) => ({ [name]: fn(option[0]) });
 }
 
+export function lazy(getValue) {
+  let cache;
+  return () => (cache ??= getValue());
+}
+
 export function lazyMap(...entries) {
   let cache;
   return () => (cache ??= new Map(entries));
@@ -33,12 +38,20 @@ export function enumToString(getEnumMap) {
   };
 }
 
+export function stringToEnum(getStringToType) {
+  return (stringValue) => new (getStringToType()[stringValue])();
+}
+
 export function unwrapArg(default$) {
   return (option) => $option.unwrap(option, default$);
 }
 
 function id(value) {
   return value;
+}
+
+export function listToArray(list) {
+  return list.toArray();
 }
 
 export function withArgTransform(fn, transformers) {
@@ -51,7 +64,7 @@ export function objectToCustomType(constructor, mapping) {
 }
 
 export function optionFromNullable(nullable) {
-  return nullable === null ? new $option.None() : new $option.Some(nullable);
+  return nullable == null ? new $option.None() : new $option.Some(nullable);
 }
 
 export function withReturnTransform(fn, transform) {

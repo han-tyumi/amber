@@ -3,11 +3,13 @@ import gleam/option.{type Option}
 import gleano/fs/dir_entry.{type DirEntry}
 import gleano/fs/file.{type File}
 import gleano/fs/file_info.{type FileInfo}
+import gleano/fs/fs_watcher.{type FsWatcher}
 import gleano/fs/make_temp.{type MakeTempOption}
 import gleano/fs/mkdir.{type MkdirOption}
 import gleano/fs/open.{type OpenOption}
 import gleano/fs/remove.{type RemoveOption}
 import gleano/fs/symlink.{type SymlinkOption}
+import gleano/fs/watch_fs.{type WatchFsOption}
 import gleano/fs/write_file.{type WriteFileOption}
 import gleano/web.{type Uint8Array}
 
@@ -83,9 +85,7 @@ pub fn write_text_file_sync(
 pub fn truncate_sync(name: String, len: Option(Int)) -> Nil
 
 @external(javascript, "../fs_ffi.mjs", "watch_fs")
-pub fn watch_fs(paths: List(String), options: List(Nil)) -> Nil {
-  todo as "Implement Deno.watchFs binding."
-}
+pub fn watch_fs(paths: List(String), options: List(WatchFsOption)) -> FsWatcher
 
 @external(javascript, "../fs_ffi.mjs", "symlink_sync")
 pub fn symlink_sync(
