@@ -15,6 +15,7 @@ jobs:
       - uses: erlef/setup-beam@v1
         with:
           version-file: .tool-versions
+          version-type: strict
 
       - uses: denoland/setup-deno@v2
         with:
