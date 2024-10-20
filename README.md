@@ -1,20 +1,21 @@
-# gleano
+# amber
 
-[![Package Version](https://img.shields.io/hexpm/v/gleano)](https://hex.pm/packages/gleano)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/gleano/)
+[![Package Version](https://img.shields.io/hexpm/v/amber)](https://hex.pm/packages/amber)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/amber/)
 
 ```sh
-gleam add gleano@1
+gleam add amber@1
 ```
+
 ```gleam
-import gleano
+import amber
 
 pub fn main() {
   // TODO: An example of the project in use
 }
 ```
 
-Further documentation can be found at <https://hexdocs.pm/gleano>.
+Further documentation can be found at <https://hexdocs.pm/amber>.
 
 ## Development
 

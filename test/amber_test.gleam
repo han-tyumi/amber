@@ -1,7 +1,7 @@
+import amber/fs
+import amber/fs/fs_watcher
+import amber/fs/watch_fs
 import gleam/io
-import gleano/fs
-import gleano/fs/fs_watcher
-import gleano/fs/watch_fs
 import gleeunit
 
 pub fn main() {

@@ -1,6 +1,6 @@
 {
   "imports": {
-    "gleano/": "./build/dev/javascript/gleano/gleano/",
+    "amber/": "./build/dev/javascript/amber/amber/",
     "gleam": "./build/dev/javascript/gleam_stdlib/gleam.mjs",
     "gleam/": "./build/dev/javascript/gleam_stdlib/gleam/"
   }

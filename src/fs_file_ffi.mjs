@@ -2,13 +2,13 @@
 
 /**
  * @import { None, Some } from "gleam/option.mjs";
- * @import { Current, End, Start } from "gleano/fs/seek_mode.mjs";
- * @import { Cbreak } from "gleano/fs/set_raw.mjs";
+ * @import { Current, End, Start } from "amber/fs/seek_mode.mjs";
+ * @import { Cbreak } from "amber/fs/set_raw.mjs";
  */
 
+import * as $seek_mode from "amber/fs/seek_mode.mjs";
+import * as $set_raw from "amber/fs/set_raw.mjs";
 import * as $option from "gleam/option.mjs";
-import * as $seek_mode from "gleano/fs/seek_mode.mjs";
-import * as $set_raw from "gleano/fs/set_raw.mjs";
 
 import {
   enumToString,

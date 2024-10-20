@@ -1,9 +1,9 @@
 import gleam/option.{type Option}
 
-import gleano/fs/file_info.{type FileInfo}
-import gleano/fs/seek_mode.{type SeekMode}
-import gleano/fs/set_raw.{type SetRawOption}
-import gleano/web.{type ReadableStream, type Uint8Array, type WritableStream}
+import amber/fs/file_info.{type FileInfo}
+import amber/fs/seek_mode.{type SeekMode}
+import amber/fs/set_raw.{type SetRawOption}
+import amber/web.{type ReadableStream, type Uint8Array, type WritableStream}
 
 pub type FsFile
 

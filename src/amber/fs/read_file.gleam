@@ -1,4 +1,4 @@
-import gleano/web.{type AbortSignal}
+import amber/web.{type AbortSignal}
 
 pub type ReadFileOption {
   Signal(AbortSignal)

@@ -1,14 +1,14 @@
 import { toList } from "gleam";
 
-import * as $dir_entry from "gleano/fs/dir_entry.mjs";
-import * as $file_info from "gleano/fs/file_info.mjs";
-import * as $make_temp from "gleano/fs/make_temp.mjs";
-import * as $mkdir from "gleano/fs/mkdir.mjs";
-import * as $open from "gleano/fs/open.mjs";
-import * as $remove from "gleano/fs/remove.mjs";
-import * as $symlink from "gleano/fs/symlink.mjs";
-import * as $watch_fs from "gleano/fs/watch_fs.mjs";
-import * as $write_file from "gleano/fs/write_file.mjs";
+import * as $dir_entry from "amber/fs/dir_entry.mjs";
+import * as $file_info from "amber/fs/file_info.mjs";
+import * as $make_temp from "amber/fs/make_temp.mjs";
+import * as $mkdir from "amber/fs/mkdir.mjs";
+import * as $open from "amber/fs/open.mjs";
+import * as $remove from "amber/fs/remove.mjs";
+import * as $symlink from "amber/fs/symlink.mjs";
+import * as $watch_fs from "amber/fs/watch_fs.mjs";
+import * as $write_file from "amber/fs/write_file.mjs";
 
 import {
   enumToString,

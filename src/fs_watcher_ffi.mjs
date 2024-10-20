@@ -1,6 +1,6 @@
+import * as $fs_watcher from "amber/fs/fs_watcher.mjs";
 import { toList } from "gleam";
 import * as $option from "gleam/option.mjs";
-import * as $fs_watcher from "gleano/fs/fs_watcher.mjs";
 
 import {
   lazy,

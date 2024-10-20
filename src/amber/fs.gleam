@@ -1,17 +1,17 @@
 import gleam/option.{type Option}
 
-import gleano/fs/dir_entry.{type DirEntry}
-import gleano/fs/file_info.{type FileInfo}
-import gleano/fs/fs_file.{type FsFile}
-import gleano/fs/fs_watcher.{type FsWatcher}
-import gleano/fs/make_temp.{type MakeTempOption}
-import gleano/fs/mkdir.{type MkdirOption}
-import gleano/fs/open.{type OpenOption}
-import gleano/fs/remove.{type RemoveOption}
-import gleano/fs/symlink.{type SymlinkOption}
-import gleano/fs/watch_fs.{type WatchFsOption}
-import gleano/fs/write_file.{type WriteFileOption}
-import gleano/web.{type Uint8Array}
+import amber/fs/dir_entry.{type DirEntry}
+import amber/fs/file_info.{type FileInfo}
+import amber/fs/fs_file.{type FsFile}
+import amber/fs/fs_watcher.{type FsWatcher}
+import amber/fs/make_temp.{type MakeTempOption}
+import amber/fs/mkdir.{type MkdirOption}
+import amber/fs/open.{type OpenOption}
+import amber/fs/remove.{type RemoveOption}
+import amber/fs/symlink.{type SymlinkOption}
+import amber/fs/watch_fs.{type WatchFsOption}
+import amber/fs/write_file.{type WriteFileOption}
+import amber/web.{type Uint8Array}
 
 @external(javascript, "../fs_ffi.mjs", "link_sync")
 pub fn link_sync(oldpath: String, newpath: String) -> Nil
