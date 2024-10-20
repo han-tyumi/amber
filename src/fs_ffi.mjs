@@ -102,7 +102,7 @@ export const copy_file_sync = Deno.copyFileSync;
 
 export const read_link_sync = Deno.readLinkSync;
 
-const objectToFileInfo = objectToCustomType($file_info.FileInfo, [
+export const objectToFileInfo = objectToCustomType($file_info.FileInfo, [
   ["isFile"],
   ["isDirectory"],
   ["isSymlink"],

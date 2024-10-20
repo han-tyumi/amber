@@ -1,8 +1,8 @@
 import gleam/option.{type Option}
 
 import gleano/fs/dir_entry.{type DirEntry}
-import gleano/fs/file.{type File}
 import gleano/fs/file_info.{type FileInfo}
+import gleano/fs/fs_file.{type FsFile}
 import gleano/fs/fs_watcher.{type FsWatcher}
 import gleano/fs/make_temp.{type MakeTempOption}
 import gleano/fs/mkdir.{type MkdirOption}
@@ -17,10 +17,10 @@ import gleano/web.{type Uint8Array}
 pub fn link_sync(oldpath: String, newpath: String) -> Nil
 
 @external(javascript, "../fs_ffi.mjs", "open_sync")
-pub fn open_sync(path: String, options: List(OpenOption)) -> File
+pub fn open_sync(path: String, options: List(OpenOption)) -> FsFile
 
 @external(javascript, "../fs_ffi.mjs", "create_sync")
-pub fn create_sync(path: String) -> File
+pub fn create_sync(path: String) -> FsFile
 
 @external(javascript, "../fs_ffi.mjs", "mkdir_sync")
 pub fn mkdir_sync(path: String, options: List(MkdirOption)) -> Nil

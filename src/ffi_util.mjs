@@ -1,3 +1,4 @@
+import * as $gleam from "gleam";
 import * as $option from "gleam/option.mjs";
 
 export function flag(name) {
@@ -18,15 +19,18 @@ export function lazyMap(...entries) {
   return () => (cache ??= new Map(entries));
 }
 
+export function optionsFromList(list, getOptionsMap) {
+  const map = getOptionsMap();
+  const options = {};
+  for (const option of list) {
+    Object.assign(options, map.get(option.constructor)?.(option) ?? {});
+  }
+  return options;
+}
+
 export function withOptions(fn, getOptionsMap) {
   return (...args) => {
-    const map = getOptionsMap();
-
-    const options = {};
-    for (const option of args.pop()) {
-      Object.assign(options, map.get(option.constructor)?.(option) ?? {});
-    }
-
+    const options = optionsFromList(args.pop(), getOptionsMap);
     return fn(...args, options);
   };
 }
@@ -65,6 +69,10 @@ export function objectToCustomType(constructor, mapping) {
 
 export function optionFromNullable(nullable) {
   return nullable == null ? new $option.None() : new $option.Some(nullable);
+}
+
+export function resultFromNullable(nullable, error) {
+  return nullable == null ? new $gleam.Error(error) : new $gleam.Ok(nullable);
 }
 
 export function withReturnTransform(fn, transform) {
