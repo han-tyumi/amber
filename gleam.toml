@@ -9,6 +9,9 @@ target = "javascript"
 [javascript]
 runtime = "deno"
 
+[javascript.deno]
+allow_read = ["gleam.toml"]
+
 [dependencies]
 gleam_stdlib = ">= 0.34.0 and < 2.0.0"
 
