@@ -2,6 +2,12 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
 
+  "[javascript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+
   "[gleam]": {
     "editor.defaultFormatter": "gleam.gleam"
   }
