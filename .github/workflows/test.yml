@@ -12,6 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: .tool-versions
+
       - uses: denoland/setup-deno@v2
         with:
           deno-version-file: .tool-versions
