@@ -1,4 +1,7 @@
-deno   2.0.2
-gleam  1.5.1
-erlang 27.1.2
-rebar  3.24.0
+deno      2.0.2
+erlang    27.1.2
+gleam     1.5.1
+just      1.36.0
+lefthook  1.7.22
+rebar     3.24.0
+watchexec 2.2.0

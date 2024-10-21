@@ -1,4 +1,5 @@
 {
+  "exclude": ["build"],
   "imports": {
     "amber/": "./build/dev/javascript/amber/amber/",
     "gleam": "./build/dev/javascript/gleam_stdlib/gleam.mjs",

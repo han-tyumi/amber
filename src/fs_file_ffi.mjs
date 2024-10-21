@@ -128,7 +128,7 @@ const setRawOptionMap = lazyMap(
  * @param {SetRawOption[]} options
  */
 export function set_raw(file, mode, options) {
-  // @ts-ignore
+  // @ts-ignore: need to add typings to ffi_util.mjs
   return file.setRaw(mode, optionsFromList(options, setRawOptionMap));
 }
 
