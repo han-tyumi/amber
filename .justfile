@@ -1,3 +1,5 @@
+set dotenv-load := true
+
 alias dev := develop
 
 bootstrap: build
@@ -14,3 +16,6 @@ test:
 
 develop:
   watchexec -w src -w test 'gleam build; gleam test'
+
+publish:
+  gleam publish
