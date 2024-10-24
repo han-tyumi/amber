@@ -11,16 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: erlef/setup-beam@v1
-        with:
-          version-file: .tool-versions
-          version-type: strict
-
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version-file: .tool-versions
-
-      - run: gleam deps download
-      - run: gleam test
-      - run: gleam format --check src test
+      - uses: jdx/mise-action@v2
+      - run: just bootstrap test
