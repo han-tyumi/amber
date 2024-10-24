@@ -14,5 +14,35 @@
   "tasks": {
     "build": "deno run -A build.ts",
     "clean": "rm -f src/*.mjs"
+  },
+
+  "lint": {
+    "rules": {
+      "tags": ["recommended"],
+      "include": [
+        "ban-untagged-todo",
+        "camelcase",
+        "default-param-last",
+        "eqeqeq",
+        "explicit-function-return-type",
+        "guard-for-in",
+        "no-await-in-loop",
+        "no-const-assign",
+        "no-eval",
+        "no-external-import",
+        "no-implicit-declare-namespace-export",
+        "no-inferrable-types",
+        "no-non-null-asserted-optional-chain",
+        "no-non-null-assertion",
+        "no-self-compare",
+        "no-sparse-arrays",
+        "no-sync-fn-in-async-fn",
+        "no-throw-literal",
+        "prefer-ascii",
+        "single-var-declarator",
+        "triple-slash-reference",
+        "verbatim-module-syntax"
+      ]
+    }
   }
 }
