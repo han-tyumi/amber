@@ -9,6 +9,20 @@ const cwd = Deno.cwd();
 const src = path.resolve(cwd, "src");
 const buildCwd = path.resolve(cwd, "build/dev/javascript/amber");
 
+await build({
+  entryPoints: await entryPoints(),
+  platform: "neutral",
+  outdir: "src",
+  outExtension: { ".js": ".mjs" },
+  bundle: true,
+  splitting: true,
+  plugins: [
+    useImportMap(
+      relativeImportMap(buildCwd, denoConfig.imports),
+    ),
+  ],
+});
+
 function entryPoints(): Promise<BuildOptions["entryPoints"]> {
   const entriesPromise = fs.expandGlob("src/**/*_ffi.ts", {
     extended: false,
@@ -23,20 +37,6 @@ function entryPoints(): Promise<BuildOptions["entryPoints"]> {
     return { in: inPath, out: outBase };
   });
 }
-
-await build({
-  entryPoints: await entryPoints(),
-  platform: "neutral",
-  outdir: "src",
-  outExtension: { ".js": ".mjs" },
-  bundle: true,
-  splitting: true,
-  plugins: [
-    useImportMap(
-      relativeImportMap(buildCwd, denoConfig.imports),
-    ),
-  ],
-});
 
 function relativeImportMap(
   from: string,
