@@ -1,8 +1,48 @@
 {
-  "exclude": ["build"],
   "imports": {
+    "@std/fs": "jsr:@std/fs@^1.0.4",
+    "@std/path": "jsr:@std/path@^1.0.6",
+    "@std/regexp": "jsr:@std/regexp@^1.0.0",
     "amber/": "./build/dev/javascript/amber/amber/",
-    "gleam": "./build/dev/javascript/gleam_stdlib/gleam.mjs",
-    "gleam/": "./build/dev/javascript/gleam_stdlib/gleam/"
+    "esbuild": "npm:esbuild@^0.24.0",
+    "gleam/": "./build/dev/javascript/gleam_stdlib/gleam/",
+    "prelude": "./build/dev/javascript/prelude.mjs",
+    "prelude-types": "./build/dev/javascript/prelude.d.mts",
+    "type-fest": "npm:type-fest@^4.26.1"
+  },
+
+  "tasks": {
+    "build": "deno run -A build.ts",
+    "clean": "rm -f src/*.mjs"
+  },
+
+  "lint": {
+    "rules": {
+      "tags": ["recommended"],
+      "include": [
+        "ban-untagged-todo",
+        "camelcase",
+        "default-param-last",
+        "eqeqeq",
+        "explicit-function-return-type",
+        "guard-for-in",
+        "no-await-in-loop",
+        "no-const-assign",
+        "no-eval",
+        "no-external-import",
+        "no-implicit-declare-namespace-export",
+        "no-inferrable-types",
+        "no-non-null-asserted-optional-chain",
+        "no-non-null-assertion",
+        "no-self-compare",
+        "no-sparse-arrays",
+        "no-sync-fn-in-async-fn",
+        "no-throw-literal",
+        "prefer-ascii",
+        "single-var-declarator",
+        "triple-slash-reference",
+        "verbatim-module-syntax"
+      ]
+    }
   }
 }

@@ -2,9 +2,9 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
 
-  "[javascript]": {
+  "[typescript]": {
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+      "source.sortImports": "explicit"
     }
   },
 
