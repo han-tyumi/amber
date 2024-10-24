@@ -1,3 +1,3 @@
 pub type SetRawOption {
-  Cbreak
+  Cbreak(Bool)
 }

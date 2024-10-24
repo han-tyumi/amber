@@ -13,19 +13,14 @@ pre-commit:
       stage_fixed: true
 
     deno-check:
-      glob: "*.mjs"
+      glob: "*.ts"
       run: deno check {staged_files}
 
     deno-lint:
-      glob: "*.mjs"
+      glob: "*.ts"
       run: deno lint {staged_files}
 
     deno-format:
-      glob: "*.{mjs,md,json,yml}"
+      glob: "*.{ts,md,json,yml}"
       run: deno fmt {staged_files}
       stage_fixed: true
-
-    only-mjs:
-      glob: "*.{js,cjs}"
-      run: exit 1
-      fail_text: "JS files must use the `.mjs` extension."
