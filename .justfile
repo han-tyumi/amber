@@ -10,11 +10,10 @@ bootstrap:
 
 clean:
   gleam clean
-  -deno task clean
 
 build:
-  deno task build
   gleam build
+  deno task build
 
 test:
   gleam test

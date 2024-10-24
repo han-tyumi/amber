@@ -6,35 +6,40 @@ import { build, type BuildOptions, type Plugin } from "esbuild";
 import denoConfig from "./deno.json" with { type: "json" };
 
 const cwd = Deno.cwd();
-const src = path.resolve(cwd, "src");
-const buildCwd = path.resolve(cwd, "build/dev/javascript/amber");
+const srcDir = path.resolve(cwd, "src");
+const entryPointsGlob = path.joinGlobs([srcDir, "**/*_ffi.ts"]);
+const outDir = path.resolve(cwd, "build/dev/javascript/amber");
 
 await build({
-  entryPoints: await entryPoints(),
+  entryPoints: await entryPoints(entryPointsGlob, srcDir, outDir),
   platform: "neutral",
-  outdir: "src",
+  outdir: outDir,
   outExtension: { ".js": ".mjs" },
   bundle: true,
   splitting: true,
   plugins: [
     useImportMap(
-      relativeImportMap(buildCwd, denoConfig.imports),
+      relativeImportMap(outDir, denoConfig.imports),
     ),
   ],
 });
 
-function entryPoints(): Promise<BuildOptions["entryPoints"]> {
-  const entriesPromise = fs.expandGlob("src/**/*_ffi.ts", {
+function entryPoints(
+  entryPointsGlob: string,
+  srcDir: string,
+  outDir: string,
+): Promise<BuildOptions["entryPoints"]> {
+  const entriesPromise = fs.expandGlob(entryPointsGlob, {
     extended: false,
     includeDirs: false,
   });
 
   return Array.fromAsync(entriesPromise, ({ path: inPath }) => {
-    const inRelativeToSrc = path.relative(src, inPath);
-    const { dir: inDir, name: inName } = path.parse(inRelativeToSrc);
-    const relativeOutBase = path.join(inDir, inName).replaceAll("/", "__");
-    const outBase = path.resolve(src, relativeOutBase);
-    return { in: inPath, out: outBase };
+    const relInPath = path.relative(srcDir, inPath);
+    const { dir: relInDir, name: inName } = path.parse(relInPath);
+    const outBase = path.join(relInDir, inName).replaceAll("/", "__");
+    const outPath = path.resolve(outDir, outBase);
+    return { in: inPath, out: outPath };
   });
 }
 

@@ -12,8 +12,7 @@
   },
 
   "tasks": {
-    "build": "deno run -A build.ts",
-    "clean": "rm -f src/*.mjs"
+    "build": "deno run -A build.ts"
   },
 
   "lint": {
