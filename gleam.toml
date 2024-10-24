@@ -11,7 +11,8 @@ runtime = "deno"
 typescript_declarations = true
 
 [javascript.deno]
-allow_read = ["gleam.toml", "test"]
+allow_read = true
+allow_write = true
 
 [dependencies]
 gleam_stdlib = ">= 0.34.0 and < 2.0.0"
