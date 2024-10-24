@@ -4,22 +4,42 @@
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/amber/)
 
 ```sh
-gleam add amber@1
+gleam add amber
 ```
 
 ```gleam
-import amber
+import amber/fs
 
 pub fn main() {
-  // TODO: An example of the project in use
+  fs.write_text_file_sync("amber.txt", "deno bindings for gleam", [])
 }
 ```
 
 Further documentation can be found at <https://hexdocs.pm/amber>.
 
-## Development
+## Contributing
+
+### Prerequisites
+
+- [Deno](https://docs.deno.com/runtime/getting_started/installation/)
+- [Gleam](https://gleam.run/getting-started/installing/)
+- [Just](https://just.systems/man/en/prerequisites.html)
+- [Rebar3](https://rebar3.org/docs/getting-started/)
+- [Watchexec](https://github.com/watchexec/watchexec/tree/main?tab=readme-ov-file#install)
+
+_Tip_: You can install these tools using a version manager like
+[asdf](https://asdf-vm.com/guide/getting-started.html) or
+[mise](https://mise.jdx.dev/getting-started.html), which can read from
+`.tool-versions`.
+
+### Initial Setup
 
 ```sh
-gleam run   # Run the project
-gleam test  # Run the tests
+just
+```
+
+### Development
+
+```sh
+just develop
 ```
