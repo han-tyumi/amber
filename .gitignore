@@ -4,3 +4,5 @@
 *.ez
 /build
 erl_crash.dump
+
+/src/*.mjs

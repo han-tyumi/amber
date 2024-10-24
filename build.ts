@@ -8,7 +8,8 @@ import denoConfig from "./deno.json" with { type: "json" };
 const cwd = Deno.cwd();
 const srcDir = path.resolve(cwd, "src");
 const entryPointsGlob = path.joinGlobs([srcDir, "**/*_ffi.ts"]);
-const outDir = path.resolve(cwd, "build/dev/javascript/amber");
+const gleamOutDir = path.resolve(cwd, "build/dev/javascript/amber");
+const outDir = srcDir;
 
 await build({
   entryPoints: await entryPoints(entryPointsGlob, srcDir, outDir),
@@ -19,7 +20,7 @@ await build({
   splitting: true,
   plugins: [
     useImportMap(
-      relativeImportMap(outDir, denoConfig.imports),
+      relativeImportMap(gleamOutDir, denoConfig.imports),
     ),
   ],
 });
