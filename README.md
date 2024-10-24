@@ -6,8 +6,7 @@
 :construction: **This package a work in progress. Use at your own risk.**
 :construction:
 
-:sauropod: [Deno](https://deno.com/) bindings for [Gleam](https://gleam.run/).
-:star2:
+:sauropod: [Deno](https://deno.com/) bindings for [Gleam](https://gleam.run/). :star2:
 
 Currently only bindings to the
 [Deno File System APIs](https://docs.deno.com/api/deno/file-system) are
