@@ -20,7 +20,8 @@ test:
   gleam test
 
 develop:
-  watchexec -w src -w test 'just build; just test'
+  watchexec -w src -w test 'just build test'
 
 publish:
+  just clean build test
   gleam publish
