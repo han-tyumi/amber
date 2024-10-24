@@ -1,6 +1,8 @@
+.env
+
 *.beam
 *.ez
 /build
 erl_crash.dump
 
-.env
+/src/*.mjs

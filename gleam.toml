@@ -8,6 +8,7 @@ target = "javascript"
 
 [javascript]
 runtime = "deno"
+typescript_declarations = true
 
 [javascript.deno]
 allow_read = ["gleam.toml", "test"]
