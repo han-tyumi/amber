@@ -1,3 +1,24 @@
+// TODO(@han-tyumi): Should probably be opaque.
+/// Information about a directory entry returned from
+/// [`fs.read_dir_sync`](../fs.html#read_dir_sync).
+///
 pub type DirEntry {
-  DirEntry(name: String, is_file: Bool, is_directory: Bool, is_symlink: Bool)
+  DirEntry(
+    /// The file name of the entry. It is just the entity name and does not
+    /// include the full path.
+    ///
+    name: String,
+    /// True if this is info for a regular file. Mutually exclusive to
+    /// `DirEntry.is_directory` and `DirEntry.is_symlink`.
+    ///
+    is_file: Bool,
+    /// True if this is info for a regular directory. Mutually exclusive to
+    /// `DirEntry.is_file` and `DirEntry.is_symlink`.
+    ///
+    is_directory: Bool,
+    /// True if this is info for a symlink. Mutually exclusive to
+    /// `DirEntry.is_file` and `DirEntry.is_directory`.
+    ///
+    is_symlink: Bool,
+  )
 }
