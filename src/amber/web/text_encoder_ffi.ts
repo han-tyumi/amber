@@ -1,3 +1,4 @@
+import { EncodeIntoResult } from "amber/web/encode_into_result.mjs";
 import type * as $textEncoder from "amber/web/text_encoder.mjs";
 
 export const new_: typeof $textEncoder.new$ = () => {
@@ -9,4 +10,13 @@ export const encode: typeof $textEncoder.encode = (
   input,
 ) => {
   return encoder.encode(input);
+};
+
+export const encodeInto: typeof $textEncoder.encode_into = (
+  encoder: TextEncoder,
+  input,
+  dest: Uint8Array,
+) => {
+  const result = encoder.encodeInto(input, dest);
+  return new EncodeIntoResult(result.read, result.written);
 };

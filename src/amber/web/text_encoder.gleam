@@ -1,13 +1,14 @@
+import amber/web/encode_into_result.{type EncodeIntoResult}
 import amber/web/uint8_array.{type Uint8Array}
 
 /// Allows you to convert a string into binary data
 /// (in the form of a Uint8Array) given the encoding.
 ///
 /// ## Examples
-/// 
+///
 /// ```gleam
 /// import amber/web/text_encoder
-/// 
+///
 /// text_encoder.new()
 /// |> text_encoder.encode("Hello")
 /// // -> //js(Uint8Array { "0": 72, "1": 101, "2": 108, "3": 108, "4": 111 })
@@ -20,6 +21,16 @@ pub fn new() -> TextEncoder
 
 /// Turns a string into binary data (in the form of a Uint8Array) using UTF-8
 /// encoding.
-/// 
+///
 @external(javascript, "../../amber__web__text_encoder_ffi.mjs", "encode")
 pub fn encode(encoder: TextEncoder, input: String) -> Uint8Array
+
+/// Encodes a string into the destination Uint8Array and returns the result of
+/// the encoding.
+///
+@external(javascript, "../../amber__web__text_encoder_ffi.mjs", "encodeInto")
+pub fn encode_into(
+  encoder: TextEncoder,
+  input: String,
+  dest: Uint8Array,
+) -> EncodeIntoResult
