@@ -24,3 +24,7 @@ pre-commit:
       glob: "*.{ts,md,json,yml}"
       run: deno fmt {staged_files}
       stage_fixed: true
+
+    test:
+      glob: "*.{gleam,ts}"
+      run: just test
