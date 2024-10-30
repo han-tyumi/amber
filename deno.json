@@ -11,6 +11,10 @@
     "type-fest": "npm:type-fest@^4.26.1"
   },
 
+  "compilerOptions": {
+    "types": ["./prelude.d.ts", "./iterator.d.ts"]
+  },
+
   "tasks": {
     "build": "deno run -A build.ts",
     "clean": "rm -f src/*.mjs"
