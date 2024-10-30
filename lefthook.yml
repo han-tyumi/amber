@@ -12,9 +12,14 @@ pre-commit:
       run: gleam format {staged_files}
       stage_fixed: true
 
-    deno-check:
-      glob: "*.ts"
-      run: deno check {staged_files}
+    # TODO(@han-tyumi): Currently broken.
+    # Gleam seems to output incorrect type declarations for both gleam/iterator
+    # and web/iterator.
+    # gleam/iterator is missing Action$ and web/iterator's Iterator sometimes
+    # has its type parameters swapped around.
+    # deno-check:
+    #   glob: "*.ts"
+    #   run: deno check {staged_files}
 
     deno-lint:
       glob: "*.ts"
