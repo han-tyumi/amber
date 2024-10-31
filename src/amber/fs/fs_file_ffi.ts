@@ -4,7 +4,7 @@ import * as $setRaw from "amber/fs/set_raw.mjs";
 import { unwrap } from "gleam/option.mjs";
 
 import { CustomTypeOptionsMap } from "../../utils/CustomTypeOptionsMap.ts";
-import { fromEnumCustomType } from "../../utils/enum_custom_type.ts";
+import { fromEnumCustomType } from "../../utils/enumCustomType.ts";
 import { toResult } from "../../utils/result.ts";
 import { toGleamFileInfo } from "./file_info.ts";
 

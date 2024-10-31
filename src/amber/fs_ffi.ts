@@ -10,7 +10,7 @@ import * as $writeFile from "amber/fs/write_file.mjs";
 import { unwrap } from "gleam/option.mjs";
 
 import { CustomTypeOptionsMap } from "../utils/CustomTypeOptionsMap.ts";
-import { fromEnumCustomType } from "../utils/enum_custom_type.ts";
+import { fromEnumCustomType } from "../utils/enumCustomType.ts";
 import { fromArrayMapped } from "../utils/list.ts";
 import { toResult } from "../utils/result.ts";
 import { toError$ } from "./error.ts";

@@ -3,7 +3,7 @@ import type * as $fsWatcher from "amber/fs/fs_watcher.mjs";
 import * as $option from "gleam/option.mjs";
 import { toList } from "prelude";
 
-import { toEnumCustomType } from "../../utils/enum_custom_type.ts";
+import { toEnumCustomType } from "../../utils/enumCustomType.ts";
 import { toOption } from "../../utils/option.ts";
 
 export const close: typeof $fsWatcher.close = (watcher: Deno.FsWatcher) => {
