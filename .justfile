@@ -1,7 +1,5 @@
 set dotenv-load := true
 
-alias dev := develop
-
 bootstrap:
   lefthook install
   deno install
@@ -23,9 +21,7 @@ docs:
   gleam docs build
 
 watch +recipes:
-  watchexec -c -w src -w test -- just {{recipes}}
-
-develop: (watch 'build test')
+  watchexec --no-meta -c -w src -w test -e gleam,mjs,ts -- just {{recipes}}
 
 publish:
   just clean build test
