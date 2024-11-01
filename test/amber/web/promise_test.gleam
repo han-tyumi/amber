@@ -2,7 +2,9 @@ import amber/web
 import amber/web/promise
 import amber/web/promise_settled_result
 import gleam/dynamic
+import gleeunit/async_test
 import gleeunit/should
+import gleeunit/spy
 
 pub fn resolve_promise_test() {
   let promise = promise.resolve(42)
@@ -77,12 +79,21 @@ pub fn promise_all_settled_test() {
 }
 
 pub fn then_catch_finally_test() {
+  use done <- async_test.run
+
+  let assert Ok(spy) =
+    spy.new(fn(value) {
+      should.equal(value, 42)
+      value + 1
+    })
+
   promise.resolve(42)
-  |> promise.then(fn(value) {
-    should.equal(value, 42)
-    value + 1
-  })
+  |> promise.then(spy |> spy.fun)
   |> promise.catch(fn(_reason) { should.fail() })
-  |> promise.finally(fn() { Nil })
+  |> promise.finally(fn() {
+    spy |> spy.has_been_called |> should.be_true
+    done()
+  })
   |> promise.then(fn(value) { should.equal(value, 43) })
+  Nil
 }
