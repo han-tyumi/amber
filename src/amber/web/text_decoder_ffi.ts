@@ -12,7 +12,7 @@ const textDecoderOptionsMap = new CustomTypeOptionsMap<TextDecoderOptions>()
   .set($textDecoderOption.Fatal, () => ({ fatal: true }))
   .set($textDecoderOption.IgnoreBom, () => ({ ignoreBOM: true }));
 
-export const newWith: typeof $textDecoder.new_with = (label, options) => {
+export const new_with: typeof $textDecoder.new_with = (label, options) => {
   return new TextDecoder(
     label,
     textDecoderOptionsMap.customTypeListToOptions(options),
@@ -26,7 +26,7 @@ export const decode: typeof $textDecoder.decode = (decoder: TextDecoder) => {
 const textDecodeOptionsMap = new CustomTypeOptionsMap<TextDecodeOptions>()
   .set($textDecodeOption.Stream, () => ({ stream: true }));
 
-export const decodeWith: typeof $textDecoder.decode_with = (
+export const decode_with: typeof $textDecoder.decode_with = (
   decoder: TextDecoder,
   input: ArrayBuffer,
   options,

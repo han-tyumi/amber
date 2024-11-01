@@ -11,10 +11,10 @@ pub type Uint8Array
 @external(javascript, "../../amber__web__uint8_array_ffi.mjs", "new_")
 pub fn new() -> Uint8Array
 
-@external(javascript, "../../amber__web__uint8_array_ffi.mjs", "fromLength")
+@external(javascript, "../../amber__web__uint8_array_ffi.mjs", "from_length")
 pub fn from_length(length: Int) -> Uint8Array
 
-@external(javascript, "../../amber__web__uint8_array_ffi.mjs", "fromList")
+@external(javascript, "../../amber__web__uint8_array_ffi.mjs", "from_list")
 pub fn from_list(list: List(Int)) -> Uint8Array
 
 @external(javascript, "../../amber__web__uint8_array_ffi.mjs", "buffer")

@@ -16,7 +16,7 @@ import { toResult } from "../utils/result.ts";
 import { toError$ } from "./error.ts";
 import { toGleamFileInfo } from "./fs/file_info.ts";
 
-export const linkSync: typeof $fs.link_sync = (oldpath, newpath) => {
+export const link_sync: typeof $fs.link_sync = (oldpath, newpath) => {
   return toResult.fromThrows(() => Deno.linkSync(oldpath, newpath), toError$);
 };
 
@@ -29,18 +29,18 @@ const openOptionsMap = new CustomTypeOptionsMap<Deno.OpenOptions>()
   .set($open.Truncate, () => ({ truncate: true }))
   .set($open.Write, () => ({ write: true }));
 
-export const openSync: typeof $fs.open_sync = (path, options) => {
+export const open_sync: typeof $fs.open_sync = (path, options) => {
   return Deno.openSync(path, openOptionsMap.customTypeListToOptions(options));
 };
 
-export const createSync: typeof $fs.create_sync = (path) =>
+export const create_sync: typeof $fs.create_sync = (path) =>
   Deno.createSync(path);
 
 const mkdirOptionsMap = new CustomTypeOptionsMap<Deno.MkdirOptions>()
   .set($mkdir.Mode, (mode) => ({ mode: mode[0] }))
   .set($mkdir.Recursive, () => ({ recursive: true }));
 
-export const mkdirSync: typeof $fs.mkdir_sync = (
+export const mkdir_sync: typeof $fs.mkdir_sync = (
   path,
   options,
 ) => {
@@ -52,23 +52,25 @@ const makeTempOptionsMap = new CustomTypeOptionsMap<Deno.MakeTempOptions>()
   .set($makeTemp.Prefix, (prefix) => ({ prefix: prefix[0] }))
   .set($makeTemp.Suffix, (suffix) => ({ suffix: suffix[0] }));
 
-export const makeTempDirSync: typeof $fs.make_temp_dir_sync = (options) => {
+export const make_temp_dir_sync: typeof $fs.make_temp_dir_sync = (options) => {
   return Deno.makeTempDirSync(
     makeTempOptionsMap.customTypeListToOptions(options),
   );
 };
 
-export const makeTempFileSync: typeof $fs.make_temp_file_sync = (options) => {
+export const make_temp_file_sync: typeof $fs.make_temp_file_sync = (
+  options,
+) => {
   return Deno.makeTempFileSync(
     makeTempOptionsMap.customTypeListToOptions(options),
   );
 };
 
-export const chmodSync: typeof $fs.chmod_sync = (path, mode) => {
+export const chmod_sync: typeof $fs.chmod_sync = (path, mode) => {
   Deno.chmodSync(path, mode);
 };
 
-export const chownSync: typeof $fs.chown_sync = (
+export const chown_sync: typeof $fs.chown_sync = (
   path,
   uid,
   gid,
@@ -79,25 +81,25 @@ export const chownSync: typeof $fs.chown_sync = (
 const removeOptionsMap = new CustomTypeOptionsMap<Deno.RemoveOptions>()
   .set($remove.Recursive, () => ({ recursive: true }));
 
-export const removeSync: typeof $fs.remove_sync = (
+export const remove_sync: typeof $fs.remove_sync = (
   path,
   options,
 ) => {
   Deno.removeSync(path, removeOptionsMap.customTypeListToOptions(options));
 };
 
-export const renameSync: typeof $fs.rename_sync = (oldpath, newpath) => {
+export const rename_sync: typeof $fs.rename_sync = (oldpath, newpath) => {
   Deno.renameSync(oldpath, newpath);
 };
 
-export const readTextFileSync: typeof $fs.read_text_file_sync =
+export const read_text_file_sync: typeof $fs.read_text_file_sync =
   Deno.readTextFileSync;
 
-export const readFileSync: typeof $fs.read_file_sync = Deno.readFileSync;
+export const read_file_sync: typeof $fs.read_file_sync = Deno.readFileSync;
 
-export const realPathSync: typeof $fs.real_path_sync = Deno.realPathSync;
+export const real_path_sync: typeof $fs.real_path_sync = Deno.realPathSync;
 
-export const readDirSync: typeof $fs.read_dir_sync = (path) => {
+export const read_dir_sync: typeof $fs.read_dir_sync = (path) => {
   const entries = Deno.readDirSync(path);
   return fromArrayMapped(
     Array.from(entries),
@@ -111,17 +113,20 @@ export const readDirSync: typeof $fs.read_dir_sync = (path) => {
   );
 };
 
-export const copyFileSync: typeof $fs.copy_file_sync = (from_path, to_path) => {
+export const copy_file_sync: typeof $fs.copy_file_sync = (
+  from_path,
+  to_path,
+) => {
   Deno.copyFileSync(from_path, to_path);
 };
 
-export const readLinkSync: typeof $fs.read_link_sync = Deno.readLinkSync;
+export const read_link_sync: typeof $fs.read_link_sync = Deno.readLinkSync;
 
-export const lstatSync: typeof $fs.lstat_sync = (path) => {
+export const lstat_sync: typeof $fs.lstat_sync = (path) => {
   return toGleamFileInfo(Deno.lstatSync(path));
 };
 
-export const statSync: typeof $fs.stat_sync = (path) => {
+export const stat_sync: typeof $fs.stat_sync = (path) => {
   return toGleamFileInfo(Deno.statSync(path));
 };
 
@@ -132,7 +137,7 @@ const writeFileOptionsMap = new CustomTypeOptionsMap<Deno.WriteFileOptions>()
   .set($writeFile.Mode, (mode) => ({ mode: mode[0] }))
   .set($writeFile.Signal, (signal) => ({ signal: signal[0] }));
 
-export const writeFileSync: typeof $fs.write_file_sync = (
+export const write_file_sync: typeof $fs.write_file_sync = (
   path,
   data,
   options,
@@ -144,7 +149,7 @@ export const writeFileSync: typeof $fs.write_file_sync = (
   );
 };
 
-export const writeTextFileSync: typeof $fs.write_text_file_sync = (
+export const write_text_file_sync: typeof $fs.write_text_file_sync = (
   path,
   data,
   options,
@@ -156,7 +161,7 @@ export const writeTextFileSync: typeof $fs.write_text_file_sync = (
   );
 };
 
-export const truncateSync: typeof $fs.truncate_sync = (name, len) => {
+export const truncate_sync: typeof $fs.truncate_sync = (name, len) => {
   Deno.truncateSync(name, unwrap(len, undefined));
 };
 
@@ -165,7 +170,7 @@ type WatchFsOptions = NonNullable<Parameters<typeof Deno.watchFs>["1"]>;
 const watchFsOptionsMap = new CustomTypeOptionsMap<WatchFsOptions>()
   .set($watchFs.Recursive, (recursive) => ({ recursive: recursive[0] }));
 
-export const watchFs: typeof $fs.watch_fs = (paths, options) => {
+export const watch_fs: typeof $fs.watch_fs = (paths, options) => {
   return Deno.watchFs(
     paths.toArray(),
     watchFsOptionsMap.customTypeListToOptions(options) as WatchFsOptions,
@@ -183,7 +188,7 @@ const toSymlinkType = fromEnumCustomType<Deno.SymlinkOptions["type"]>(
 const symlinkOptionsMap = new CustomTypeOptionsMap<Deno.SymlinkOptions>()
   .set($symlink.Type, (type) => ({ type: toSymlinkType(type[0]) }));
 
-export const symlinkSync: typeof $fs.symlink_sync = (
+export const symlink_sync: typeof $fs.symlink_sync = (
   oldpath,
   newpath,
   options,
@@ -195,7 +200,7 @@ export const symlinkSync: typeof $fs.symlink_sync = (
   );
 };
 
-export const utimeSync: typeof $fs.utime_sync = (path, atime, mtime) => {
+export const utime_sync: typeof $fs.utime_sync = (path, atime, mtime) => {
   Deno.utimeSync(path, atime, mtime);
 };
 

@@ -12,7 +12,7 @@ export const encode: typeof $textEncoder.encode = (
   return encoder.encode(input);
 };
 
-export const encodeInto: typeof $textEncoder.encode_into = (
+export const encode_into: typeof $textEncoder.encode_into = (
   encoder: TextEncoder,
   input,
   dest: Uint8Array,

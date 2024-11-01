@@ -16,14 +16,14 @@ export const writable: typeof $fsFile.writable = (file: Deno.FsFile) => {
   return file.writable;
 };
 
-export const writeSync: typeof $fsFile.write_sync = (
+export const write_sync: typeof $fsFile.write_sync = (
   file: Deno.FsFile,
   p: Uint8Array,
 ) => {
   return file.writeSync(p);
 };
 
-export const truncateSync: typeof $fsFile.truncate_sync = (
+export const truncate_sync: typeof $fsFile.truncate_sync = (
   file: Deno.FsFile,
   len,
 ) => {
@@ -31,7 +31,7 @@ export const truncateSync: typeof $fsFile.truncate_sync = (
   return file;
 };
 
-export const readSync: typeof $fsFile.read_sync = (
+export const read_sync: typeof $fsFile.read_sync = (
   file: Deno.FsFile,
   p: Uint8Array,
 ) => {
@@ -46,7 +46,7 @@ const toSeekMode = fromEnumCustomType<Deno.SeekMode>(
   ]),
 );
 
-export const seekSync: typeof $fsFile.seek_sync = (
+export const seek_sync: typeof $fsFile.seek_sync = (
   file: Deno.FsFile,
   offset,
   whence,
@@ -54,23 +54,23 @@ export const seekSync: typeof $fsFile.seek_sync = (
   return file.seekSync(offset, toSeekMode(whence) as Deno.SeekMode);
 };
 
-export const statSync: typeof $fsFile.stat_sync = (file: Deno.FsFile) => {
+export const stat_sync: typeof $fsFile.stat_sync = (file: Deno.FsFile) => {
   return toGleamFileInfo(file.statSync());
 };
 
-export const syncSync: typeof $fsFile.sync_sync = (file: Deno.FsFile) => {
+export const sync_sync: typeof $fsFile.sync_sync = (file: Deno.FsFile) => {
   file.syncSync();
   return file;
 };
 
-export const syncDataSync: typeof $fsFile.sync_data_sync = (
+export const sync_data_sync: typeof $fsFile.sync_data_sync = (
   file: Deno.FsFile,
 ) => {
   file.syncDataSync();
   return file;
 };
 
-export const utimeSync: typeof $fsFile.utime_sync = (
+export const utime_sync: typeof $fsFile.utime_sync = (
   file: Deno.FsFile,
   atime,
   mtime,
@@ -79,14 +79,14 @@ export const utimeSync: typeof $fsFile.utime_sync = (
   return file;
 };
 
-export const isTerminal: typeof $fsFile.is_terminal = (file: Deno.FsFile) => {
+export const is_terminal: typeof $fsFile.is_terminal = (file: Deno.FsFile) => {
   return file.isTerminal();
 };
 
 const setRawOptionsMap = new CustomTypeOptionsMap<Deno.SetRawOptions>()
   .set($setRaw.Cbreak, (cbreak) => ({ cbreak: cbreak[0] }));
 
-export const setRaw: typeof $fsFile.set_raw = (
+export const set_raw: typeof $fsFile.set_raw = (
   file: Deno.FsFile,
   mode,
   options,
@@ -98,7 +98,7 @@ export const setRaw: typeof $fsFile.set_raw = (
   return file;
 };
 
-export const lockSync: typeof $fsFile.lock_sync = (
+export const lock_sync: typeof $fsFile.lock_sync = (
   file: Deno.FsFile,
   exclusive,
 ) => {
@@ -106,7 +106,7 @@ export const lockSync: typeof $fsFile.lock_sync = (
   return file;
 };
 
-export const unlockSync: typeof $fsFile.unlock_sync = (file: Deno.FsFile) => {
+export const unlock_sync: typeof $fsFile.unlock_sync = (file: Deno.FsFile) => {
   file.unlockSync();
   return file;
 };

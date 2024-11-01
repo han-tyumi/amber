@@ -14,40 +14,40 @@ pub fn readable(file: FsFile) -> ReadableStream(Uint8Array)
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "writable")
 pub fn writable(file: FsFile) -> WritableStream(Uint8Array)
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "writeSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "write_sync")
 pub fn write_sync(file: FsFile, p: Uint8Array) -> Int
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "truncateSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "truncate_sync")
 pub fn truncate_sync(file: FsFile, len: Option(Int)) -> FsFile
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "readSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "read_sync")
 pub fn read_sync(file: FsFile, p: Uint8Array) -> Result(Int, Nil)
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "seekSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "seek_sync")
 pub fn seek_sync(file: FsFile, offset: Int, whence: SeekMode) -> Int
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "statSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "stat_sync")
 pub fn stat_sync(file: FsFile) -> FileInfo
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "syncSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "sync_sync")
 pub fn sync_sync(file: FsFile) -> FsFile
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "syncDataSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "sync_data_sync")
 pub fn sync_data_sync(file: FsFile) -> FsFile
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "utimeSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "utime_sync")
 pub fn utime_sync(file: FsFile, atime: Int, mtime: Int) -> FsFile
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "isTerminal")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "is_terminal")
 pub fn is_terminal(file: FsFile) -> Bool
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "setRaw")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "set_raw")
 pub fn set_raw(file: FsFile, mode: Bool, options: List(SetRawOption)) -> FsFile
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "lockSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "lock_sync")
 pub fn lock_sync(file: FsFile, exclusive: Bool) -> FsFile
 
-@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "unlockSync")
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "unlock_sync")
 pub fn unlock_sync(file: FsFile) -> FsFile
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "close")

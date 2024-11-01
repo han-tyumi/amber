@@ -4,7 +4,7 @@ export const new_: typeof $arrayBuffer.new$ = (byteLength) => {
   return new ArrayBuffer(byteLength);
 };
 
-export const byteLength: typeof $arrayBuffer.byte_length = (
+export const byte_length: typeof $arrayBuffer.byte_length = (
   arrayBuffer: ArrayBuffer,
 ) => {
   return arrayBuffer.byteLength;
@@ -17,7 +17,7 @@ export const slice: typeof $arrayBuffer.slice = (
   return arrayBuffer.slice(begin);
 };
 
-export const sliceWithEnd: typeof $arrayBuffer.slice_with_end = (
+export const slice_with_end: typeof $arrayBuffer.slice_with_end = (
   arrayBuffer: ArrayBuffer,
   begin,
   end,

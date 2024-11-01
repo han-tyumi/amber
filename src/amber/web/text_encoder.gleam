@@ -28,7 +28,7 @@ pub fn encode(encoder: TextEncoder, input: String) -> Uint8Array
 /// Encodes a string into the destination Uint8Array and returns the result of
 /// the encoding.
 ///
-@external(javascript, "../../amber__web__text_encoder_ffi.mjs", "encodeInto")
+@external(javascript, "../../amber__web__text_encoder_ffi.mjs", "encode_into")
 pub fn encode_into(
   encoder: TextEncoder,
   input: String,

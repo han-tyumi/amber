@@ -32,7 +32,7 @@ export const resolve: typeof $promise.resolve = (value) => {
   return Promise.resolve(value);
 };
 
-export const allSettled: typeof $promise.all_settled = async (values) => {
+export const all_settled: typeof $promise.all_settled = async (values) => {
   const results = await Promise.allSettled(values);
   return toList(
     results.map((result) =>
@@ -47,7 +47,7 @@ export const any: typeof $promise.any = (values) => {
   return Promise.any(values);
 };
 
-export const withResolvers: typeof $promise.with_resolvers = () => {
+export const with_resolvers: typeof $promise.with_resolvers = () => {
   const { promise, resolve, reject } = Promise.withResolvers();
   return new $promise.PromiseWithResolvers(
     promise,

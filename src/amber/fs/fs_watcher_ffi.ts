@@ -38,7 +38,7 @@ function toGleamFsEvent(event: Deno.FsEvent): $fsEvent.FsEvent {
   );
 }
 
-export const iterateAsync: typeof $fsWatcher.iterate_async = (
+export const iterate_async: typeof $fsWatcher.iterate_async = (
   watcher: Deno.FsWatcher,
   callback,
 ) => {

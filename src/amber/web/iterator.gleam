@@ -8,13 +8,13 @@ pub fn new(
   next: fn(Option(next)) -> IteratorResult(a, return),
 ) -> Iterator(a, return, next)
 
-@external(javascript, "../../amber__web__iterator_ffi.mjs", "withReturn")
+@external(javascript, "../../amber__web__iterator_ffi.mjs", "with_return")
 pub fn with_return(
   iterator: Iterator(a, return, next),
   return: fn(Option(return)) -> IteratorResult(a, return),
 ) -> Iterator(a, return, next)
 
-@external(javascript, "../../amber__web__iterator_ffi.mjs", "withThrow")
+@external(javascript, "../../amber__web__iterator_ffi.mjs", "with_throw")
 pub fn with_throw(
   iterator: Iterator(a, return, next),
   throw: fn(e) -> IteratorResult(a, return),
@@ -23,7 +23,7 @@ pub fn with_throw(
 @external(javascript, "../../amber__web__iterator_ffi.mjs", "next")
 pub fn next(iterator: Iterator(a, return, next)) -> IteratorResult(a, return)
 
-@external(javascript, "../../amber__web__iterator_ffi.mjs", "nextWith")
+@external(javascript, "../../amber__web__iterator_ffi.mjs", "next_with")
 pub fn next_with(
   iterator: Iterator(a, return, next),
   value: next,
@@ -34,7 +34,7 @@ pub fn return(
   iterator: Iterator(a, return, next),
 ) -> Result(IteratorResult(a, return), Nil)
 
-@external(javascript, "../../amber__web__iterator_ffi.mjs", "returnWith")
+@external(javascript, "../../amber__web__iterator_ffi.mjs", "return_with")
 pub fn return_with(
   iterator: Iterator(a, return, next),
   value: return,

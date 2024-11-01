@@ -16,7 +16,7 @@ pub type WritableStream(w)
 /// web.set_timeout(500, fn() { io.println("hello") })
 /// ```
 ///
-@external(javascript, "../amber__web_ffi.mjs", "setTimeout")
+@external(javascript, "../amber__web_ffi.mjs", "set_timeout")
 pub fn set_timeout(delay: Int, callback: fn() -> Nil) -> Int
 
 /// Cancels a scheduled action initiated by `set_timeout`.
@@ -29,5 +29,5 @@ pub fn set_timeout(delay: Int, callback: fn() -> Nil) -> Int
 /// web.clear_timeout(id)
 /// ```
 ///
-@external(javascript, "../amber__web_ffi.mjs", "clearTimeout")
+@external(javascript, "../amber__web_ffi.mjs", "clear_timeout")
 pub fn clear_timeout(id: Int) -> Nil

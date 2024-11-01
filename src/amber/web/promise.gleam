@@ -44,7 +44,7 @@ pub fn resolve(value: a) -> Promise(a)
 /// Creates a Promise that is resolved with a list of `PromiseSettledResult`s
 /// when all of the provided Promises resolve or reject.
 ///
-@external(javascript, "../../amber__web__promise_ffi.mjs", "allSettled")
+@external(javascript, "../../amber__web__promise_ffi.mjs", "all_settled")
 pub fn all_settled(
   values: List(Promise(a)),
 ) -> Promise(List(PromiseSettledResult(a)))
@@ -60,7 +60,7 @@ pub fn any(values: List(Promise(a))) -> Promise(a)
 /// Creates a new Promise and returns it in a `PromiseWithResolvers` record,
 /// along with its resolve and reject functions.
 ///
-@external(javascript, "../../amber__web__promise_ffi.mjs", "withResolvers")
+@external(javascript, "../../amber__web__promise_ffi.mjs", "with_resolvers")
 pub fn with_resolvers() -> PromiseWithResolvers(a)
 
 /// Attaches a callback for the resolution of the Promise.

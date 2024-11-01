@@ -25,10 +25,8 @@
       "tags": ["recommended"],
       "include": [
         "ban-untagged-todo",
-        "camelcase",
         "default-param-last",
         "eqeqeq",
-        "explicit-function-return-type",
         "guard-for-in",
         "no-await-in-loop",
         "no-const-assign",

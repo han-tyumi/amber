@@ -4,11 +4,11 @@ export const new_: typeof $uint8Array.new$ = () => {
   return new Uint8Array();
 };
 
-export const fromLength: typeof $uint8Array.from_length = (length) => {
+export const from_length: typeof $uint8Array.from_length = (length) => {
   return new Uint8Array(length);
 };
 
-export const fromList: typeof $uint8Array.from_list = (list) => {
+export const from_list: typeof $uint8Array.from_list = (list) => {
   return new Uint8Array(list);
 };
 

@@ -14,7 +14,7 @@ export const new_: typeof $iterator.new$ = <T, TReturn, TNext>(
   return iterator;
 };
 
-export const withReturn: typeof $iterator.with_return = <T, TReturn, TNext>(
+export const with_return: typeof $iterator.with_return = <T, TReturn, TNext>(
   iterator: Iterator<T, TReturn, TNext>,
   return_: Parameters<typeof $iterator.with_return<TReturn, T, TNext>>[1],
 ) => {
@@ -25,7 +25,7 @@ export const withReturn: typeof $iterator.with_return = <T, TReturn, TNext>(
   return newIterator;
 };
 
-export const withThrow: typeof $iterator.with_throw = <T, TReturn, TNext>(
+export const with_throw: typeof $iterator.with_throw = <T, TReturn, TNext>(
   iterator: Iterator<T, TReturn, TNext>,
   throw_: Parameters<typeof $iterator.with_throw<TReturn, T, TNext>>[1],
 ) => {
@@ -52,7 +52,7 @@ export const next: typeof $iterator.next = <T, TReturn, TNext>(
   return toGleamIteratorResult(result);
 };
 
-export const nextWith: typeof $iterator.next_with = <T, TReturn, TNext>(
+export const next_with: typeof $iterator.next_with = <T, TReturn, TNext>(
   iterator: Iterator<T, TReturn, TNext>,
   value: Parameters<typeof $iterator.next_with<T, TReturn, TNext>>[1],
 ) => {
@@ -71,7 +71,7 @@ export const return_: typeof $iterator.return$ = <T, TReturn, TNext>(
   return new Ok(toGleamIteratorResult(result));
 };
 
-export const returnWith: typeof $iterator.return_with = <T, TReturn, TNext>(
+export const return_with: typeof $iterator.return_with = <T, TReturn, TNext>(
   iterator: Iterator<T, TReturn, TNext>,
   value: Parameters<typeof $iterator.return_with<T, TReturn>>[1],
 ) => {

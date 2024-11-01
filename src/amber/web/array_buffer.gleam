@@ -10,13 +10,13 @@ pub fn new(byte_length: Int) -> ArrayBuffer
 
 /// The length of the ArrayBuffer (in bytes).
 ///
-@external(javascript, "../../amber__web__array_buffer_ffi.mjs", "byteLength")
+@external(javascript, "../../amber__web__array_buffer_ffi.mjs", "byte_length")
 pub fn byte_length(array_buffer: ArrayBuffer) -> Int
 
 @external(javascript, "../../amber__web__array_buffer_ffi.mjs", "slice")
 pub fn slice(array_buffer: ArrayBuffer, begin: Int) -> ArrayBuffer
 
-@external(javascript, "../../amber__web__array_buffer_ffi.mjs", "sliceWithEnd")
+@external(javascript, "../../amber__web__array_buffer_ffi.mjs", "slice_with_end")
 pub fn slice_with_end(
   array_buffer: ArrayBuffer,
   begin: Int,
