@@ -35,7 +35,7 @@ export const read_sync: typeof $fsFile.read_sync = (
   file: Deno.FsFile,
   p: Uint8Array,
 ) => {
-  return toResult(file.readSync(p), undefined);
+  return fromThrows(() => toBytesRead(file.readSync(p)));
 };
 
 const toSeekMode = fromEnumCustomType<Deno.SeekMode>(

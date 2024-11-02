@@ -1,4 +1,5 @@
 import amber/error.{type Error}
+import amber/fs/bytes_read.{type BytesRead}
 import amber/fs/file_info.{type FileInfo}
 import amber/fs/seek_mode.{type SeekMode}
 import amber/fs/set_raw.{type SetRawOption}
@@ -21,7 +22,7 @@ pub fn write_sync(file: FsFile, p: Uint8Array) -> Int
 pub fn truncate_sync(file: FsFile, len: Option(Int)) -> FsFile
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "read_sync")
-pub fn read_sync(file: FsFile, p: Uint8Array) -> Result(Int, Nil)
+pub fn read_sync(file: FsFile, p: Uint8Array) -> Result(BytesRead, Error)
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "seek_sync")
 pub fn seek_sync(file: FsFile, offset: Int, whence: SeekMode) -> Int
