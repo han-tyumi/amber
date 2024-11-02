@@ -5,7 +5,6 @@ import amber/fs/seek_mode.{type SeekMode}
 import amber/fs/set_raw.{type SetRawOption}
 import amber/web.{type ReadableStream, type WritableStream}
 import amber/web/uint8_array.{type Uint8Array}
-import gleam/option.{type Option}
 
 pub type FsFile
 
@@ -16,7 +15,7 @@ pub fn readable(file: FsFile) -> ReadableStream(Uint8Array)
 pub fn writable(file: FsFile) -> WritableStream(Uint8Array)
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "write_sync")
-pub fn write_sync(file: FsFile, p: Uint8Array) -> Int
+pub fn write_sync(file: FsFile, p: Uint8Array) -> Result(Int, Error)
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "truncate_sync")
 pub fn truncate_sync(file: FsFile) -> FsFile
@@ -31,7 +30,7 @@ pub fn read_sync(file: FsFile, p: Uint8Array) -> Result(BytesRead, Error)
 pub fn seek_sync(file: FsFile, offset: Int, whence: SeekMode) -> Int
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "stat_sync")
-pub fn stat_sync(file: FsFile) -> FileInfo
+pub fn stat_sync(file: FsFile) -> Result(FileInfo, Error)
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "sync_sync")
 pub fn sync_sync(file: FsFile) -> FsFile

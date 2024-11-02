@@ -1,11 +1,14 @@
+import type { Error$ } from "amber/error.mjs";
 import type * as $fsFile from "amber/fs/fs_file.mjs";
 import * as $seekMode from "amber/fs/seek_mode.mjs";
 import * as $setRaw from "amber/fs/set_raw.mjs";
-import { unwrap } from "gleam/option.mjs";
+import * as $result from "gleam/result.mjs";
+import type { Result } from "prelude";
 
 import { CustomTypeOptionsMap } from "../../utils/CustomTypeOptionsMap.ts";
 import { fromEnumCustomType } from "../../utils/enumCustomType.ts";
-import { toResult } from "../../utils/result.ts";
+import { fromThrows } from "../error.ts";
+import { toBytesRead } from "./bytes_read.ts";
 import { toGleamFileInfo } from "./file_info.ts";
 
 export const readable: typeof $fsFile.readable = (file: Deno.FsFile) => {
@@ -20,7 +23,7 @@ export const write_sync: typeof $fsFile.write_sync = (
   file: Deno.FsFile,
   p: Uint8Array,
 ) => {
-  return file.writeSync(p);
+  return fromThrows(() => file.writeSync(p));
 };
 
 export const truncate_sync: typeof $fsFile.truncate_sync = (
@@ -62,7 +65,7 @@ export const seek_sync: typeof $fsFile.seek_sync = (
 };
 
 export const stat_sync: typeof $fsFile.stat_sync = (file: Deno.FsFile) => {
-  return toGleamFileInfo(file.statSync());
+  return fromThrows(() => toGleamFileInfo(file.statSync()));
 };
 
 export const sync_sync: typeof $fsFile.sync_sync = (file: Deno.FsFile) => {
