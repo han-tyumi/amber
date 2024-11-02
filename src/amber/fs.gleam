@@ -1,5 +1,3 @@
-import gleam/option.{type Option}
-
 import amber/error.{type Error}
 import amber/fs/dir_entry.{type DirEntry}
 import amber/fs/file_info.{type FileInfo}
@@ -13,6 +11,7 @@ import amber/fs/symlink.{type SymlinkOption}
 import amber/fs/watch_fs.{type WatchFsOption}
 import amber/fs/write_file.{type WriteFileOption}
 import amber/web/uint8_array.{type Uint8Array}
+import gleam/option.{type Option}
 
 @external(javascript, "../amber__fs_ffi.mjs", "link_sync")
 pub fn link_sync(oldpath: String, newpath: String) -> Result(Nil, Error)
@@ -99,4 +98,7 @@ pub fn symlink_sync(
 pub fn utime_sync(path: String, atime: Int, mtime: Int) -> Nil
 
 @external(javascript, "../amber__fs_ffi.mjs", "umask")
-pub fn umask(mask: Option(Int)) -> Int
+pub fn umask() -> Int
+
+@external(javascript, "../amber__fs_ffi.mjs", "set_umask")
+pub fn set_umask(mask: Int) -> Int

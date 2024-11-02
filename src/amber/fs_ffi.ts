@@ -204,6 +204,10 @@ export const utime_sync: typeof $fs.utime_sync = (path, atime, mtime) => {
   Deno.utimeSync(path, atime, mtime);
 };
 
-export const umask: typeof $fs.umask = (mask) => {
-  return Deno.umask(unwrap(mask, undefined));
+export const umask: typeof $fs.umask = () => {
+  return Deno.umask();
+};
+
+export const set_umask: typeof $fs.set_umask = (mask) => {
+  return Deno.umask(mask);
 };
