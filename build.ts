@@ -16,6 +16,7 @@ await build({
   platform: "neutral",
   outdir: outDir,
   outExtension: { ".js": ".mjs" },
+  target: "es2024",
   bundle: true,
   splitting: true,
   plugins: [

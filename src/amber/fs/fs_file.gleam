@@ -1,10 +1,10 @@
-import gleam/option.{type Option}
-
+import amber/error.{type Error}
 import amber/fs/file_info.{type FileInfo}
 import amber/fs/seek_mode.{type SeekMode}
 import amber/fs/set_raw.{type SetRawOption}
 import amber/web.{type ReadableStream, type WritableStream}
 import amber/web/uint8_array.{type Uint8Array}
+import gleam/option.{type Option}
 
 pub type FsFile
 
@@ -52,3 +52,9 @@ pub fn unlock_sync(file: FsFile) -> FsFile
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "close")
 pub fn close(file: FsFile) -> Nil
+
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "using_")
+pub fn using(
+  file_result: Result(FsFile, Error),
+  fun: fn(FsFile) -> Result(a, Error),
+) -> Result(a, Error)

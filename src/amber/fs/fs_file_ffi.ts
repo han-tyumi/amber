@@ -114,3 +114,13 @@ export const unlock_sync: typeof $fsFile.unlock_sync = (file: Deno.FsFile) => {
 export const close: typeof $fsFile.close = (file: Deno.FsFile) => {
   file.close();
 };
+
+export const using_: typeof $fsFile.using = <T>(
+  fileResult: Result<Deno.FsFile, Error$>,
+  fun: (file: Deno.FsFile) => Result<T, Error$>,
+): Result<T, Error$> => {
+  return $result.then$(fileResult, (file) => {
+    using usedFile = file;
+    return fun(usedFile);
+  });
+};
