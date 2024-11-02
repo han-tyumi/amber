@@ -125,4 +125,6 @@ pub type Error {
   /// being written.
   ///
   WriteZero
+
+  Other(String)
 }

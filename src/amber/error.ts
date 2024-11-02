@@ -1,5 +1,7 @@
 import * as $error from "amber/error.mjs";
+import type { Result } from "prelude";
 import type { Constructor } from "type-fest";
+import { toResult } from "../utils/result.ts";
 
 const map = new WeakMap<Constructor<Error>, Constructor<$error.Error$>>([
   [Deno.errors.AddrInUse, $error.AddrInUse],
@@ -35,6 +37,11 @@ export function toError$(error: unknown): $error.Error$ {
     if (Error$) {
       return new Error$();
     }
+    return new $error.Other(error.message);
   }
-  throw error;
+  return new $error.Other(String(error));
+}
+
+export function fromThrows<T>(throws: () => T): Result<T, $error.Error$> {
+  return toResult.fromThrows(throws, toError$);
 }
