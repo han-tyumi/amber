@@ -19,7 +19,10 @@ pub fn writable(file: FsFile) -> WritableStream(Uint8Array)
 pub fn write_sync(file: FsFile, p: Uint8Array) -> Int
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "truncate_sync")
-pub fn truncate_sync(file: FsFile, len: Option(Int)) -> FsFile
+pub fn truncate_sync(file: FsFile) -> FsFile
+
+@external(javascript, "../../amber__fs__fs_file_ffi.mjs", "truncate_to_length_sync")
+pub fn truncate_to_length_sync(file: FsFile, len: Int) -> FsFile
 
 @external(javascript, "../../amber__fs__fs_file_ffi.mjs", "read_sync")
 pub fn read_sync(file: FsFile, p: Uint8Array) -> Result(BytesRead, Error)

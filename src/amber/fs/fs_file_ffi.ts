@@ -25,9 +25,16 @@ export const write_sync: typeof $fsFile.write_sync = (
 
 export const truncate_sync: typeof $fsFile.truncate_sync = (
   file: Deno.FsFile,
+) => {
+  file.truncateSync();
+  return file;
+};
+
+export const truncate_to_length_sync: typeof $fsFile.truncate_to_length_sync = (
+  file: Deno.FsFile,
   len,
 ) => {
-  file.truncateSync(unwrap(len, undefined));
+  file.truncateSync(len);
   return file;
 };
 
