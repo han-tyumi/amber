@@ -12,12 +12,11 @@ import { unwrap } from "gleam/option.mjs";
 import { CustomTypeOptionsMap } from "../utils/CustomTypeOptionsMap.ts";
 import { fromEnumCustomType } from "../utils/enumCustomType.ts";
 import { fromArrayMapped } from "../utils/list.ts";
-import { toResult } from "../utils/result.ts";
-import { toError$ } from "./error.ts";
+import { fromThrows } from "./error.ts";
 import { toGleamFileInfo } from "./fs/file_info.ts";
 
 export const link_sync: typeof $fs.link_sync = (oldpath, newpath) => {
-  return toResult.fromThrows(() => Deno.linkSync(oldpath, newpath), toError$);
+  return fromThrows(() => Deno.linkSync(oldpath, newpath));
 };
 
 const openOptionsMap = new CustomTypeOptionsMap<Deno.OpenOptions>()
@@ -30,11 +29,13 @@ const openOptionsMap = new CustomTypeOptionsMap<Deno.OpenOptions>()
   .set($open.Write, () => ({ write: true }));
 
 export const open_sync: typeof $fs.open_sync = (path, options) => {
-  return Deno.openSync(path, openOptionsMap.customTypeListToOptions(options));
+  return fromThrows(() =>
+    Deno.openSync(path, openOptionsMap.customTypeListToOptions(options))
+  );
 };
 
 export const create_sync: typeof $fs.create_sync = (path) =>
-  Deno.createSync(path);
+  fromThrows(() => Deno.createSync(path));
 
 const mkdirOptionsMap = new CustomTypeOptionsMap<Deno.MkdirOptions>()
   .set($mkdir.Mode, (mode) => ({ mode: mode[0] }))

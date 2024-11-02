@@ -17,10 +17,13 @@ import gleam/option.{type Option}
 pub fn link_sync(oldpath: String, newpath: String) -> Result(Nil, Error)
 
 @external(javascript, "../amber__fs_ffi.mjs", "open_sync")
-pub fn open_sync(path: String, options: List(OpenOption)) -> FsFile
+pub fn open_sync(
+  path: String,
+  options: List(OpenOption),
+) -> Result(FsFile, Error)
 
 @external(javascript, "../amber__fs_ffi.mjs", "create_sync")
-pub fn create_sync(path: String) -> FsFile
+pub fn create_sync(path: String) -> Result(FsFile, Error)
 
 @external(javascript, "../amber__fs_ffi.mjs", "mkdir_sync")
 pub fn mkdir_sync(path: String, options: List(MkdirOption)) -> Nil
