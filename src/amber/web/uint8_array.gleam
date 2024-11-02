@@ -19,3 +19,9 @@ pub fn from_list(list: List(Int)) -> Uint8Array
 
 @external(javascript, "../../amber__web__uint8_array_ffi.mjs", "buffer")
 pub fn buffer(uint8_array: Uint8Array) -> ArrayBuffer
+
+@external(javascript, "../../amber__web__uint8_array_ffi.mjs", "byte_length")
+pub fn byte_length(uint8_array: Uint8Array) -> Int
+
+@external(javascript, "../../amber__web__uint8_array_ffi.mjs", "byte_offset")
+pub fn byte_offset(uint8_array: Uint8Array) -> Int

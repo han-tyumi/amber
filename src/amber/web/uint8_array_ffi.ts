@@ -15,3 +15,15 @@ export const from_list: typeof $uint8Array.from_list = (list) => {
 export const buffer: typeof $uint8Array.buffer = (uint8Array: Uint8Array) => {
   return uint8Array.buffer;
 };
+
+export const byte_length: typeof $uint8Array.byte_length = (
+  uint8Array: Uint8Array,
+) => {
+  return uint8Array.byteLength;
+};
+
+export const byte_offset: typeof $uint8Array.byte_offset = (
+  uint8Array: Uint8Array,
+) => {
+  return uint8Array.byteOffset;
+};
