@@ -1,5 +1,5 @@
 pub type OpenOption {
-  Read(Bool)
+  Read
   Write
   Append
   Truncate

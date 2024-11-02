@@ -25,7 +25,7 @@ const openOptionsMap = new CustomTypeOptionsMap<Deno.OpenOptions>()
   .set($open.Create, () => ({ create: true }))
   .set($open.CreateNew, () => ({ createNew: true }))
   .set($open.Mode, (mode) => ({ mode: mode[0] }))
-  .set($open.Read, (read) => ({ read: read[0] }))
+  .set($open.Read, () => ({ read: true }))
   .set($open.Truncate, () => ({ truncate: true }))
   .set($open.Write, () => ({ write: true }));
 
