@@ -21,7 +21,7 @@ docs:
   gleam docs build
 
 watch +recipes:
-  watchexec --no-meta -c -w src -w test -e gleam,mjs,ts -- just {{recipes}}
+  watchexec --no-meta -c -e gleam,mjs,ts,md -- just {{recipes}}
 
 publish:
   just clean build test
