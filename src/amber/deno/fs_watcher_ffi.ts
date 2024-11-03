@@ -1,5 +1,5 @@
-import * as $fsEvent from "amber/fs/fs_event.mjs";
-import type * as $fsWatcher from "amber/fs/fs_watcher.mjs";
+import * as $fsEvent from "amber/deno/fs_event.mjs";
+import type * as $fsWatcher from "amber/deno/fs_watcher.mjs";
 import * as $option from "gleam/option.mjs";
 import { toList } from "prelude";
 

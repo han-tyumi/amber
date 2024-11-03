@@ -1,14 +1,14 @@
-import type { Error$ } from "amber/error.mjs";
-import type * as $fsFile from "amber/fs/fs_file.mjs";
-import * as $seekMode from "amber/fs/seek_mode.mjs";
-import * as $setRaw from "amber/fs/set_raw.mjs";
+import type { Error$ } from "amber/deno/error.mjs";
+import type * as $fsFile from "amber/deno/fs_file.mjs";
+import * as $seekMode from "amber/deno/seek_mode.mjs";
+import * as $setRaw from "amber/deno/set_raw.mjs";
 import * as $result from "gleam/result.mjs";
 import type { Result } from "prelude";
 
 import { CustomTypeOptionsMap } from "../../utils/CustomTypeOptionsMap.ts";
 import { fromEnumCustomType } from "../../utils/enumCustomType.ts";
-import { fromThrows } from "../error.ts";
 import { toBytesRead } from "./bytes_read.ts";
+import { fromThrows } from "./error.ts";
 import { toGleamFileInfo } from "./file_info.ts";
 
 export const readable: typeof $fsFile.readable = (file: Deno.FsFile) => {

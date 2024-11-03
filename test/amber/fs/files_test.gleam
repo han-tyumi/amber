@@ -1,10 +1,10 @@
-import amber/error
-import amber/fs
-import amber/fs/bytes_read
-import amber/fs/fs_file
-import amber/fs/open
-import amber/fs/remove
-import amber/fs/seek_mode
+import amber/deno
+import amber/deno/bytes_read
+import amber/deno/error
+import amber/deno/fs_file
+import amber/deno/open
+import amber/deno/remove
+import amber/deno/seek_mode
 import amber/web/text_decoder
 import amber/web/text_encoder
 import amber/web/uint8_array
@@ -13,17 +13,17 @@ import gleam/option.{Some}
 import gleeunit/should
 
 pub fn open_sync_mode_test() {
-  let path = fs.make_temp_dir_sync([]) <> "/test_open_sync.txt"
+  let path = deno.make_temp_dir_sync([]) <> "/test_open_sync.txt"
 
   use _file <- fs_file.using(
-    fs.open_sync(path, [open.Write, open.CreateNew, open.Mode(0o626)]),
+    deno.open_sync(path, [open.Write, open.CreateNew, open.Mode(0o626)]),
   )
 
   // Non-windows systems only.
-  let assert Some(mode) = fs.stat_sync(path).mode
+  let assert Some(mode) = deno.stat_sync(path).mode
   should.equal(
     int.bitwise_and(mode, 0o777),
-    int.bitwise_and(0o626, fs.umask() |> int.bitwise_not),
+    int.bitwise_and(0o626, deno.umask() |> int.bitwise_not),
   )
 
   Ok(Nil)
@@ -36,24 +36,24 @@ pub fn open_options_test() {
   // An empty object expects at least one option to be true.
   // Should we instead provide an additional `open_with_sync`?
   should.equal(
-    fs.open_sync(filename, []),
+    deno.open_sync(filename, []),
     Error(error.Other("OpenOptions requires at least one option to be true")),
   )
 
   should.equal(
-    fs.open_sync(filename, [open.Truncate]),
+    deno.open_sync(filename, [open.Truncate]),
     Error(error.Other("'truncate' option requires 'write' option")),
   )
 
   should.equal(
-    fs.open_sync(filename, [open.Create]),
+    deno.open_sync(filename, [open.Create]),
     Error(error.Other(
       "'create' or 'createNew' options require 'write' or 'append' option",
     )),
   )
 
   should.equal(
-    fs.open_sync(filename, [open.CreateNew]),
+    deno.open_sync(filename, [open.CreateNew]),
     Error(error.Other(
       "'create' or 'createNew' options require 'write' or 'append' option",
     )),
@@ -62,18 +62,18 @@ pub fn open_options_test() {
 
 pub fn open_sync_not_found_test() {
   should.equal(
-    fs.open_sync("bad_file_name", [open.Read]),
+    deno.open_sync("bad_file_name", [open.Read]),
     Error(error.NotFound),
   )
 }
 
 pub fn create_sync_file_test() {
-  let temp_dir = fs.make_temp_dir_sync([])
+  let temp_dir = deno.make_temp_dir_sync([])
   let filename = temp_dir <> "/test.txt"
 
-  let assert Ok(f) = fs.create_sync(filename)
+  let assert Ok(f) = deno.create_sync(filename)
 
-  let file_info = fs.stat_sync(filename)
+  let file_info = deno.stat_sync(filename)
   should.be_true(file_info.is_file)
   should.equal(file_info.size, 0)
 
@@ -81,29 +81,29 @@ pub fn create_sync_file_test() {
   let data = enc |> text_encoder.encode("hello")
   let assert Ok(_) = f |> fs_file.write_sync(data)
 
-  let file_info = fs.stat_sync(filename)
+  let file_info = deno.stat_sync(filename)
   should.equal(file_info.size, 5)
 
   fs_file.close(f)
-  fs.remove_sync(temp_dir, [remove.Recursive])
+  deno.remove_sync(temp_dir, [remove.Recursive])
 }
 
 pub fn open_mode_write_test() {
-  let temp_dir = fs.make_temp_dir_sync([])
+  let temp_dir = deno.make_temp_dir_sync([])
   let encoder = text_encoder.new()
   let filename = temp_dir <> "hello.txt"
   let data = encoder |> text_encoder.encode("hello world!\n")
   let assert Ok(file) =
-    fs.open_sync(filename, [open.Create, open.Write, open.Truncate])
+    deno.open_sync(filename, [open.Create, open.Write, open.Truncate])
 
   // Assert file was created.
-  let file_info = fs.stat_sync(filename)
+  let file_info = deno.stat_sync(filename)
   should.be_true(file_info.is_file)
   should.equal(file_info.size, 0)
 
   // Write some data.
   let assert Ok(_) = file |> fs_file.write_sync(data)
-  let file_info = fs.stat_sync(filename)
+  let file_info = deno.stat_sync(filename)
   should.equal(file_info.size, 13)
 
   // Assert we can't read from file.
@@ -112,31 +112,31 @@ pub fn open_mode_write_test() {
   fs_file.close(file)
 
   // Assert that existing file is truncated on open.
-  let assert Ok(file) = fs.open_sync(filename, [open.Write, open.Truncate])
+  let assert Ok(file) = deno.open_sync(filename, [open.Write, open.Truncate])
   fs_file.close(file)
-  let file_size = fs.stat_sync(filename).size
+  let file_size = deno.stat_sync(filename).size
   should.equal(file_size, 0)
-  fs.remove_sync(temp_dir, [remove.Recursive])
+  deno.remove_sync(temp_dir, [remove.Recursive])
 }
 
 pub fn open_mode_write_read_test() {
-  let temp_dir = fs.make_temp_dir_sync([])
+  let temp_dir = deno.make_temp_dir_sync([])
   let encoder = text_encoder.new()
   let filename = temp_dir <> "hello.txt"
   let data = encoder |> text_encoder.encode("hello world!\n")
 
   use file <- fs_file.using(
-    fs.open_sync(filename, [open.Write, open.Truncate, open.Create, open.Read]),
+    deno.open_sync(filename, [open.Write, open.Truncate, open.Create, open.Read]),
   )
 
   // Assert file was created.
-  let file_info = fs.stat_sync(filename)
+  let file_info = deno.stat_sync(filename)
   should.be_true(file_info.is_file)
   should.equal(file_info.size, 0)
 
   // Write some data.
   let assert Ok(_) = file |> fs_file.write_sync(data)
-  let file_info = fs.stat_sync(filename)
+  let file_info = deno.stat_sync(filename)
   should.equal(file_info.size, 13)
   let buf = uint8_array.from_length(20)
 
@@ -146,15 +146,15 @@ pub fn open_mode_write_read_test() {
     file |> fs_file.seek_sync(seek_position, seek_mode.Start)
   should.equal(seek_position, cursor_position)
   let result = file |> fs_file.read_sync(buf)
-  // TODO(@han-tyumi): Move bytes_read into amber/fs/read?
+  // TODO(@han-tyumi): Move bytes_read into amber/deno/read?
   should.equal(result, Ok(bytes_read.Bytes(13)))
-  fs.remove_sync(temp_dir, [remove.Recursive])
+  deno.remove_sync(temp_dir, [remove.Recursive])
   Ok(Nil)
 }
 
 pub fn seek_sync_start_test() {
   let filename = "test/testdata/assets/hello.txt"
-  use file <- fs_file.using(fs.open_sync(filename, []))
+  use file <- fs_file.using(deno.open_sync(filename, []))
 
   // Deliberately move 1 step forward ("H").
   let assert Ok(_) = file |> fs_file.read_sync(uint8_array.from_length(1))
@@ -176,7 +176,7 @@ pub fn seek_sync_start_test() {
 
 pub fn seek_sync_current_test() {
   let filename = "test/testdata/assets/hello.txt"
-  use file <- fs_file.using(fs.open_sync(filename, []))
+  use file <- fs_file.using(deno.open_sync(filename, []))
 
   // Deliberately move 1 step forward ("H").
   let assert Ok(_) = file |> fs_file.read_sync(uint8_array.from_length(1))
@@ -199,7 +199,7 @@ pub fn seek_sync_current_test() {
 
 pub fn seek_sync_end_test() {
   let filename = "test/testdata/assets/hello.txt"
-  use file <- fs_file.using(fs.open_sync(filename, []))
+  use file <- fs_file.using(deno.open_sync(filename, []))
 
   // Deliberately move 1 step forward ("H").
   let assert Ok(_) = file |> fs_file.read_sync(uint8_array.from_length(1))
@@ -218,24 +218,24 @@ pub fn seek_sync_end_test() {
 }
 
 pub fn file_truncate_to_length_sync_success_test() {
-  let filename = fs.make_temp_dir_sync([]) <> "/test_file_truncate_sync.txt"
+  let filename = deno.make_temp_dir_sync([]) <> "/test_file_truncate_sync.txt"
   use file <- fs_file.using(
-    fs.open_sync(filename, [open.Create, open.Read, open.Write]),
+    deno.open_sync(filename, [open.Create, open.Read, open.Write]),
   )
 
   file |> fs_file.truncate_to_length_sync(20)
-  should.equal(fs.read_file_sync(filename) |> uint8_array.byte_length, 20)
+  should.equal(deno.read_file_sync(filename) |> uint8_array.byte_length, 20)
   file |> fs_file.truncate_to_length_sync(5)
-  should.equal(fs.read_file_sync(filename) |> uint8_array.byte_length, 5)
+  should.equal(deno.read_file_sync(filename) |> uint8_array.byte_length, 5)
   file |> fs_file.truncate_to_length_sync(-5)
-  should.equal(fs.read_file_sync(filename) |> uint8_array.byte_length, 0)
+  should.equal(deno.read_file_sync(filename) |> uint8_array.byte_length, 0)
 
-  fs.remove_sync(filename, [])
+  deno.remove_sync(filename, [])
   Ok(Nil)
 }
 
 pub fn file_stat_sync_success_test() {
-  use file <- fs_file.using(fs.open_sync("README.md", []))
+  use file <- fs_file.using(deno.open_sync("README.md", []))
   let assert Ok(file_info) = file |> fs_file.stat_sync()
   should.be_true(file_info.is_file)
   should.be_false(file_info.is_symlink)
@@ -251,7 +251,7 @@ pub fn file_stat_sync_success_test() {
 // TODO(@han-tyumi): Implement the following tests once streams have been implemented.
 // pub fn readable_stream_test() {
 //   let filename = "test/testdata/assets/hello.txt"
-//   let file = await fs.open_sync(filename)
+//   let file = await deno.open_sync(filename)
 //   should.be_true(file.readable instanceof readable_stream)
 //   let chunks = []
 //   for await (let chunk of file.readable) {
@@ -263,7 +263,7 @@ pub fn file_stat_sync_success_test() {
 
 // pub fn readable_stream_text_encoder_pipe_test() {
 //   let filename = "test/testdata/assets/hello.txt"
-//   let file = await fs.open_sync(filename)
+//   let file = await deno.open_sync(filename)
 //   let readable = file.readable.pipe_through(new text_decoder_stream())
 //   let chunks = []
 //   for await (let chunk of readable) {
@@ -274,8 +274,8 @@ pub fn file_stat_sync_success_test() {
 // }
 
 // pub fn writable_stream_test() {
-//   let path = await fs.make_temp_file()
-//   let file = await fs.open_sync(path, { write: true })
+//   let path = await deno.make_temp_file()
+//   let file = await deno.open_sync(path, { write: true })
 //   should.be_true(file.writable instanceof writable_stream)
 //   let readable = new readable_stream({
 //     start(controller) {
@@ -285,19 +285,19 @@ pub fn file_stat_sync_success_test() {
 //     },
 //   })
 //   await readable.pipe_to(file.writable)
-//   let res = await fs.read_text_file(path)
+//   let res = await deno.read_text_file(path)
 //   should.equal(res, "hello world!")
 // }
 
 pub fn read_text_file_non_utf8_test() {
-  let path = fs.make_temp_file_sync([])
-  use file <- fs_file.using(fs.open_sync(path, [open.Write]))
+  let path = deno.make_temp_file_sync([])
+  use file <- fs_file.using(deno.open_sync(path, [open.Write]))
   let assert Ok(_) =
     file
     |> fs_file.write_sync(text_encoder.new() |> text_encoder.encode("hello "))
   let assert Ok(_) = file |> fs_file.write_sync(uint8_array.from_list([0xC0]))
 
-  let res_sync = fs.read_text_file_sync(path)
+  let res_sync = deno.read_text_file_sync(path)
   should.equal(res_sync, "hello \u{fffd}")
   Ok(Nil)
 }
@@ -305,7 +305,7 @@ pub fn read_text_file_non_utf8_test() {
 pub fn fs_file_explicit_resource_management_test() {
   let assert Ok(file) =
     fs_file.using(
-      fs.open_sync("test/testdata/assets/hello.txt", [open.Read]),
+      deno.open_sync("test/testdata/assets/hello.txt", [open.Read]),
       fn(file) {
         let assert Ok(stat) = fs_file.stat_sync(file)
         should.be_true(stat.is_file)
@@ -317,7 +317,7 @@ pub fn fs_file_explicit_resource_management_test() {
 
 pub fn fs_file_explicit_resource_management_manual_close_test() {
   use file <- fs_file.using(
-    fs.open_sync("test/testdata/assets/hello.txt", [open.Read]),
+    deno.open_sync("test/testdata/assets/hello.txt", [open.Read]),
   )
   fs_file.close(file)
   should.equal(fs_file.stat_sync(file), Error(error.BadResource))
@@ -325,33 +325,33 @@ pub fn fs_file_explicit_resource_management_manual_close_test() {
 }
 
 pub fn fs_file_datasync_sync_success_test() {
-  let filename = fs.make_temp_dir_sync([]) <> "/test_fdatasync_sync.txt"
+  let filename = deno.make_temp_dir_sync([]) <> "/test_fdatasync_sync.txt"
   let assert Ok(file) =
-    fs.open_sync(filename, [open.Read, open.Write, open.Create])
+    deno.open_sync(filename, [open.Read, open.Write, open.Create])
   let data = uint8_array.from_length(64)
   let assert Ok(_) = file |> fs_file.write_sync(data)
   file |> fs_file.sync_data_sync()
-  should.equal(fs.read_file_sync(filename), data)
+  should.equal(deno.read_file_sync(filename), data)
   file |> fs_file.close
-  fs.remove_sync(filename, [])
+  deno.remove_sync(filename, [])
 }
 
 pub fn fs_file_sync_sync_success_test() {
-  let filename = fs.make_temp_dir_sync([]) <> "/test_fsync_sync.txt"
+  let filename = deno.make_temp_dir_sync([]) <> "/test_fsync_sync.txt"
   let assert Ok(file) =
-    fs.open_sync(filename, [open.Read, open.Write, open.Create])
+    deno.open_sync(filename, [open.Read, open.Write, open.Create])
   let size = 64
   file |> fs_file.truncate_to_length_sync(size)
   file |> fs_file.sync_sync()
   let assert Ok(stat) = file |> fs_file.stat_sync
   should.equal(stat.size, size)
   file |> fs_file.close
-  fs.remove_sync(filename, [])
+  deno.remove_sync(filename, [])
 }
 
 pub fn fs_file_is_terminal_test() {
   use file <- fs_file.using(
-    fs.open_sync("test/testdata/assets/hello.txt", [open.Read]),
+    deno.open_sync("test/testdata/assets/hello.txt", [open.Read]),
   )
   should.be_false(file |> fs_file.is_terminal)
   Ok(Nil)

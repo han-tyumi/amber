@@ -6,8 +6,8 @@
     "amber/": "./build/dev/javascript/amber/amber/",
     "esbuild": "npm:esbuild@^0.24.0",
     "gleam/": "./build/dev/javascript/gleam_stdlib/gleam/",
-    "prelude": "./build/dev/javascript/prelude.mjs",
     "prelude-types": "./build/dev/javascript/prelude.d.mts",
+    "prelude": "./build/dev/javascript/prelude.mjs",
     "type-fest": "npm:type-fest@^4.26.1"
   },
 

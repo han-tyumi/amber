@@ -27,10 +27,10 @@ runtime = "deno"
 ## Usage
 
 ```gleam
-import amber/fs
+import amber/deno
 
 pub fn main() {
-  fs.write_text_file_sync("amber.txt", "deno bindings for gleam", [])
+  deno.write_text_file_sync("amber.txt", "deno bindings for gleam", [])
 }
 ```
 

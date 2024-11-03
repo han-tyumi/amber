@@ -3,8 +3,8 @@ import gleam/option.{type Option}
 
 // TODO(@han-tyumi): Should probably be opaque.
 /// Provides information about a file and is returned by
-/// [`fs.stat_sync`](../fs.html#stat_sync) and
-/// [`fs.lstat_sync`](../fs.html#lstat_sync) or from calling
+/// [`deno.stat_sync`](../deno.html#stat_sync) and
+/// [`deno.lstat_sync`](../deno.html#lstat_sync) or from calling
 /// [`stat_sync`](./fs_file.html#stat_sync) with a
 /// [`FsFile`](./fs_file.html#FsFile) instance.
 ///

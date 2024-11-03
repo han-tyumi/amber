@@ -1,4 +1,5 @@
-import * as $fileInfo from "amber/fs/file_info.mjs";
+import * as $fileInfo from "amber/deno/file_info.mjs";
+
 import { toOption } from "../../utils/option.ts";
 
 export function toGleamFileInfo(fileInfo: Deno.FileInfo): $fileInfo.FileInfo {

@@ -1,6 +1,6 @@
 // TODO(@han-tyumi): Should probably be opaque.
 /// Information about a directory entry returned from
-/// [`fs.read_dir_sync`](../fs.html#read_dir_sync).
+/// [`deno.read_dir_sync`](../deno.html#read_dir_sync).
 ///
 pub type DirEntry {
   DirEntry(

@@ -1,7 +1,8 @@
-import * as $error from "amber/error.mjs";
+import * as $error from "amber/deno/error.mjs";
 import type { Result } from "prelude";
 import type { Constructor } from "type-fest";
-import { toResult } from "../utils/result.ts";
+
+import { toResult } from "../../utils/result.ts";
 
 const map = new WeakMap<Constructor<Error>, Constructor<$error.Error$>>([
   [Deno.errors.AddrInUse, $error.AddrInUse],
