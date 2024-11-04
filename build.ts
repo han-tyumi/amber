@@ -19,10 +19,13 @@ await build({
   target: "es2024",
   bundle: true,
   splitting: true,
+  alias: {
+    "~": denoConfig.imports["~/"],
+  },
   plugins: [
-    useImportMap(
-      relativeImportMap(gleamOutDir, denoConfig.imports),
-    ),
+    externalAlias({
+      "$/": relativeImportPath(gleamOutDir, denoConfig.imports["$/"]),
+    }),
   ],
 });
 
@@ -45,32 +48,18 @@ function entryPoints(
   });
 }
 
-function relativeImportMap(
-  from: string,
-  importMap: Record<string, string>,
-): Record<string, string> {
-  const localImportMapEntries = Object.entries(importMap)
-    .filter(([_moduleSpecifier, resolvedPath]) => resolvedPath.startsWith("."));
-
-  const relativeImportMapEntries = localImportMapEntries
-    .map(([moduleSpecifier, localPath]) => {
-      const relativePath = path.relative(from, localPath);
-      const hasLeadingDot = relativePath.startsWith(".");
-      const isDir = path.extname(relativePath) === "";
-      return [
-        moduleSpecifier,
-        `${hasLeadingDot ? "" : "./"}${relativePath}${isDir ? "/" : ""}`,
-      ];
-    });
-
-  return Object.fromEntries(relativeImportMapEntries);
+function relativeImportPath(from: string, to: string): string {
+  const relativePath = path.relative(from, to);
+  const hasLeadingDot = relativePath.startsWith(".");
+  const isDir = path.extname(relativePath) === "";
+  return `${hasLeadingDot ? "" : "./"}${relativePath}${isDir ? "/" : ""}`;
 }
 
-function useImportMap(importMap: Record<string, string>): Plugin {
+function externalAlias(aliases: Record<string, string>): Plugin {
   return {
-    name: "use-import-map",
+    name: "external-alias",
     setup: (build) => {
-      for (const [moduleSpecifier, resolvedPath] of Object.entries(importMap)) {
+      for (const [moduleSpecifier, resolvedPath] of Object.entries(aliases)) {
         const hasPrefix = moduleSpecifier.endsWith("/");
         const moduleSpecifierPattern = new RegExp(
           `^${regexp.escape(moduleSpecifier)}${hasPrefix ? "" : "$"}`,
