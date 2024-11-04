@@ -3,7 +3,6 @@
   "specifiers": {
     "jsr:@std/fs@^1.0.4": "1.0.4",
     "jsr:@std/path@^1.0.6": "1.0.6",
-    "jsr:@std/regexp@1": "1.0.0",
     "npm:esbuild@0.24": "0.24.0",
     "npm:type-fest@^4.26.1": "4.26.1"
   },
@@ -16,9 +15,6 @@
     },
     "@std/path@1.0.6": {
       "integrity": "ab2c55f902b380cf28e0eec501b4906e4c1960d13f00e11cfbcd21de15f18fed"
-    },
-    "@std/regexp@1.0.0": {
-      "integrity": "158628d134c49a0858afe05017c4666f5f73d3a56602c346549ca42f3fab244a"
     }
   },
   "npm": {
@@ -131,7 +127,6 @@
     "dependencies": [
       "jsr:@std/fs@^1.0.4",
       "jsr:@std/path@^1.0.6",
-      "jsr:@std/regexp@1",
       "npm:esbuild@0.24",
       "npm:type-fest@^4.26.1"
     ]

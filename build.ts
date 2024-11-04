@@ -1,91 +1,56 @@
 import * as fs from "@std/fs";
 import * as path from "@std/path";
-import * as regexp from "@std/regexp";
-import { build, type BuildOptions, type Plugin } from "esbuild";
+import { build, type Plugin } from "esbuild";
 
 import denoConfig from "./deno.json" with { type: "json" };
 
-const cwd = Deno.cwd();
-const srcDir = path.resolve(cwd, "src");
-const entryPointsGlob = path.joinGlobs([srcDir, "**/*.ffi.ts"]);
-const gleamOutDir = path.resolve(cwd, "build/dev/javascript/amber");
-const outDir = srcDir;
+const srcDir = path.resolve("src");
+const buildDir = path.resolve("build/dev/javascript/amber");
+
+const entryPointFiles = fs.expandGlob(path.joinGlobs([srcDir, "**/*.ffi.ts"]), {
+  extended: false,
+  includeDirs: false,
+});
+
+const entryPoints = await Array.fromAsync(entryPointFiles, (entry) => {
+  const { dir, name } = path.parse(path.relative(srcDir, entry.path));
+  return {
+    in: entry.path,
+    out: path.resolve(srcDir, path.join(dir, name).replaceAll("/", "__")),
+  };
+});
+
+const buildImportMapper: Plugin = {
+  name: "build-import-mapper",
+  setup: (build) => {
+    const buildImportRegex = /^\$\//;
+    const buildImportPath = path.relative(buildDir, denoConfig.imports["$/"]);
+
+    build.onResolve({ filter: buildImportRegex }, (args) => {
+      const relativePath = path.relative(
+        buildDir,
+        path.resolve(
+          buildDir,
+          path.join(buildImportPath, args.path.replace(buildImportRegex, "")),
+        ),
+      );
+
+      return {
+        path: (relativePath.startsWith(".") ? "" : "./") + relativePath,
+        external: true,
+      };
+    });
+  },
+};
 
 await build({
-  entryPoints: await entryPoints(entryPointsGlob, srcDir, outDir),
+  entryPoints,
   platform: "neutral",
-  outdir: outDir,
+  outdir: srcDir,
   outExtension: { ".js": ".mjs" },
   target: "es2024",
   bundle: true,
   splitting: true,
-  alias: {
-    "~": denoConfig.imports["~/"],
-  },
-  plugins: [
-    externalImportMap({
-      cwd: gleamOutDir,
-      importMap: {
-        "$/": path.resolve(denoConfig.imports["$/"]),
-      },
-    }),
-  ],
+  alias: { "~": denoConfig.imports["~/"] },
+  plugins: [buildImportMapper],
 });
-
-function entryPoints(
-  entryPointsGlob: string,
-  srcDir: string,
-  outDir: string,
-): Promise<BuildOptions["entryPoints"]> {
-  const entriesPromise = fs.expandGlob(entryPointsGlob, {
-    extended: false,
-    includeDirs: false,
-  });
-
-  return Array.fromAsync(entriesPromise, ({ path: inPath }) => {
-    const relInPath = path.relative(srcDir, inPath);
-    const { dir: relInDir, name: inName } = path.parse(relInPath);
-    const outBase = path.join(relInDir, inName).replaceAll("/", "__");
-    const outPath = path.resolve(outDir, outBase);
-    return { in: inPath, out: outPath };
-  });
-}
-
-function externalImportMap(
-  { cwd, importMap }: { cwd: string; importMap: Record<string, string> },
-): Plugin {
-  return {
-    name: "external-import-map",
-    setup: (build) => {
-      for (const [moduleSpecifier, resolvedPath] of Object.entries(importMap)) {
-        const isDir = moduleSpecifier.endsWith("/");
-        const moduleSpecifierPattern = new RegExp(
-          `^${regexp.escape(moduleSpecifier)}` + (isDir ? "" : "$"),
-        );
-        const relResolvedPath = path.relative(cwd, resolvedPath);
-
-        build.onResolve({ filter: moduleSpecifierPattern }, (args) => {
-          const replacedPath = path.join(
-            relResolvedPath,
-            args.path.replace(moduleSpecifierPattern, ""),
-          );
-          const absolutePath = path.resolve(cwd, replacedPath);
-          const relativePath = path.relative(cwd, absolutePath);
-
-          return {
-            path: formalizePath(relativePath),
-            external: true,
-          };
-        });
-      }
-    },
-  };
-}
-
-function formalizePath(filePath: string) {
-  const hasLeadingDot = filePath.startsWith(".");
-  const hasTrailingSlash = filePath.endsWith("/");
-  const isDir = path.extname(filePath) === "";
-  return (hasLeadingDot ? "" : "./") + filePath +
-    (isDir && !hasTrailingSlash ? "/" : "");
-}
