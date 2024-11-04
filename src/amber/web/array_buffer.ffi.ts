@@ -1,4 +1,4 @@
-import type * as $arrayBuffer from "amber/web/array_buffer.mjs";
+import type * as $arrayBuffer from "$/amber/amber/web/array_buffer.mjs";
 
 export const new_: typeof $arrayBuffer.new$ = (byteLength) => {
   return new ArrayBuffer(byteLength);

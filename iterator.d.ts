@@ -1,6 +1,6 @@
-declare module "gleam/iterator.mjs" {
-  import type { CustomType } from "prelude";
-  export * from "gleam/iterator.mjs";
+declare module "$/gleam_stdlib/gleam/iterator.mjs" {
+  import type { CustomType } from "$/prelude.mjs";
+  export * from "$/gleam_stdlib/gleam/iterator.mjs";
 
   export class Stop extends CustomType {}
 

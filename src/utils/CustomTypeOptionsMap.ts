@@ -1,4 +1,4 @@
-import type { CustomType, List } from "prelude";
+import type { CustomType, List } from "$/prelude.mjs";
 import type { Constructor } from "type-fest";
 
 export type CustomTypeToOptions<T extends CustomType, O extends object> = (

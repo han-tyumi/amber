@@ -1,4 +1,4 @@
-import { Error, Ok } from "prelude";
+import { Error, Ok } from "$/prelude.mjs";
 
 export function new_(fun) {
   if (typeof fun !== "function") {

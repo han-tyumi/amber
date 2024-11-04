@@ -1,4 +1,4 @@
-import { None, type Option$, Some } from "gleam/option.mjs";
+import { None, type Option$, Some } from "$/gleam_stdlib/gleam/option.mjs";
 
 import { isNullish } from "./nullish.ts";
 

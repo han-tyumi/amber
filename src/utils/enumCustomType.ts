@@ -1,4 +1,4 @@
-import type { CustomType } from "prelude";
+import type { CustomType } from "$/prelude.mjs";
 import type { Constructor } from "type-fest";
 
 export function fromEnumCustomType<K extends string | number>(

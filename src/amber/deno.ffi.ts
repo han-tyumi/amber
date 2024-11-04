@@ -1,19 +1,18 @@
-import type * as $deno from "amber/deno.mjs";
-import * as $dirEntry from "amber/deno/dir_entry.mjs";
-import * as $makeTemp from "amber/deno/make_temp.mjs";
-import * as $mkdir from "amber/deno/mkdir.mjs";
-import * as $open from "amber/deno/open.mjs";
-import * as $remove from "amber/deno/remove.mjs";
-import * as $symlink from "amber/deno/symlink.mjs";
-import * as $watchFs from "amber/deno/watch_fs.mjs";
-import * as $writeFile from "amber/deno/write_file.mjs";
-import { unwrap } from "gleam/option.mjs";
-
-import { CustomTypeOptionsMap } from "../utils/CustomTypeOptionsMap.ts";
-import { fromEnumCustomType } from "../utils/enumCustomType.ts";
-import { fromArrayMapped } from "../utils/list.ts";
-import { fromThrows } from "./deno/error.ts";
-import { toGleamFileInfo } from "./deno/file_info.ts";
+import type * as $deno from "$/amber/amber/deno.mjs";
+import * as $dirEntry from "$/amber/amber/deno/dir_entry.mjs";
+import * as $makeTemp from "$/amber/amber/deno/make_temp.mjs";
+import * as $mkdir from "$/amber/amber/deno/mkdir.mjs";
+import * as $open from "$/amber/amber/deno/open.mjs";
+import * as $remove from "$/amber/amber/deno/remove.mjs";
+import * as $symlink from "$/amber/amber/deno/symlink.mjs";
+import * as $watchFs from "$/amber/amber/deno/watch_fs.mjs";
+import * as $writeFile from "$/amber/amber/deno/write_file.mjs";
+import { unwrap } from "$/gleam_stdlib/gleam/option.mjs";
+import { fromThrows } from "~/amber/deno/error.ts";
+import { toGleamFileInfo } from "~/amber/deno/file_info.ts";
+import { CustomTypeOptionsMap } from "~/utils/CustomTypeOptionsMap.ts";
+import { fromEnumCustomType } from "~/utils/enumCustomType.ts";
+import { fromArrayMapped } from "~/utils/list.ts";
 
 export const link_sync: typeof $deno.link_sync = (oldpath, newpath) => {
   return fromThrows(() => Deno.linkSync(oldpath, newpath));

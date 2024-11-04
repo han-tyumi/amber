@@ -1,4 +1,4 @@
-import { Error as Error$, Ok, type Result } from "prelude";
+import { Error as Error$, Ok, type Result } from "$/prelude.mjs";
 
 import { isNullish } from "./nullish.ts";
 

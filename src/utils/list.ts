@@ -1,4 +1,4 @@
-import { Empty, type List, NonEmpty } from "prelude";
+import { Empty, type List, NonEmpty } from "$/prelude.mjs";
 
 export function fromArrayMapped<T, U>(
   array: T[],

@@ -1,6 +1,6 @@
-import * as $promise from "amber/web/promise.mjs";
-import * as $promiseSettledResult from "amber/web/promise_settled_result.mjs";
-import { toList } from "prelude";
+import * as $promise from "$/amber/amber/web/promise.mjs";
+import * as $promiseSettledResult from "$/amber/amber/web/promise_settled_result.mjs";
+import { toList } from "$/prelude.mjs";
 
 export const new_: typeof $promise.new$ = (executor) => {
   return new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-import type * as $web from "amber/web.mjs";
+import type * as $web from "$/amber/amber/web.mjs";
 
 export const set_timeout: typeof $web.set_timeout = (delay, callback) => {
   return globalThis.setTimeout(callback, delay);

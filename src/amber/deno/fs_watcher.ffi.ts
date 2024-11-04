@@ -1,10 +1,9 @@
-import * as $fsEvent from "amber/deno/fs_event.mjs";
-import type * as $fsWatcher from "amber/deno/fs_watcher.mjs";
-import * as $option from "gleam/option.mjs";
-import { toList } from "prelude";
-
-import { toEnumCustomType } from "../../utils/enumCustomType.ts";
-import { toOption } from "../../utils/option.ts";
+import * as $fsEvent from "$/amber/amber/deno/fs_event.mjs";
+import type * as $fsWatcher from "$/amber/amber/deno/fs_watcher.mjs";
+import * as $option from "$/gleam_stdlib/gleam/option.mjs";
+import { toList } from "$/prelude.mjs";
+import { toEnumCustomType } from "~/utils/enumCustomType.ts";
+import { toOption } from "~/utils/option.ts";
 
 export const close: typeof $fsWatcher.close = (watcher: Deno.FsWatcher) => {
   watcher.close();

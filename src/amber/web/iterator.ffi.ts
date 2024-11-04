@@ -1,9 +1,8 @@
-import type * as $iterator from "amber/web/iterator.mjs";
-import * as $iteratorResult from "amber/web/iterator_result.mjs";
-import * as $option from "gleam/option.d.mts";
-import { Error, Ok } from "prelude";
-
-import { toOption } from "../../utils/option.ts";
+import type * as $iterator from "$/amber/amber/web/iterator.mjs";
+import * as $iteratorResult from "$/amber/amber/web/iterator_result.mjs";
+import * as $option from "$/gleam_stdlib/gleam/option.d.mts";
+import { Error, Ok } from "$/prelude.mjs";
+import { toOption } from "~/utils/option.ts";
 
 export const new_: typeof $iterator.new$ = <T, TReturn, TNext>(
   ...[next]: Parameters<typeof $iterator.new$<TNext, TReturn, T>>

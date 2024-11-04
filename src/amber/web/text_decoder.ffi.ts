@@ -1,8 +1,7 @@
-import * as $textDecodeOption from "amber/web/text_decode_option.mjs";
-import type * as $textDecoder from "amber/web/text_decoder.mjs";
-import * as $textDecoderOption from "amber/web/text_decoder_option.mjs";
-
-import { CustomTypeOptionsMap } from "../../utils/CustomTypeOptionsMap.ts";
+import * as $textDecodeOption from "$/amber/amber/web/text_decode_option.mjs";
+import type * as $textDecoder from "$/amber/amber/web/text_decoder.mjs";
+import * as $textDecoderOption from "$/amber/amber/web/text_decoder_option.mjs";
+import { CustomTypeOptionsMap } from "~/utils/CustomTypeOptionsMap.ts";
 
 export const new_: typeof $textDecoder.new$ = () => {
   return new TextDecoder();

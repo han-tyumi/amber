@@ -3,11 +3,9 @@
     "@std/fs": "jsr:@std/fs@^1.0.4",
     "@std/path": "jsr:@std/path@^1.0.6",
     "@std/regexp": "jsr:@std/regexp@^1.0.0",
-    "amber/": "./build/dev/javascript/amber/amber/",
+    "~/": "./src/",
+    "$/": "./build/dev/javascript/",
     "esbuild": "npm:esbuild@^0.24.0",
-    "gleam/": "./build/dev/javascript/gleam_stdlib/gleam/",
-    "prelude-types": "./build/dev/javascript/prelude.d.mts",
-    "prelude": "./build/dev/javascript/prelude.mjs",
     "type-fest": "npm:type-fest@^4.26.1"
   },
 
