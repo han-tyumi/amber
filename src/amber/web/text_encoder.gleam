@@ -1,4 +1,4 @@
-import amber/web/encode_into_result.{type EncodeIntoResult}
+import amber/web/text_encoder/encode_into_result.{type EncodeIntoResult}
 import amber/web/uint8_array.{type Uint8Array}
 
 /// Allows you to convert a string into binary data

@@ -1,5 +1,5 @@
-import { EncodeIntoResult } from "amber/web/encode_into_result.mjs";
 import type * as $textEncoder from "amber/web/text_encoder.mjs";
+import { EncodeIntoResult } from "amber/web/text_encoder/encode_into_result.mjs";
 
 export const new_: typeof $textEncoder.new$ = () => {
   return new TextEncoder();
