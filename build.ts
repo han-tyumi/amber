@@ -23,8 +23,11 @@ await build({
     "~": denoConfig.imports["~/"],
   },
   plugins: [
-    externalAlias({
-      "$/": relativeImportPath(gleamOutDir, denoConfig.imports["$/"]),
+    externalImportMap({
+      cwd: gleamOutDir,
+      importMap: {
+        "$/": path.resolve(denoConfig.imports["$/"]),
+      },
     }),
   ],
 });
@@ -48,28 +51,41 @@ function entryPoints(
   });
 }
 
-function relativeImportPath(from: string, to: string): string {
-  const relativePath = path.relative(from, to);
-  const hasLeadingDot = relativePath.startsWith(".");
-  const isDir = path.extname(relativePath) === "";
-  return `${hasLeadingDot ? "" : "./"}${relativePath}${isDir ? "/" : ""}`;
-}
-
-function externalAlias(aliases: Record<string, string>): Plugin {
+function externalImportMap(
+  { cwd, importMap }: { cwd: string; importMap: Record<string, string> },
+): Plugin {
   return {
-    name: "external-alias",
+    name: "external-import-map",
     setup: (build) => {
-      for (const [moduleSpecifier, resolvedPath] of Object.entries(aliases)) {
-        const hasPrefix = moduleSpecifier.endsWith("/");
+      for (const [moduleSpecifier, resolvedPath] of Object.entries(importMap)) {
+        const isDir = moduleSpecifier.endsWith("/");
         const moduleSpecifierPattern = new RegExp(
-          `^${regexp.escape(moduleSpecifier)}${hasPrefix ? "" : "$"}`,
+          `^${regexp.escape(moduleSpecifier)}` + (isDir ? "" : "$"),
         );
+        const relResolvedPath = path.relative(cwd, resolvedPath);
 
-        build.onResolve({ filter: moduleSpecifierPattern }, (args) => ({
-          path: args.path.replace(moduleSpecifierPattern, resolvedPath),
-          external: true,
-        }));
+        build.onResolve({ filter: moduleSpecifierPattern }, (args) => {
+          const replacedPath = path.join(
+            relResolvedPath,
+            args.path.replace(moduleSpecifierPattern, ""),
+          );
+          const absolutePath = path.resolve(cwd, replacedPath);
+          const relativePath = path.relative(cwd, absolutePath);
+
+          return {
+            path: formalizePath(relativePath),
+            external: true,
+          };
+        });
       }
     },
   };
+}
+
+function formalizePath(filePath: string) {
+  const hasLeadingDot = filePath.startsWith(".");
+  const hasTrailingSlash = filePath.endsWith("/");
+  const isDir = path.extname(filePath) === "";
+  return (hasLeadingDot ? "" : "./") + filePath +
+    (isDir && !hasTrailingSlash ? "/" : "");
 }
