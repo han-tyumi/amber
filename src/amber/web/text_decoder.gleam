@@ -20,19 +20,19 @@ import amber/web/text_decoder_option.{type TextDecoderOption}
 ///
 pub type TextDecoder
 
-@external(javascript, "../../amber__web__text_decoder_ffi.mjs", "new_")
+@external(javascript, "../../amber__web__text_decoder.ffi.mjs", "new_")
 pub fn new() -> TextDecoder
 
-@external(javascript, "../../amber__web__text_decoder_ffi.mjs", "new_with")
+@external(javascript, "../../amber__web__text_decoder.ffi.mjs", "new_with")
 pub fn new_with(label: String, options: List(TextDecoderOption)) -> TextDecoder
 
 /// Turns binary data, often in the form of a Uint8Array, into a string given
 /// the encoding.
 ///
-@external(javascript, "../../amber__web__text_decoder_ffi.mjs", "decode")
+@external(javascript, "../../amber__web__text_decoder.ffi.mjs", "decode")
 pub fn decode(decoder: TextDecoder) -> String
 
-@external(javascript, "../../amber__web__text_decoder_ffi.mjs", "decode_with")
+@external(javascript, "../../amber__web__text_decoder.ffi.mjs", "decode_with")
 pub fn decode_with(
   decoder: TextDecoder,
   input: ArrayBuffer,

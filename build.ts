@@ -7,7 +7,7 @@ import denoConfig from "./deno.json" with { type: "json" };
 
 const cwd = Deno.cwd();
 const srcDir = path.resolve(cwd, "src");
-const entryPointsGlob = path.joinGlobs([srcDir, "**/*_ffi.ts"]);
+const entryPointsGlob = path.joinGlobs([srcDir, "**/*.ffi.ts"]);
 const gleamOutDir = path.resolve(cwd, "build/dev/javascript/amber");
 const outDir = srcDir;
 
