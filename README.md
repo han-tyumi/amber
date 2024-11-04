@@ -1,11 +1,9 @@
-# amber
+# Amber 🧡
 
 [![Package Version](https://img.shields.io/hexpm/v/amber)](https://hex.pm/packages/amber)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/amber/)
 
-🚧 **This package is a work in progress. Use at your own risk.** 🚧
-
-🦕 [Deno](https://deno.com/) bindings for [Gleam](https://gleam.run/). 🌟
+✨🦕 [Deno](https://deno.com/) Bindings For [Gleam](https://gleam.run/) 🧡
 
 ## Installation
 
