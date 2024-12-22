@@ -18,6 +18,10 @@ build:
 test:
   gleam test
 
+format:
+  deno fmt -q
+  gleam format
+
 docs:
   gleam docs build
 
