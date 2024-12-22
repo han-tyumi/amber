@@ -9,12 +9,16 @@
   },
 
   "compilerOptions": {
-    "types": ["./prelude.d.ts", "./iterator.d.ts"]
+    "types": ["./prelude.d.ts"]
   },
 
   "tasks": {
     "build": "deno run -A build.ts",
     "clean": "rm -f src/*.mjs"
+  },
+
+  "fmt": {
+    "exclude": ["./src/*.mjs", "./build/"]
   },
 
   "lint": {

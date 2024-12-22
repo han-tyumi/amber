@@ -13,6 +13,7 @@ clean:
 build:
   deno task build
   gleam build
+  cp -r patch/* build/
 
 test:
   gleam test
