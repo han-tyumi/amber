@@ -37,25 +37,25 @@ pub fn open_options_test() {
   // Should we instead provide an additional `open_with_sync`?
   should.equal(
     deno.open_sync(filename, []),
-    Error(error.Other("OpenOptions requires at least one option to be true")),
+    Error(error.Other("'options' requires at least one option to be true")),
   )
 
   should.equal(
     deno.open_sync(filename, [open.Truncate]),
-    Error(error.Other("'truncate' option requires 'write' option")),
+    Error(error.Other("'truncate' option requires 'write' to be true")),
   )
 
   should.equal(
     deno.open_sync(filename, [open.Create]),
     Error(error.Other(
-      "'create' or 'createNew' options require 'write' or 'append' option",
+      "'create' or 'createNew' options require 'write' or 'append' to be true",
     )),
   )
 
   should.equal(
     deno.open_sync(filename, [open.CreateNew]),
     Error(error.Other(
-      "'create' or 'createNew' options require 'write' or 'append' option",
+      "'create' or 'createNew' options require 'write' or 'append' to be true",
     )),
   )
 }
