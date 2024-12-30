@@ -9,11 +9,7 @@ pub fn link_sync_success_test() {
   let old_name = test_dir <> "/oldname"
   let new_name = test_dir <> "/newname"
 
-  deno.write_file_sync(
-    old_name,
-    text_encoder.new() |> text_encoder.encode(old_data),
-    [],
-  )
+  deno.write_file_sync(old_name, text_encoder.encode(old_data), [])
 
   // Create the hard link.
   let _ = deno.link_sync(old_name, new_name)
@@ -24,20 +20,12 @@ pub fn link_sync_success_test() {
 
   // Writing to newname also affects oldname.
   let new_data2 = "modified"
-  deno.write_file_sync(
-    new_name,
-    text_encoder.new() |> text_encoder.encode(new_data2),
-    [],
-  )
+  deno.write_file_sync(new_name, text_encoder.encode(new_data2), [])
   should.equal(new_data2, deno.read_text_file_sync(old_name))
 
   // Writing to oldname also affects newname.
   let new_data3 = "modified_again"
-  deno.write_file_sync(
-    old_name,
-    text_encoder.new() |> text_encoder.encode(new_data3),
-    [],
-  )
+  deno.write_file_sync(old_name, text_encoder.encode(new_data3), [])
   should.equal(new_data3, deno.read_text_file_sync(new_name))
 
   // Remove oldname. File still accessible through newname.
@@ -55,18 +43,10 @@ pub fn link_sync_exists_test() {
   let old_name = test_dir <> "/oldname"
   let new_name = test_dir <> "/newname"
 
-  deno.write_file_sync(
-    old_name,
-    text_encoder.new() |> text_encoder.encode("old_name"),
-    [],
-  )
+  deno.write_file_sync(old_name, text_encoder.encode("old_name"), [])
 
   // newname is already created.
-  deno.write_file_sync(
-    new_name,
-    text_encoder.new() |> text_encoder.encode("new_name"),
-    [],
-  )
+  deno.write_file_sync(new_name, text_encoder.encode("new_name"), [])
 
   deno.link_sync(old_name, new_name)
   |> should.equal(Error(error.AlreadyExists))

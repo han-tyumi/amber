@@ -77,8 +77,7 @@ pub fn create_sync_file_test() {
   should.be_true(file_info.is_file)
   should.equal(file_info.size, 0)
 
-  let enc = text_encoder.new()
-  let data = enc |> text_encoder.encode("hello")
+  let data = text_encoder.encode("hello")
   let assert Ok(_) = f |> fs_file.write_sync(data)
 
   let file_info = deno.stat_sync(filename)
@@ -90,9 +89,8 @@ pub fn create_sync_file_test() {
 
 pub fn open_mode_write_test() {
   let temp_dir = deno.make_temp_dir_sync([])
-  let encoder = text_encoder.new()
   let filename = temp_dir <> "hello.txt"
-  let data = encoder |> text_encoder.encode("hello world!\n")
+  let data = text_encoder.encode("hello world!\n")
   let assert Ok(file) =
     deno.open_sync(filename, [open.Create, open.Write, open.Truncate])
 
@@ -121,9 +119,8 @@ pub fn open_mode_write_test() {
 
 pub fn open_mode_write_read_test() {
   let temp_dir = deno.make_temp_dir_sync([])
-  let encoder = text_encoder.new()
   let filename = temp_dir <> "hello.txt"
-  let data = encoder |> text_encoder.encode("hello world!\n")
+  let data = text_encoder.encode("hello world!\n")
 
   use file <- fs_file.using(
     deno.open_sync(filename, [open.Write, open.Truncate, open.Create, open.Read]),
@@ -167,9 +164,7 @@ pub fn seek_sync_start_test() {
   should.equal(seek_position, cursor_position)
   let buf = uint8_array.from_length(6)
   let assert Ok(_) = file |> fs_file.read_sync(buf)
-  let decoded =
-    text_decoder.new()
-    |> text_decoder.decode_with(uint8_array.buffer(buf), [])
+  let decoded = text_decoder.decode(uint8_array.buffer(buf))
   should.equal(decoded, "world!")
   Ok(Nil)
 }
@@ -189,10 +184,7 @@ pub fn seek_sync_current_test() {
   should.equal(seek_position + 1, cursor_position)
   let buf = uint8_array.from_length(6)
   let assert Ok(_) = file |> fs_file.read_sync(buf)
-  let decoded =
-    // TODO(@han-tyumi): Simplify TextDecoder & TextEncoder APIs?
-    text_decoder.new()
-    |> text_decoder.decode_with(uint8_array.buffer(buf), [])
+  let decoded = text_decoder.decode(uint8_array.buffer(buf))
   should.equal(decoded, "world!")
   Ok(Nil)
 }
@@ -210,9 +202,7 @@ pub fn seek_sync_end_test() {
   should.equal(6, cursor_position)
   let buf = uint8_array.from_length(6)
   let assert Ok(_) = file |> fs_file.read_sync(buf)
-  let decoded =
-    text_decoder.new()
-    |> text_decoder.decode_with(uint8_array.buffer(buf), [])
+  let decoded = text_decoder.decode(uint8_array.buffer(buf))
   should.equal(decoded, "world!")
   Ok(Nil)
 }
@@ -294,7 +284,7 @@ pub fn read_text_file_non_utf8_test() {
   use file <- fs_file.using(deno.open_sync(path, [open.Write]))
   let assert Ok(_) =
     file
-    |> fs_file.write_sync(text_encoder.new() |> text_encoder.encode("hello "))
+    |> fs_file.write_sync(text_encoder.encode("hello "))
   let assert Ok(_) = file |> fs_file.write_sync(uint8_array.from_list([0xC0]))
 
   let res_sync = deno.read_text_file_sync(path)

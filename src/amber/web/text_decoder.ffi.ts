@@ -1,37 +1,40 @@
-import * as $textDecodeOption from "$/amber/amber/web/text_decode_option.mjs";
 import type * as $textDecoder from "$/amber/amber/web/text_decoder.mjs";
-import * as $textDecoderOption from "$/amber/amber/web/text_decoder_option.mjs";
-import { CustomTypeOptionsMap } from "~/utils/CustomTypeOptionsMap.ts";
+import { toTextDecoderOptions } from "~/amber/web/text_decoder/text_decoder_option.ts";
+
+const sharedDecoder = new TextDecoder();
 
 export const new_: typeof $textDecoder.new$ = () => {
   return new TextDecoder();
 };
 
-const textDecoderOptionsMap = new CustomTypeOptionsMap<TextDecoderOptions>()
-  .set($textDecoderOption.Fatal, () => ({ fatal: true }))
-  .set($textDecoderOption.IgnoreBom, () => ({ ignoreBOM: true }));
-
 export const new_with: typeof $textDecoder.new_with = (label, options) => {
   return new TextDecoder(
     label,
-    textDecoderOptionsMap.customTypeListToOptions(options),
+    toTextDecoderOptions(options),
   );
 };
 
-export const decode: typeof $textDecoder.decode = (decoder: TextDecoder) => {
+export const decode_chunk: typeof $textDecoder.decode_chunk = (
+  decoder: TextDecoder,
+  input: ArrayBuffer,
+) => {
+  return decoder.decode(input, { stream: true });
+};
+
+export const flush: typeof $textDecoder.flush = (decoder: TextDecoder) => {
   return decoder.decode();
 };
 
-const textDecodeOptionsMap = new CustomTypeOptionsMap<TextDecodeOptions>()
-  .set($textDecodeOption.Stream, () => ({ stream: true }));
+export const decode: typeof $textDecoder.decode = (
+  input: ArrayBuffer,
+) => {
+  return sharedDecoder.decode(input);
+};
 
 export const decode_with: typeof $textDecoder.decode_with = (
-  decoder: TextDecoder,
   input: ArrayBuffer,
+  label,
   options,
 ) => {
-  return decoder.decode(
-    input,
-    textDecodeOptionsMap.customTypeListToOptions(options),
-  );
+  return new TextDecoder(label, toTextDecoderOptions(options)).decode(input);
 };
