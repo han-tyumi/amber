@@ -1,41 +1,41 @@
 {
-	"Import associated Gleam generated file": {
-		"scope": "typescript",
-		"prefix": "import",
-		"body": "import type * as \\$${TM_FILENAME_BASE/(.+)_ffi/${1:/camelcase}/} from \"${RELATIVE_FILEPATH/^src\\/(.+)_ffi\\.ts/$1.mjs/}\";"
-	},
-	"Create exported FFI function": {
-		"scope": "typescript",
-		"prefix": "ffi",
-		"body": [
-			"export const $1: typeof \\$${TM_FILENAME_BASE/(.+)_ffi/${1:/camelcase}/}.$1 = ($2) => {",
-			"\treturn $0;",
-			"}"
-		]
-	},
-	"Create exported Deno namespaced FFI function": {
-		"scope": "typescript",
-		"prefix": "ffi:deno",
-		"body": [
-			"export const $1: typeof \\$${TM_FILENAME_BASE/(.+)_ffi/${1:/camelcase}/}.$1 = ($2) => {",
-			"\treturn Deno.${1/(.+)/${1:/camelcase}/}($2$0);",
-			"}"
-		]
-	},
-	"Create CustomTypeOptionsMap": {
-		"scope": "typescript",
-		"prefix": "ctom",
-		"body": [
-			"const $1Map = new CustomTypeOptionsMap<${1/(.+)/${1:/pascalcase}/}>()",
-			"\t$0"
-		]
-	},
-	"Add CustomTypeOptionsMap `set` call": {
-		"scope": "typescript",
-		"prefix": "ctom:s",
-		"body": [
-			".set(\\$$1.$2, (${3:${2/(.+)/${1:/camelcase}/}}) => ({ ${2/(.+)/${1:/camelcase}/}: ${4:${2/(.+)/${1:/camelcase}/}[0]} }))",
-			"$0"
-		]
-	}
+  "Import associated Gleam generated file": {
+    "scope": "typescript",
+    "prefix": "import",
+    "body": "import type * as \\$${TM_FILENAME_BASE/(.+)\\.ffi/${1:/camelcase}/} from \"${RELATIVE_FILEPATH/^src\\/(.+)\\.ffi\\.ts/$\\/amber\\/$1.mjs/}\";"
+  },
+  "Create exported FFI function": {
+    "scope": "typescript",
+    "prefix": "ffi",
+    "body": [
+      "export const $1: typeof \\$${TM_FILENAME_BASE/(.+)\\.ffi/${1:/camelcase}/}.$1 = ($2) => {",
+      "\treturn $0;",
+      "}"
+    ]
+  },
+  "Create exported Deno namespaced FFI function": {
+    "scope": "typescript",
+    "prefix": "ffi:deno",
+    "body": [
+      "export const $1: typeof \\$${TM_FILENAME_BASE/(.+)\\.ffi/${1:/camelcase}/}.$1 = ($2) => {",
+      "\treturn Deno.${1/(.+)/${1:/camelcase}/}($2$0);",
+      "}"
+    ]
+  },
+  "Create CustomTypeOptionsMap": {
+    "scope": "typescript",
+    "prefix": "ctom",
+    "body": [
+      "const $1Map = new CustomTypeOptionsMap<${1/(.+)/${1:/pascalcase}/}>()",
+      "\t$0"
+    ]
+  },
+  "Add CustomTypeOptionsMap `set` call": {
+    "scope": "typescript",
+    "prefix": "ctom:s",
+    "body": [
+      ".set(\\$$1.$2, (${3:${2/(.+)/${1:/camelcase}/}}) => ({ ${2/(.+)/${1:/camelcase}/}: ${4:${2/(.+)/${1:/camelcase}/}[0]} }))",
+      "$0"
+    ]
+  }
 }
