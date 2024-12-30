@@ -45,3 +45,6 @@ pub fn throw(
   iterator: Iterator(a, return, next),
   e: e,
 ) -> Result(IteratorResult(a, return), Nil)
+
+@external(javascript, "../../amber__web__iterator.ffi.mjs", "for_")
+pub fn for(iterator: Iterator(a, return, next), fun: fn(a) -> any) -> Nil

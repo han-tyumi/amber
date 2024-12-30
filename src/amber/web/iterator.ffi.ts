@@ -1,11 +1,14 @@
 import type * as $iterator from "$/amber/amber/web/iterator.mjs";
-import * as $iteratorResult from "$/amber/amber/web/iterator_result.mjs";
 import * as $option from "$/gleam_stdlib/gleam/option.d.mts";
 import { Error, Ok } from "$/prelude.mjs";
+import {
+  toGleamIteratorResult,
+  toIteratorResult,
+} from "~/amber/web/iterator_result.ts";
 import { toOption } from "~/utils/option.ts";
 
 export const new_: typeof $iterator.new$ = <T, TReturn, TNext>(
-  ...[next]: Parameters<typeof $iterator.new$<TNext, T, TReturn>>
+  ...[next]: Parameters<typeof $iterator.new$<TNext, TReturn, T>>
 ) => {
   const iterator: Iterator<T, TReturn, TNext> = {
     next: (...[value]) => toIteratorResult(next(toOption(value))),
@@ -15,7 +18,7 @@ export const new_: typeof $iterator.new$ = <T, TReturn, TNext>(
 
 export const with_return: typeof $iterator.with_return = <T, TReturn, TNext>(
   iterator: Iterator<T, TReturn, TNext>,
-  return_: Parameters<typeof $iterator.with_return<T, TReturn, TNext>>[1],
+  return_: Parameters<typeof $iterator.with_return<TReturn, T, TNext>>[1],
 ) => {
   const newIterator: Iterator<T, TReturn, TNext> = {
     ...iterator,
@@ -26,7 +29,7 @@ export const with_return: typeof $iterator.with_return = <T, TReturn, TNext>(
 
 export const with_throw: typeof $iterator.with_throw = <T, TReturn, TNext>(
   iterator: Iterator<T, TReturn, TNext>,
-  throw_: Parameters<typeof $iterator.with_throw<T, TReturn, TNext>>[1],
+  throw_: Parameters<typeof $iterator.with_throw<TReturn, T, TNext>>[1],
 ) => {
   const newIterator: Iterator<T, TReturn, TNext> = {
     ...iterator,
@@ -34,15 +37,6 @@ export const with_throw: typeof $iterator.with_throw = <T, TReturn, TNext>(
   };
   return newIterator;
 };
-
-function toIteratorResult<T, TReturn>(
-  result: $iteratorResult.IteratorResult$<T, TReturn>,
-): IteratorResult<T, TReturn> {
-  if (result instanceof $iteratorResult.Return) {
-    return { done: true, value: result.value };
-  }
-  return { done: false, value: result.value };
-}
 
 export const next: typeof $iterator.next = <T, TReturn, TNext>(
   iterator: Iterator<T, TReturn, TNext>,
@@ -94,11 +88,15 @@ export const throw_: typeof $iterator.throw$ = <T, TReturn, TNext>(
   return new Ok(toGleamIteratorResult(result));
 };
 
-function toGleamIteratorResult<T, TReturn>(
-  result: IteratorResult<T, TReturn>,
-): $iteratorResult.IteratorResult$<TReturn, T> {
-  if (result.done) {
-    return new $iteratorResult.Return(result.value);
+export const for_: typeof $iterator.for$ = <T, TReturn, TNext>(
+  iterator: Iterator<T, TReturn, TNext>,
+  fun: Parameters<typeof $iterator.for$<T>>[1],
+) => {
+  while (true) {
+    const result = iterator.next();
+    if (result.done) {
+      break;
+    }
+    fun(result.value);
   }
-  return new $iteratorResult.Yield(result.value);
-}
+};
