@@ -1,4 +1,4 @@
-import amber/web.{type AbortSignal}
+import amber/web/abort_signal.{type AbortSignal}
 
 pub type WriteFileOption {
   Append
