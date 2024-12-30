@@ -23,132 +23,6 @@ import { fromEnumCustomType } from "~/utils/enumCustomType.ts";
 import { fromArrayMapped } from "~/utils/list.ts";
 import { toOption } from "~/utils/option.ts";
 
-// Runtime
-
-export const add_signal_listener: typeof $deno.add_signal_listener = (
-  signal,
-  handler,
-) => {
-  // deno-lint-ignore no-non-null-assertion
-  Deno.addSignalListener(toSignal(signal)!, handler);
-};
-
-export const chdir: typeof $deno.chdir = (directory) => {
-  return fromThrows(() => {
-    Deno.chdir(directory);
-  });
-};
-
-export const cwd: typeof $deno.cwd = () => {
-  return Deno.cwd();
-};
-
-export const exec_path: typeof $deno.exec_path = () => {
-  return Deno.execPath();
-};
-
-export const exit: typeof $deno.exit = () => {
-  Deno.exit();
-};
-
-export const exit_with: typeof $deno.exit_with = (code) => {
-  Deno.exit(code);
-};
-
-export const gid: typeof $deno.gid = () => {
-  return toOption(Deno.gid());
-};
-
-export const hostname: typeof $deno.hostname = () => {
-  return Deno.hostname();
-};
-
-export const loadavg: typeof $deno.loadavg = () => {
-  return Deno.loadavg() as [number, number, number];
-};
-
-export const memory_usage: typeof $deno.memory_usage = () => {
-  return toMemoryUsageType(Deno.memoryUsage());
-};
-
-export const os_release: typeof $deno.os_release = () => {
-  return Deno.osRelease();
-};
-
-export const os_uptime: typeof $deno.os_uptime = () => {
-  return Deno.osUptime();
-};
-
-export const ref_timer: typeof $deno.ref_timer = (id) => {
-  Deno.refTimer(id);
-};
-
-export const remove_signal_listener: typeof $deno.remove_signal_listener = (
-  signal,
-  handler,
-) => {
-  // deno-lint-ignore no-non-null-assertion
-  Deno.removeSignalListener(toSignal(signal)!, handler);
-};
-
-export const system_memory_info: typeof $deno.system_memory_info = () => {
-  return toSystemMemoryInfoType(Deno.systemMemoryInfo());
-};
-
-export const uid: typeof $deno.uid = () => {
-  return toOption(Deno.uid());
-};
-
-export const unref_timer: typeof $deno.unref_timer = (id) => {
-  Deno.unrefTimer(id);
-};
-
-export const args: typeof $deno.args = () => {
-  return List.fromArray(Deno.args);
-};
-
-export const build: typeof $deno.build = () => {
-  return new $build.Build(
-    Deno.build.target,
-    toArchType(Deno.build.arch),
-    toOsType(Deno.build.os),
-    Deno.build.target,
-    toOption(Deno.build.vendor),
-  );
-};
-
-export const exit_code: typeof $deno.exit_code = () => {
-  return Deno.exitCode;
-};
-
-export const set_exit_code: typeof $deno.set_exit_code = (code) => {
-  Deno.exitCode = code;
-};
-
-export const main_module: typeof $deno.main_module = () => {
-  return Deno.mainModule;
-};
-
-export const no_color: typeof $deno.no_color = () => {
-  return Deno.noColor;
-};
-
-export const pid: typeof $deno.pid = () => {
-  return Deno.pid;
-};
-
-export const ppid: typeof $deno.ppid = () => {
-  return Deno.ppid;
-};
-
-export const version: typeof $deno.version = () => {
-  return new Version(
-    Deno.version.deno,
-    Deno.version.v8,
-    Deno.version.typescript,
-  );
-};
-
 // File System
 
 export const link_sync: typeof $deno.link_sync = (oldpath, newpath) => {
@@ -349,4 +223,130 @@ export const umask: typeof $deno.umask = () => {
 
 export const set_umask: typeof $deno.set_umask = (mask) => {
   return Deno.umask(mask);
+};
+
+// Runtime
+
+export const add_signal_listener: typeof $deno.add_signal_listener = (
+  signal,
+  handler,
+) => {
+  // deno-lint-ignore no-non-null-assertion
+  Deno.addSignalListener(toSignal(signal)!, handler);
+};
+
+export const chdir: typeof $deno.chdir = (directory) => {
+  return fromThrows(() => {
+    Deno.chdir(directory);
+  });
+};
+
+export const cwd: typeof $deno.cwd = () => {
+  return Deno.cwd();
+};
+
+export const exec_path: typeof $deno.exec_path = () => {
+  return Deno.execPath();
+};
+
+export const exit: typeof $deno.exit = () => {
+  Deno.exit();
+};
+
+export const exit_with: typeof $deno.exit_with = (code) => {
+  Deno.exit(code);
+};
+
+export const gid: typeof $deno.gid = () => {
+  return toOption(Deno.gid());
+};
+
+export const hostname: typeof $deno.hostname = () => {
+  return Deno.hostname();
+};
+
+export const loadavg: typeof $deno.loadavg = () => {
+  return Deno.loadavg() as [number, number, number];
+};
+
+export const memory_usage: typeof $deno.memory_usage = () => {
+  return toMemoryUsageType(Deno.memoryUsage());
+};
+
+export const os_release: typeof $deno.os_release = () => {
+  return Deno.osRelease();
+};
+
+export const os_uptime: typeof $deno.os_uptime = () => {
+  return Deno.osUptime();
+};
+
+export const ref_timer: typeof $deno.ref_timer = (id) => {
+  Deno.refTimer(id);
+};
+
+export const remove_signal_listener: typeof $deno.remove_signal_listener = (
+  signal,
+  handler,
+) => {
+  // deno-lint-ignore no-non-null-assertion
+  Deno.removeSignalListener(toSignal(signal)!, handler);
+};
+
+export const system_memory_info: typeof $deno.system_memory_info = () => {
+  return toSystemMemoryInfoType(Deno.systemMemoryInfo());
+};
+
+export const uid: typeof $deno.uid = () => {
+  return toOption(Deno.uid());
+};
+
+export const unref_timer: typeof $deno.unref_timer = (id) => {
+  Deno.unrefTimer(id);
+};
+
+export const args: typeof $deno.args = () => {
+  return List.fromArray(Deno.args);
+};
+
+export const build: typeof $deno.build = () => {
+  return new $build.Build(
+    Deno.build.target,
+    toArchType(Deno.build.arch),
+    toOsType(Deno.build.os),
+    Deno.build.target,
+    toOption(Deno.build.vendor),
+  );
+};
+
+export const exit_code: typeof $deno.exit_code = () => {
+  return Deno.exitCode;
+};
+
+export const set_exit_code: typeof $deno.set_exit_code = (code) => {
+  Deno.exitCode = code;
+};
+
+export const main_module: typeof $deno.main_module = () => {
+  return Deno.mainModule;
+};
+
+export const no_color: typeof $deno.no_color = () => {
+  return Deno.noColor;
+};
+
+export const pid: typeof $deno.pid = () => {
+  return Deno.pid;
+};
+
+export const ppid: typeof $deno.ppid = () => {
+  return Deno.ppid;
+};
+
+export const version: typeof $deno.version = () => {
+  return new Version(
+    Deno.version.deno,
+    Deno.version.v8,
+    Deno.version.typescript,
+  );
 };

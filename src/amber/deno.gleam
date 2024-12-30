@@ -18,86 +18,6 @@ import amber/deno/write_file.{type WriteFileOption}
 import amber/web/uint8_array.{type Uint8Array}
 import gleam/option.{type Option}
 
-// Runtime
-
-@external(javascript, "../amber__deno.ffi.mjs", "add_signal_listener")
-pub fn add_signal_listener(signal: Signal, handler: fn() -> any) -> Nil
-
-@external(javascript, "../amber__deno.ffi.mjs", "chdir")
-pub fn chdir(directory: String) -> Result(Nil, Error)
-
-@external(javascript, "../amber__deno.ffi.mjs", "cwd")
-pub fn cwd() -> String
-
-@external(javascript, "../amber__deno.ffi.mjs", "exec_path")
-pub fn exec_path() -> String
-
-@external(javascript, "../amber__deno.ffi.mjs", "exit")
-pub fn exit() -> Nil
-
-@external(javascript, "../amber__deno.ffi.mjs", "exit_with")
-pub fn exit_with(code: Int) -> Nil
-
-@external(javascript, "../amber__deno.ffi.mjs", "gid")
-pub fn gid() -> Option(Int)
-
-@external(javascript, "../amber__deno.ffi.mjs", "hostname")
-pub fn hostname() -> String
-
-@external(javascript, "../amber__deno.ffi.mjs", "loadavg")
-pub fn loadavg() -> #(Float, Float, Float)
-
-@external(javascript, "../amber__deno.ffi.mjs", "memory_usage")
-pub fn memory_usage() -> MemoryUsage
-
-@external(javascript, "../amber__deno.ffi.mjs", "os_release")
-pub fn os_release() -> String
-
-@external(javascript, "../amber__deno.ffi.mjs", "os_uptime")
-pub fn os_uptime() -> Int
-
-@external(javascript, "../amber__deno.ffi.mjs", "ref_timer")
-pub fn ref_timer(id: Int) -> Nil
-
-@external(javascript, "../amber__deno.ffi.mjs", "remove_signal_listener")
-pub fn remove_signal_listener(signal: Signal, handler: fn() -> any) -> Nil
-
-@external(javascript, "../amber__deno.ffi.mjs", "system_memory_info")
-pub fn system_memory_info() -> SystemMemoryInfo
-
-@external(javascript, "../amber__deno.ffi.mjs", "uid")
-pub fn uid() -> Option(Int)
-
-@external(javascript, "../amber__deno.ffi.mjs", "unref_timer")
-pub fn unref_timer(id: Int) -> Nil
-
-@external(javascript, "../amber__deno.ffi.mjs", "args")
-pub fn args() -> List(String)
-
-@external(javascript, "../amber__deno.ffi.mjs", "build")
-pub fn build() -> Build
-
-@external(javascript, "../amber__deno.ffi.mjs", "exit_code")
-pub fn exit_code() -> Int
-
-@external(javascript, "../amber__deno.ffi.mjs", "set_exit_code")
-pub fn set_exit_code(code: Int) -> Nil
-
-@external(javascript, "../amber__deno.ffi.mjs", "main_module")
-pub fn main_module() -> String
-
-@external(javascript, "../amber__deno.ffi.mjs", "no_color")
-pub fn no_color() -> Bool
-
-@external(javascript, "../amber__deno.ffi.mjs", "pid")
-pub fn pid() -> Int
-
-@external(javascript, "../amber__deno.ffi.mjs", "ppid")
-pub fn ppid() -> Int
-
-@external(javascript, "../amber__deno.ffi.mjs", "version")
-pub fn version() -> Version
-
 // File System
 
 @external(javascript, "../amber__deno.ffi.mjs", "link_sync")
@@ -192,3 +112,83 @@ pub fn umask() -> Int
 
 @external(javascript, "../amber__deno.ffi.mjs", "set_umask")
 pub fn set_umask(mask: Int) -> Int
+
+// Runtime
+
+@external(javascript, "../amber__deno.ffi.mjs", "add_signal_listener")
+pub fn add_signal_listener(signal: Signal, handler: fn() -> any) -> Nil
+
+@external(javascript, "../amber__deno.ffi.mjs", "chdir")
+pub fn chdir(directory: String) -> Result(Nil, Error)
+
+@external(javascript, "../amber__deno.ffi.mjs", "cwd")
+pub fn cwd() -> String
+
+@external(javascript, "../amber__deno.ffi.mjs", "exec_path")
+pub fn exec_path() -> String
+
+@external(javascript, "../amber__deno.ffi.mjs", "exit")
+pub fn exit() -> Nil
+
+@external(javascript, "../amber__deno.ffi.mjs", "exit_with")
+pub fn exit_with(code: Int) -> Nil
+
+@external(javascript, "../amber__deno.ffi.mjs", "gid")
+pub fn gid() -> Option(Int)
+
+@external(javascript, "../amber__deno.ffi.mjs", "hostname")
+pub fn hostname() -> String
+
+@external(javascript, "../amber__deno.ffi.mjs", "loadavg")
+pub fn loadavg() -> #(Float, Float, Float)
+
+@external(javascript, "../amber__deno.ffi.mjs", "memory_usage")
+pub fn memory_usage() -> MemoryUsage
+
+@external(javascript, "../amber__deno.ffi.mjs", "os_release")
+pub fn os_release() -> String
+
+@external(javascript, "../amber__deno.ffi.mjs", "os_uptime")
+pub fn os_uptime() -> Int
+
+@external(javascript, "../amber__deno.ffi.mjs", "ref_timer")
+pub fn ref_timer(id: Int) -> Nil
+
+@external(javascript, "../amber__deno.ffi.mjs", "remove_signal_listener")
+pub fn remove_signal_listener(signal: Signal, handler: fn() -> any) -> Nil
+
+@external(javascript, "../amber__deno.ffi.mjs", "system_memory_info")
+pub fn system_memory_info() -> SystemMemoryInfo
+
+@external(javascript, "../amber__deno.ffi.mjs", "uid")
+pub fn uid() -> Option(Int)
+
+@external(javascript, "../amber__deno.ffi.mjs", "unref_timer")
+pub fn unref_timer(id: Int) -> Nil
+
+@external(javascript, "../amber__deno.ffi.mjs", "args")
+pub fn args() -> List(String)
+
+@external(javascript, "../amber__deno.ffi.mjs", "build")
+pub fn build() -> Build
+
+@external(javascript, "../amber__deno.ffi.mjs", "exit_code")
+pub fn exit_code() -> Int
+
+@external(javascript, "../amber__deno.ffi.mjs", "set_exit_code")
+pub fn set_exit_code(code: Int) -> Nil
+
+@external(javascript, "../amber__deno.ffi.mjs", "main_module")
+pub fn main_module() -> String
+
+@external(javascript, "../amber__deno.ffi.mjs", "no_color")
+pub fn no_color() -> Bool
+
+@external(javascript, "../amber__deno.ffi.mjs", "pid")
+pub fn pid() -> Int
+
+@external(javascript, "../amber__deno.ffi.mjs", "ppid")
+pub fn ppid() -> Int
+
+@external(javascript, "../amber__deno.ffi.mjs", "version")
+pub fn version() -> Version
