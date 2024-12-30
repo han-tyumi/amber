@@ -1,9 +1,5 @@
 pub type Date
 
-pub type ReadableStream(r)
-
-pub type WritableStream(w)
-
 /// A microtask is a short function which is executed after the function or
 /// module which created it exits and only if the JavaScript execution stack is
 /// empty, but before returning control to the event loop being used to drive the

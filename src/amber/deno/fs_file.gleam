@@ -3,8 +3,9 @@ import amber/deno/error.{type Error}
 import amber/deno/file_info.{type FileInfo}
 import amber/deno/seek_mode.{type SeekMode}
 import amber/deno/set_raw.{type SetRawOption}
-import amber/web.{type ReadableStream, type WritableStream}
+import amber/web/readable_stream.{type ReadableStream}
 import amber/web/uint8_array.{type Uint8Array}
+import amber/web/writable_stream.{type WritableStream}
 
 pub type FsFile
 
