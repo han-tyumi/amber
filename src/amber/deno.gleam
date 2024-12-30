@@ -1,3 +1,4 @@
+import amber/deno/build.{type Build}
 import amber/deno/dir_entry.{type DirEntry}
 import amber/deno/error.{type Error}
 import amber/deno/file_info.{type FileInfo}
@@ -12,6 +13,19 @@ import amber/deno/watch_fs.{type WatchFsOption}
 import amber/deno/write_file.{type WriteFileOption}
 import amber/web/uint8_array.{type Uint8Array}
 import gleam/option.{type Option}
+
+// Runtime
+
+@external(javascript, "../amber__deno.ffi.mjs", "exec_path")
+pub fn exec_path() -> String
+
+@external(javascript, "../amber__deno.ffi.mjs", "cwd")
+pub fn cwd() -> String
+
+@external(javascript, "../amber__deno.ffi.mjs", "build")
+pub fn build() -> Build
+
+// File System
 
 @external(javascript, "../amber__deno.ffi.mjs", "link_sync")
 pub fn link_sync(oldpath: String, newpath: String) -> Result(Nil, Error)

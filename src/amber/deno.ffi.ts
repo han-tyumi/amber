@@ -1,4 +1,5 @@
 import type * as $deno from "$/amber/amber/deno.mjs";
+import * as $build from "$/amber/amber/deno/build.mjs";
 import * as $dirEntry from "$/amber/amber/deno/dir_entry.mjs";
 import * as $makeTemp from "$/amber/amber/deno/make_temp.mjs";
 import * as $mkdir from "$/amber/amber/deno/mkdir.mjs";
@@ -8,11 +9,36 @@ import * as $symlink from "$/amber/amber/deno/symlink.mjs";
 import * as $watchFs from "$/amber/amber/deno/watch_fs.mjs";
 import * as $writeFile from "$/amber/amber/deno/write_file.mjs";
 import { unwrap } from "$/gleam_stdlib/gleam/option.mjs";
+import { toArchType } from "~/amber/deno/build/arch.ts";
+import { toOsType } from "~/amber/deno/build/os.ts";
 import { fromThrows } from "~/amber/deno/error.ts";
 import { toGleamFileInfo } from "~/amber/deno/file_info.ts";
 import { CustomTypeOptionsMap } from "~/utils/CustomTypeOptionsMap.ts";
 import { fromEnumCustomType } from "~/utils/enumCustomType.ts";
 import { fromArrayMapped } from "~/utils/list.ts";
+import { toOption } from "~/utils/option.ts";
+
+// Runtime
+
+export const cwd: typeof $deno.cwd = () => {
+  return Deno.cwd();
+};
+
+export const exec_path: typeof $deno.exec_path = () => {
+  return Deno.execPath();
+};
+
+export const build: typeof $deno.build = () => {
+  return new $build.Build(
+    Deno.build.target,
+    toArchType(Deno.build.arch),
+    toOsType(Deno.build.os),
+    Deno.build.target,
+    toOption(Deno.build.vendor),
+  );
+};
+
+// File System
 
 export const link_sync: typeof $deno.link_sync = (oldpath, newpath) => {
   return fromThrows(() => Deno.linkSync(oldpath, newpath));
