@@ -1,6 +1,8 @@
 import amber/web/promise_settled_result.{type PromiseSettledResult}
 import gleam/dynamic.{type Dynamic}
+import gleam/option.{type Option, None, Some}
 
+// TODO(@han-tyumi): Consider adding a type to represent rejections.
 pub type Promise(a)
 
 pub type PromiseWithResolvers(a) {
@@ -79,3 +81,17 @@ pub fn catch(promise: Promise(a), onrejected: fn(r) -> Nil) -> Promise(a)
 ///
 @external(javascript, "../../amber__web__promise.ffi.mjs", "finally_")
 pub fn finally(promise: Promise(a), onfinally: fn() -> Nil) -> Promise(a)
+
+pub fn from_result(result: Result(a, _)) -> Promise(a) {
+  case result {
+    Ok(value) -> resolve(value)
+    Error(error) -> reject(error)
+  }
+}
+
+pub fn from_option(option: Option(a)) -> Promise(a) {
+  case option {
+    Some(value) -> resolve(value)
+    None -> reject(Nil)
+  }
+}
