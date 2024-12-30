@@ -1,6 +1,6 @@
 import type * as $env from "$/amber/amber/deno/env.mjs";
+import Dict from "$/gleam_stdlib/dict.mjs";
 import { toOption } from "~/utils/option.ts";
-import Dict from "../../../build/prod/javascript/gleam_stdlib/dict.mjs";
 
 export const get: typeof $env.get = (key) => {
   return toOption(Deno.env.get(key));
