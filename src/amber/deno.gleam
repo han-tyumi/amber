@@ -192,3 +192,11 @@ pub fn ppid() -> Int
 
 @external(javascript, "../amber__deno.ffi.mjs", "version")
 pub fn version() -> Version
+
+// Subprocess
+
+@external(javascript, "../amber__deno.ffi.mjs", "kill")
+pub fn kill(pid: Int) -> Nil
+
+@external(javascript, "../amber__deno.ffi.mjs", "kill_with")
+pub fn kill_with(pid: Int, signal: Signal) -> Nil

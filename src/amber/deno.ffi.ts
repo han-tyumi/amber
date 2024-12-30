@@ -350,3 +350,13 @@ export const version: typeof $deno.version = () => {
     Deno.version.typescript,
   );
 };
+
+// Subprocess
+
+export const kill: typeof $deno.kill = (pid) => {
+  Deno.kill(pid);
+};
+
+export const kill_with: typeof $deno.kill_with = (pid, signal) => {
+  Deno.kill(pid, toSignal(signal));
+};
