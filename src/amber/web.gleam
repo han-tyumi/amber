@@ -6,6 +6,19 @@ pub type ReadableStream(r)
 
 pub type WritableStream(w)
 
+/// A microtask is a short function which is executed after the function or
+/// module which created it exits and only if the JavaScript execution stack is
+/// empty, but before returning control to the event loop being used to drive the
+/// script's execution environment. This event loop may be either the main event
+/// loop or the event loop driving a web worker.
+///
+/// ```gleam
+/// web.queue_microtask(fn() { io.println("This event loop stack is complete") })
+/// ```
+///
+@external(javascript, "../amber__web.ffi.mjs", "queue_microtask")
+pub fn queue_microtask(func: fn() -> Nil) -> Nil
+
 /// Sets a timer which executes a function once after the delay
 /// (in milliseconds) elapses. Returns an id which may be used to cancel the
 /// timeout.
