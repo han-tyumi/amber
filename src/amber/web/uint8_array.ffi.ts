@@ -12,6 +12,12 @@ export const from_list: typeof $uint8Array.from_list = (list) => {
   return new Uint8Array(list);
 };
 
+export const from_buffer: typeof $uint8Array.from_buffer = (
+  buffer: ArrayBuffer,
+) => {
+  return new Uint8Array(buffer);
+};
+
 export const buffer: typeof $uint8Array.buffer = (uint8Array: Uint8Array) => {
   return uint8Array.buffer;
 };

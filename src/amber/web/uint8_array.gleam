@@ -17,6 +17,9 @@ pub fn from_length(length: Int) -> Uint8Array
 @external(javascript, "../../amber__web__uint8_array.ffi.mjs", "from_list")
 pub fn from_list(list: List(Int)) -> Uint8Array
 
+@external(javascript, "../../amber__web__uint8_array.ffi.mjs", "from_buffer")
+pub fn from_buffer(buffer: ArrayBuffer) -> Uint8Array
+
 @external(javascript, "../../amber__web__uint8_array.ffi.mjs", "buffer")
 pub fn buffer(uint8_array: Uint8Array) -> ArrayBuffer
 
