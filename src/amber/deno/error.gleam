@@ -126,5 +126,6 @@ pub type Error {
   ///
   WriteZero
 
+  // TODO(@han-tyumi): Consider adding more information.
   Other(String)
 }
