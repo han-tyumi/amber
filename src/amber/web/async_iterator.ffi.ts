@@ -1,5 +1,5 @@
 import type * as $asyncIterator from "$/amber/amber/web/async_iterator.mjs";
-import * as $option from "$/gleam_stdlib/gleam/option.d.mts";
+import * as $option from "$/gleam_stdlib/gleam/option.mjs";
 import {
   toGleamIteratorResult,
   toIteratorResult,

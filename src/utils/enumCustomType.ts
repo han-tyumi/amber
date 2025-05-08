@@ -1,5 +1,5 @@
 import type { CustomType } from "$/prelude.mjs";
-import type { Constructor } from "type-fest";
+import type { Constructor } from "./types.d.ts";
 
 export function fromEnumCustomType<K extends string | number>(
   map: Map<Constructor<CustomType>, K>,

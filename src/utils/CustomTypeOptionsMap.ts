@@ -1,5 +1,5 @@
 import type { CustomType, List } from "$/prelude.mjs";
-import type { Constructor } from "type-fest";
+import type { Constructor } from "~/utils/types.d.ts";
 
 export type CustomTypeToOptions<T extends CustomType, O extends object> = (
   instance: T,

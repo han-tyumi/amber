@@ -1,5 +1,5 @@
 import type * as $iterator from "$/amber/amber/web/iterator.mjs";
-import * as $option from "$/gleam_stdlib/gleam/option.d.mts";
+import * as $option from "$/gleam_stdlib/gleam/option.mjs";
 import { Error, Ok } from "$/prelude.mjs";
 import {
   toGleamIteratorResult,

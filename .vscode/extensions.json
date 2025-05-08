@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "denoland.vscode-deno",
-    "gleam.gleam"
+    "gleam.gleam",
+    "tamasfe.even-better-toml"
   ]
 }

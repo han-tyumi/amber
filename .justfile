@@ -18,6 +18,9 @@ build:
 test:
   gleam test
 
+check:
+  deno check --all 'src/**/*.ts'
+
 format:
   deno fmt -q
   gleam format
@@ -28,6 +31,5 @@ docs:
 watch +recipes:
   watchexec --no-meta -c -e gleam,mjs,ts,md,json -- just {{recipes}}
 
-publish:
-  just clean build test
-  gleam publish
+publish *args:
+  gleam publish {{args}}

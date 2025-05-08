@@ -12,5 +12,9 @@
 
   "[gleam]": {
     "editor.defaultFormatter": "gleam.gleam"
+  },
+
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
   }
 }
