@@ -10,7 +10,6 @@ import * as $version from "$/amber/amber/deno/version.mjs";
 import * as $watchFs from "$/amber/amber/deno/watch_fs.mjs";
 import * as $writeFile from "$/amber/amber/deno/write_file.mjs";
 import { unwrap } from "$/gleam_stdlib/gleam/option.mjs";
-import { List } from "$/prelude.mjs";
 import { toArchType } from "~/amber/deno/build/arch.ts";
 import { toOsType } from "~/amber/deno/build/os.ts";
 import { fromThrows } from "~/amber/deno/error.ts";
@@ -18,9 +17,7 @@ import { toGleamFileInfo } from "~/amber/deno/file_info.ts";
 import { toMemoryUsageType } from "~/amber/deno/memory_usage.ts";
 import { toSignal } from "~/amber/deno/signal.ts";
 import { toSystemMemoryInfoType } from "~/amber/deno/system_memory_info.ts";
-import { CustomTypeOptionsMap } from "~/utils/CustomTypeOptionsMap.ts";
-import { fromEnumCustomType } from "~/utils/enumCustomType.ts";
-import { fromArrayMapped } from "~/utils/list.ts";
+import { fromArray, fromArrayMapped, toArray } from "~/utils/list.ts";
 import { toOption } from "~/utils/option.ts";
 
 // File System
@@ -29,54 +26,71 @@ export const link_sync: typeof $deno.link_sync = (oldpath, newpath) => {
   return fromThrows(() => Deno.linkSync(oldpath, newpath));
 };
 
-const openOptionsMap = new CustomTypeOptionsMap<Deno.OpenOptions>()
-  .set($open.Append, () => ({ append: true }))
-  .set($open.Create, () => ({ create: true }))
-  .set($open.CreateNew, () => ({ createNew: true }))
-  .set($open.Mode, (mode) => ({ mode: mode[0] }))
-  .set($open.Read, () => ({ read: true }))
-  .set($open.Truncate, () => ({ truncate: true }))
-  .set($open.Write, () => ({ write: true }));
+function toOpenOptions(options: $open.OpenOption$[]): Deno.OpenOptions {
+  const result: Deno.OpenOptions = {};
+  for (const option of options) {
+    if ($open.OpenOption$isAppend(option)) result.append = true;
+    else if ($open.OpenOption$isCreate(option)) result.create = true;
+    else if ($open.OpenOption$isCreateNew(option)) result.createNew = true;
+    else if ($open.OpenOption$isMode(option)) {
+      result.mode = $open.OpenOption$Mode$0(option);
+    } else if ($open.OpenOption$isRead(option)) result.read = true;
+    else if ($open.OpenOption$isTruncate(option)) result.truncate = true;
+    else if ($open.OpenOption$isWrite(option)) result.write = true;
+  }
+  return result;
+}
 
 export const open_sync: typeof $deno.open_sync = (path, options) => {
-  return fromThrows(() =>
-    Deno.openSync(path, openOptionsMap.customTypeListToOptions(options))
-  );
+  return fromThrows(() => Deno.openSync(path, toOpenOptions(toArray(options))));
 };
 
 export const create_sync: typeof $deno.create_sync = (path) =>
   fromThrows(() => Deno.createSync(path));
 
-const mkdirOptionsMap = new CustomTypeOptionsMap<Deno.MkdirOptions>()
-  .set($mkdir.Mode, (mode) => ({ mode: mode[0] }))
-  .set($mkdir.Recursive, () => ({ recursive: true }));
+function toMkdirOptions(options: $mkdir.MkdirOption$[]): Deno.MkdirOptions {
+  const result: Deno.MkdirOptions = {};
+  for (const option of options) {
+    if ($mkdir.MkdirOption$isMode(option)) {
+      result.mode = $mkdir.MkdirOption$Mode$0(option);
+    } else if ($mkdir.MkdirOption$isRecursive(option)) result.recursive = true;
+  }
+  return result;
+}
 
 export const mkdir_sync: typeof $deno.mkdir_sync = (
   path,
   options,
 ) => {
-  Deno.mkdirSync(path, mkdirOptionsMap.customTypeListToOptions(options));
+  Deno.mkdirSync(path, toMkdirOptions(toArray(options)));
 };
 
-const makeTempOptionsMap = new CustomTypeOptionsMap<Deno.MakeTempOptions>()
-  .set($makeTemp.Dir, (dir) => ({ dir: dir[0] }))
-  .set($makeTemp.Prefix, (prefix) => ({ prefix: prefix[0] }))
-  .set($makeTemp.Suffix, (suffix) => ({ suffix: suffix[0] }));
+function toMakeTempOptions(
+  options: $makeTemp.MakeTempOption$[],
+): Deno.MakeTempOptions {
+  const result: Deno.MakeTempOptions = {};
+  for (const option of options) {
+    if ($makeTemp.MakeTempOption$isDir(option)) {
+      result.dir = $makeTemp.MakeTempOption$Dir$0(option);
+    } else if ($makeTemp.MakeTempOption$isPrefix(option)) {
+      result.prefix = $makeTemp.MakeTempOption$Prefix$0(option);
+    } else if ($makeTemp.MakeTempOption$isSuffix(option)) {
+      result.suffix = $makeTemp.MakeTempOption$Suffix$0(option);
+    }
+  }
+  return result;
+}
 
 export const make_temp_dir_sync: typeof $deno.make_temp_dir_sync = (
   options,
 ) => {
-  return Deno.makeTempDirSync(
-    makeTempOptionsMap.customTypeListToOptions(options),
-  );
+  return Deno.makeTempDirSync(toMakeTempOptions(toArray(options)));
 };
 
 export const make_temp_file_sync: typeof $deno.make_temp_file_sync = (
   options,
 ) => {
-  return Deno.makeTempFileSync(
-    makeTempOptionsMap.customTypeListToOptions(options),
-  );
+  return Deno.makeTempFileSync(toMakeTempOptions(toArray(options)));
 };
 
 export const chmod_sync: typeof $deno.chmod_sync = (path, mode) => {
@@ -91,14 +105,21 @@ export const chown_sync: typeof $deno.chown_sync = (
   Deno.chownSync(path, unwrap(uid, null), unwrap(gid, null));
 };
 
-const removeOptionsMap = new CustomTypeOptionsMap<Deno.RemoveOptions>()
-  .set($remove.Recursive, () => ({ recursive: true }));
+function toRemoveOptions(
+  options: $remove.RemoveOption$[],
+): Deno.RemoveOptions {
+  const result: Deno.RemoveOptions = {};
+  for (const option of options) {
+    if ($remove.RemoveOption$isRecursive(option)) result.recursive = true;
+  }
+  return result;
+}
 
 export const remove_sync: typeof $deno.remove_sync = (
   path,
   options,
 ) => {
-  Deno.removeSync(path, removeOptionsMap.customTypeListToOptions(options));
+  Deno.removeSync(path, toRemoveOptions(toArray(options)));
 };
 
 export const rename_sync: typeof $deno.rename_sync = (oldpath, newpath) => {
@@ -143,12 +164,24 @@ export const stat_sync: typeof $deno.stat_sync = (path) => {
   return toGleamFileInfo(Deno.statSync(path));
 };
 
-const writeFileOptionsMap = new CustomTypeOptionsMap<Deno.WriteFileOptions>()
-  .set($writeFile.Append, () => ({ append: true }))
-  .set($writeFile.Create, (create) => ({ create: create[0] }))
-  .set($writeFile.CreateNew, () => ({ createNew: true }))
-  .set($writeFile.Mode, (mode) => ({ mode: mode[0] }))
-  .set($writeFile.Signal, (signal) => ({ signal: signal[0] }));
+function toWriteFileOptions(
+  options: $writeFile.WriteFileOption$[],
+): Deno.WriteFileOptions {
+  const result: Deno.WriteFileOptions = {};
+  for (const option of options) {
+    if ($writeFile.WriteFileOption$isAppend(option)) result.append = true;
+    else if ($writeFile.WriteFileOption$isCreate(option)) {
+      result.create = $writeFile.WriteFileOption$Create$0(option);
+    } else if ($writeFile.WriteFileOption$isCreateNew(option)) {
+      result.createNew = true;
+    } else if ($writeFile.WriteFileOption$isMode(option)) {
+      result.mode = $writeFile.WriteFileOption$Mode$0(option);
+    } else if ($writeFile.WriteFileOption$isSignal(option)) {
+      result.signal = $writeFile.WriteFileOption$Signal$0(option);
+    }
+  }
+  return result;
+}
 
 export const write_file_sync: typeof $deno.write_file_sync = (
   path,
@@ -158,7 +191,7 @@ export const write_file_sync: typeof $deno.write_file_sync = (
   Deno.writeFileSync(
     path,
     data,
-    writeFileOptionsMap.customTypeListToOptions(options),
+    toWriteFileOptions(toArray(options)),
   );
 };
 
@@ -170,7 +203,7 @@ export const write_text_file_sync: typeof $deno.write_text_file_sync = (
   Deno.writeTextFileSync(
     path,
     data,
-    writeFileOptionsMap.customTypeListToOptions(options),
+    toWriteFileOptions(toArray(options)),
   );
 };
 
@@ -180,26 +213,45 @@ export const truncate_sync: typeof $deno.truncate_sync = (name, len) => {
 
 type WatchFsOptions = NonNullable<Parameters<typeof Deno.watchFs>["1"]>;
 
-const watchFsOptionsMap = new CustomTypeOptionsMap<WatchFsOptions>()
-  .set($watchFs.Recursive, (recursive) => ({ recursive: recursive[0] }));
+function toWatchFsOptions(
+  options: $watchFs.WatchFsOption$[],
+): Partial<WatchFsOptions> {
+  const result: Partial<WatchFsOptions> = {};
+  for (const option of options) {
+    if ($watchFs.WatchFsOption$isRecursive(option)) {
+      result.recursive = $watchFs.WatchFsOption$Recursive$0(option);
+    }
+  }
+  return result;
+}
 
 export const watch_fs: typeof $deno.watch_fs = (paths, options) => {
   return Deno.watchFs(
-    paths.toArray(),
-    watchFsOptionsMap.customTypeListToOptions(options) as WatchFsOptions,
+    toArray(paths),
+    toWatchFsOptions(toArray(options)) as WatchFsOptions,
   );
 };
 
-const toSymlinkType = fromEnumCustomType<Deno.SymlinkOptions["type"]>(
-  new Map([
-    [$symlink.File, "file"],
-    [$symlink.Dir, "dir"],
-    [$symlink.Junction, "junction"],
-  ]),
-);
+function toSymlinkType(
+  instance: $symlink.SymlinkType$,
+): Deno.SymlinkOptions["type"] | undefined {
+  if ($symlink.SymlinkType$isFile(instance)) return "file";
+  if ($symlink.SymlinkType$isDir(instance)) return "dir";
+  if ($symlink.SymlinkType$isJunction(instance)) return "junction";
+  return undefined;
+}
 
-const symlinkOptionsMap = new CustomTypeOptionsMap<Deno.SymlinkOptions>()
-  .set($symlink.Type, (type) => ({ type: toSymlinkType(type[0]) }));
+function toSymlinkOptions(
+  options: $symlink.SymlinkOption$[],
+): Partial<Deno.SymlinkOptions> {
+  const result: Partial<Deno.SymlinkOptions> = {};
+  for (const option of options) {
+    if ($symlink.SymlinkOption$isType(option)) {
+      result.type = toSymlinkType($symlink.SymlinkOption$Type$0(option));
+    }
+  }
+  return result;
+}
 
 export const symlink_sync: typeof $deno.symlink_sync = (
   oldpath,
@@ -209,7 +261,7 @@ export const symlink_sync: typeof $deno.symlink_sync = (
   Deno.symlinkSync(
     oldpath,
     newpath,
-    symlinkOptionsMap.customTypeListToOptions(options) as Deno.SymlinkOptions,
+    toSymlinkOptions(toArray(options)) as Deno.SymlinkOptions,
   );
 };
 
@@ -306,7 +358,7 @@ export const unref_timer: typeof $deno.unref_timer = (id) => {
 };
 
 export const args: typeof $deno.args = () => {
-  return List.fromArray(Deno.args);
+  return fromArray(Deno.args);
 };
 
 export const build: typeof $deno.build = () => {

@@ -21,21 +21,5 @@
       "\treturn Deno.${1/(.+)/${1:/camelcase}/}($2$0);",
       "}"
     ]
-  },
-  "Create CustomTypeOptionsMap": {
-    "scope": "typescript",
-    "prefix": "ctom",
-    "body": [
-      "const $1Map = new CustomTypeOptionsMap<${1/(.+)/${1:/pascalcase}/}>()",
-      "\t$0"
-    ]
-  },
-  "Add CustomTypeOptionsMap `set` call": {
-    "scope": "typescript",
-    "prefix": "ctom:s",
-    "body": [
-      ".set(\\$$1.$2, (${3:${2/(.+)/${1:/camelcase}/}}) => ({ ${2/(.+)/${1:/camelcase}/}: ${4:${2/(.+)/${1:/camelcase}/}[0]} }))",
-      "$0"
-    ]
   }
 }

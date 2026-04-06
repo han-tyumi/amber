@@ -1,17 +1,21 @@
 import * as $streamPipeOption from "$/amber/amber/web/readable_stream/stream_pipe_option.mjs";
 import type { List } from "$/prelude.mjs";
-import { CustomTypeOptionsMap } from "~/utils/CustomTypeOptionsMap.ts";
-
-const streamPipeOptionsMap = new CustomTypeOptionsMap<
-  StreamPipeOptions
->()
-  .set($streamPipeOption.PreventAbort, () => ({ preventAbort: true }))
-  .set($streamPipeOption.PreventCancel, () => ({ preventCancel: true }))
-  .set($streamPipeOption.PreventClose, () => ({ preventClose: true }))
-  .set($streamPipeOption.Signal, (signal) => ({ signal: signal[0] }));
+import { toArray } from "~/utils/list.ts";
 
 export function toStreamPipeOptions(
   options: List<$streamPipeOption.StreamPipeOption$>,
-) {
-  return streamPipeOptionsMap.customTypeListToOptions(options);
+): Partial<StreamPipeOptions> {
+  const result: Partial<StreamPipeOptions> = {};
+  for (const option of toArray(options)) {
+    if ($streamPipeOption.StreamPipeOption$isPreventAbort(option)) {
+      result.preventAbort = true;
+    } else if ($streamPipeOption.StreamPipeOption$isPreventCancel(option)) {
+      result.preventCancel = true;
+    } else if ($streamPipeOption.StreamPipeOption$isPreventClose(option)) {
+      result.preventClose = true;
+    } else if ($streamPipeOption.StreamPipeOption$isSignal(option)) {
+      result.signal = $streamPipeOption.StreamPipeOption$Signal$0(option);
+    }
+  }
+  return result;
 }

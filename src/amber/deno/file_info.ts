@@ -2,7 +2,7 @@ import * as $fileInfo from "$/amber/amber/deno/file_info.mjs";
 import { toOption } from "~/utils/option.ts";
 
 export function toGleamFileInfo(fileInfo: Deno.FileInfo): $fileInfo.FileInfo {
-  return new $fileInfo.FileInfo(
+  return $fileInfo.FileInfo$FileInfo(
     fileInfo.isFile,
     fileInfo.isDirectory,
     fileInfo.isSymlink,

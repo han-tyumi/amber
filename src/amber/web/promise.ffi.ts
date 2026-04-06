@@ -1,6 +1,6 @@
 import * as $promise from "$/amber/amber/web/promise.mjs";
 import * as $promiseSettledResult from "$/amber/amber/web/promise_settled_result.mjs";
-import { toList } from "$/prelude.mjs";
+import { fromArray } from "~/utils/list.ts";
 
 export type Promise$<T> = Promise<T>;
 
@@ -19,7 +19,7 @@ export const new_: typeof $promise.new$ = (executor) => {
 
 export const all: typeof $promise.all = async (values) => {
   const results = await Promise.all(values);
-  return toList(results);
+  return fromArray(results);
 };
 
 export const race: typeof $promise.race = (values) => {
@@ -36,11 +36,11 @@ export const resolve: typeof $promise.resolve = (value) => {
 
 export const all_settled: typeof $promise.all_settled = async (values) => {
   const results = await Promise.allSettled(values);
-  return toList(
+  return fromArray(
     results.map((result) =>
       result.status === "fulfilled"
-        ? new $promiseSettledResult.Fulfilled(result.value)
-        : new $promiseSettledResult.Rejected(result.reason)
+        ? $promiseSettledResult.PromiseSettledResult$Fulfilled(result.value)
+        : $promiseSettledResult.PromiseSettledResult$Rejected(result.reason)
     ),
   );
 };
@@ -51,7 +51,7 @@ export const any: typeof $promise.any = (values) => {
 
 export const with_resolvers: typeof $promise.with_resolvers = () => {
   const { promise, resolve, reject } = Promise.withResolvers();
-  return new $promise.PromiseWithResolvers(
+  return $promise.PromiseWithResolvers$PromiseWithResolvers(
     promise,
     (value) => {
       resolve(value);

@@ -1,8 +1,8 @@
-import { Error, Ok } from "$/prelude.mjs";
+import { Result$Error, Result$Ok } from "$/prelude.mjs";
 
 export function new_(fun) {
   if (typeof fun !== "function") {
-    return new Error(undefined);
+    return Result$Error(undefined);
   }
 
   wrappedFun.calls = [];
@@ -13,7 +13,7 @@ export function new_(fun) {
     return result;
   }
 
-  return new Ok(wrappedFun);
+  return Result$Ok(wrappedFun);
 }
 
 export function fun(spy) {

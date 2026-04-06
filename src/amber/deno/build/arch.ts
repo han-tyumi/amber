@@ -1,10 +1,10 @@
 import * as $arch from "$/amber/amber/deno/build/arch.mjs";
-import { toEnumCustomType } from "~/utils/enumCustomType.ts";
 
-export const toArchType = toEnumCustomType<
-  typeof Deno.build["arch"],
-  $arch.Arch$
->({
-  x86_64: $arch.Arch$X8664,
-  aarch64: $arch.Arch$Aarch64,
-});
+export function toArchType(value: typeof Deno.build["arch"]): $arch.Arch$ {
+  switch (value) {
+    case "x86_64":
+      return $arch.Arch$X8664();
+    case "aarch64":
+      return $arch.Arch$Aarch64();
+  }
+}

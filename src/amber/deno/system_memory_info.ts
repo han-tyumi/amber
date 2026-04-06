@@ -1,7 +1,7 @@
-import { SystemMemoryInfo } from "$/amber/amber/deno/system_memory_info.mjs";
+import { SystemMemoryInfo$SystemMemoryInfo } from "$/amber/amber/deno/system_memory_info.mjs";
 
 export function toSystemMemoryInfoType(info: Deno.SystemMemoryInfo) {
-  return new SystemMemoryInfo(
+  return SystemMemoryInfo$SystemMemoryInfo(
     info.total,
     info.free,
     info.available,

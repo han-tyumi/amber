@@ -1,12 +1,10 @@
 import * as $stdioOption from "$/amber/amber/deno/stdio_option.mjs";
-import { fromEnumCustomType } from "~/utils/enumCustomType.ts";
 
-export const toStdioOptionType = fromEnumCustomType<
-  "piped" | "inherit" | "null"
->(
-  new Map([
-    [$stdioOption.Piped, "piped"],
-    [$stdioOption.Inherit, "inherit"],
-    [$stdioOption.Null, "null"],
-  ]),
-);
+export function toStdioOptionType(
+  instance: $stdioOption.StdioOption$,
+): "piped" | "inherit" | "null" | undefined {
+  if ($stdioOption.StdioOption$isPiped(instance)) return "piped";
+  if ($stdioOption.StdioOption$isInherit(instance)) return "inherit";
+  if ($stdioOption.StdioOption$isNull(instance)) return "null";
+  return undefined;
+}

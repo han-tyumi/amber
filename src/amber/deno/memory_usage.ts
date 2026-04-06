@@ -1,7 +1,7 @@
-import { MemoryUsage } from "$/amber/amber/deno/memory_usage.mjs";
+import { MemoryUsage$MemoryUsage } from "$/amber/amber/deno/memory_usage.mjs";
 
 export function toMemoryUsageType(memoryUsage: Deno.MemoryUsage) {
-  return new MemoryUsage(
+  return MemoryUsage$MemoryUsage(
     memoryUsage.rss,
     memoryUsage.heapTotal,
     memoryUsage.heapUsed,

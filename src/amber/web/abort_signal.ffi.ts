@@ -1,5 +1,5 @@
 import type * as $abortSignal from "$/amber/amber/web/abort_signal.mjs";
-import type { List } from "$/prelude.mjs";
+import { toArray } from "~/utils/list.ts";
 
 export type AbortSignal$ = AbortSignal;
 
@@ -7,8 +7,8 @@ export const abort: typeof $abortSignal.abort = (reason) => {
   return AbortSignal.abort(reason);
 };
 
-export const any: typeof $abortSignal.any = (signals: List<AbortSignal>) => {
-  return AbortSignal.any(signals.toArray());
+export const any: typeof $abortSignal.any = (signals) => {
+  return AbortSignal.any(toArray(signals));
 };
 
 export const timeout: typeof $abortSignal.timeout = (milliseconds) => {

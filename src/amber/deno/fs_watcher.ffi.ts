@@ -1,8 +1,7 @@
 import * as $fsEvent from "$/amber/amber/deno/fs_event.mjs";
 import type * as $fsWatcher from "$/amber/amber/deno/fs_watcher.mjs";
 import * as $option from "$/gleam_stdlib/gleam/option.mjs";
-import { toList } from "$/prelude.mjs";
-import { toEnumCustomType } from "~/utils/enumCustomType.ts";
+import { fromArray } from "~/utils/list.ts";
 import { toOption } from "~/utils/option.ts";
 
 export type FsWatcher$ = Deno.FsWatcher;
@@ -11,30 +10,36 @@ export const close: typeof $fsWatcher.close = (watcher: Deno.FsWatcher) => {
   watcher.close();
 };
 
-const toFsEventKind = toEnumCustomType<
-  Deno.FsEvent["kind"],
-  $fsEvent.FsEventKind$
->({
-  any: $fsEvent.FsEventKind$Any,
-  access: $fsEvent.FsEventKind$Access,
-  create: $fsEvent.FsEventKind$Create,
-  modify: $fsEvent.FsEventKind$Modify,
-  rename: $fsEvent.FsEventKind$Rename,
-  remove: $fsEvent.FsEventKind$Remove,
-  other: $fsEvent.FsEventKind$Other,
-});
+function toFsEventKind(value: Deno.FsEvent["kind"]): $fsEvent.FsEventKind$ {
+  switch (value) {
+    case "any":
+      return $fsEvent.FsEventKind$Any();
+    case "access":
+      return $fsEvent.FsEventKind$Access();
+    case "create":
+      return $fsEvent.FsEventKind$Create();
+    case "modify":
+      return $fsEvent.FsEventKind$Modify();
+    case "rename":
+      return $fsEvent.FsEventKind$Rename();
+    case "remove":
+      return $fsEvent.FsEventKind$Remove();
+    case "other":
+      return $fsEvent.FsEventKind$Other();
+  }
+}
 
-const toFsEventFlag = toEnumCustomType<
-  Deno.FsEventFlag,
-  $fsEvent.FsEventFlag$
->({
-  rescan: $fsEvent.FsEventFlag$Rescan,
-});
+function toFsEventFlag(value: Deno.FsEventFlag): $fsEvent.FsEventFlag$ {
+  switch (value) {
+    case "rescan":
+      return $fsEvent.FsEventFlag$Rescan();
+  }
+}
 
 function toGleamFsEvent(event: Deno.FsEvent): $fsEvent.FsEvent {
   return $fsEvent.FsEvent$FsEvent(
     toFsEventKind(event.kind),
-    toList(event.paths),
+    fromArray(event.paths),
     $option.map(toOption(event.flag), toFsEventFlag),
   );
 }

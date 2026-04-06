@@ -1,13 +1,17 @@
 import * as $textDecoderOption from "$/amber/amber/web/text_decoder/text_decoder_option.mjs";
 import type { List } from "$/prelude.mjs";
-import { CustomTypeOptionsMap } from "~/utils/CustomTypeOptionsMap.ts";
-
-const textDecoderOptionsMap = new CustomTypeOptionsMap<TextDecoderOptions>()
-  .set($textDecoderOption.Fatal, () => ({ fatal: true }))
-  .set($textDecoderOption.IgnoreBom, () => ({ ignoreBOM: true }));
+import { toArray } from "~/utils/list.ts";
 
 export function toTextDecoderOptions(
   options: List<$textDecoderOption.TextDecoderOption$>,
-) {
-  return textDecoderOptionsMap.customTypeListToOptions(options);
+): Partial<TextDecoderOptions> {
+  const result: Partial<TextDecoderOptions> = {};
+  for (const option of toArray(options)) {
+    if ($textDecoderOption.TextDecoderOption$isFatal(option)) {
+      result.fatal = true;
+    } else if ($textDecoderOption.TextDecoderOption$isIgnoreBom(option)) {
+      result.ignoreBOM = true;
+    }
+  }
+  return result;
 }

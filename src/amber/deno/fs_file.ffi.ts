@@ -4,8 +4,7 @@ import * as $seekMode from "$/amber/amber/deno/seek_mode.mjs";
 import * as $setRaw from "$/amber/amber/deno/set_raw.mjs";
 import * as $result from "$/gleam_stdlib/gleam/result.mjs";
 import type { Result } from "$/prelude.mjs";
-import { CustomTypeOptionsMap } from "~/utils/CustomTypeOptionsMap.ts";
-import { fromEnumCustomType } from "~/utils/enumCustomType.ts";
+import { toArray } from "~/utils/list.ts";
 import { toBytesRead } from "./bytes_read.ts";
 import { fromThrows } from "./error.ts";
 import { toGleamFileInfo } from "./file_info.ts";
@@ -49,13 +48,14 @@ export const read_sync: typeof $fsFile.read_sync = (
   return fromThrows(() => toBytesRead(file.readSync(p)));
 };
 
-const toSeekMode = fromEnumCustomType<Deno.SeekMode>(
-  new Map([
-    [$seekMode.Start, 0],
-    [$seekMode.Current, 1],
-    [$seekMode.End, 2],
-  ]),
-);
+function toSeekMode(
+  instance: $seekMode.SeekMode$,
+): Deno.SeekMode | undefined {
+  if ($seekMode.SeekMode$isStart(instance)) return 0;
+  if ($seekMode.SeekMode$isCurrent(instance)) return 1;
+  if ($seekMode.SeekMode$isEnd(instance)) return 2;
+  return undefined;
+}
 
 export const seek_sync: typeof $fsFile.seek_sync = (
   file: Deno.FsFile,
@@ -94,8 +94,17 @@ export const is_terminal: typeof $fsFile.is_terminal = (file: Deno.FsFile) => {
   return file.isTerminal();
 };
 
-const setRawOptionsMap = new CustomTypeOptionsMap<Deno.SetRawOptions>()
-  .set($setRaw.Cbreak, (cbreak) => ({ cbreak: cbreak[0] }));
+function toSetRawOptions(
+  options: $setRaw.SetRawOption$[],
+): Partial<Deno.SetRawOptions> {
+  const result: Partial<Deno.SetRawOptions> = {};
+  for (const option of options) {
+    if ($setRaw.SetRawOption$isCbreak(option)) {
+      result.cbreak = $setRaw.SetRawOption$Cbreak$0(option);
+    }
+  }
+  return result;
+}
 
 export const set_raw: typeof $fsFile.set_raw = (
   file: Deno.FsFile,
@@ -104,7 +113,7 @@ export const set_raw: typeof $fsFile.set_raw = (
 ) => {
   file.setRaw(
     mode,
-    setRawOptionsMap.customTypeListToOptions(options) as Deno.SetRawOptions,
+    toSetRawOptions(toArray(options)) as Deno.SetRawOptions,
   );
   return file;
 };

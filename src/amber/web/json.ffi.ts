@@ -1,7 +1,7 @@
 import * as $json from "$/amber/amber/web/json.mjs";
 import Dict from "$/gleam_stdlib/dict.mjs";
-import { List } from "$/prelude.mjs";
 import { toObjectWithMap } from "~/utils/dict.ts";
+import { fromArray, toArray } from "~/utils/list.ts";
 import { toResult } from "~/utils/result.ts";
 
 type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
@@ -20,7 +20,7 @@ function gleamJsonReviver(_key: string, value: unknown) {
     return $json.Json$String(value);
   }
   if (Array.isArray(value)) {
-    return $json.Json$Array(List.fromArray(value));
+    return $json.Json$Array(fromArray(value));
   }
   if (typeof value === "object") {
     return $json.Json$Object(Dict.fromObject(value as Record<string, unknown>));
@@ -45,7 +45,7 @@ function jsonToObject(json: $json.Json$): Json {
     return $json.Json$String$0(json);
   }
   if ($json.Json$isArray(json)) {
-    return $json.Json$Array$0(json).toArray().map((child) =>
+    return toArray($json.Json$Array$0(json)).map((child) =>
       jsonToObject(child)
     );
   }
