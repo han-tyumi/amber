@@ -39,14 +39,16 @@ Further documentation can be found at <https://hexdocs.pm/amber>.
 ### Prerequisites
 
 - [Deno](https://docs.deno.com/runtime/getting_started/installation/)
-- [Gleam](https://gleam.run/getting-started/installing/)
-- [Just](https://just.systems/man/en/prerequisites.html)
+- [Erlang](https://www.erlang.org/downloads)
+- [Gleam](https://gleam.run/install/)
+- [Just](https://just.systems/man/en/installation.html)
+- [Lefthook](https://lefthook.dev/#how-to-install-lefthook)
 - [Rebar3](https://rebar3.org/docs/getting-started/)
-- [Watchexec](https://github.com/watchexec/watchexec/tree/main?tab=readme-ov-file#install)
+- [Watchexec](https://github.com/watchexec/watchexec#install)
 
-_Tip_: You can install these tools using a version manager like
-[asdf](https://asdf-vm.com/guide/getting-started.html) or
-[mise](https://mise.jdx.dev/getting-started.html), which can read from
+_Tip_: These can also be installed via
+[mise](https://mise.jdx.dev/getting-started.html) or
+[asdf](https://asdf-vm.com/guide/getting-started.html), which read from
 `.tool-versions`.
 
 ### Initial Setup
