@@ -16,6 +16,7 @@ allow_read = true
 allow_write = true
 allow_run = true
 allow_sys = true
+allow_net = true
 
 [dependencies]
 gleam_stdlib = ">= 0.34.0 and < 2.0.0"
