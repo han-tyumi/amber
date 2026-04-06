@@ -1,4 +1,3 @@
-// TODO(@han-tyumi): Should probably be opaque.
 /// Information about a directory entry returned from
 /// [`deno.read_dir_sync`](../deno.html#read_dir_sync).
 ///

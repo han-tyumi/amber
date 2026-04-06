@@ -1,7 +1,6 @@
 import amber/web.{type Date}
 import gleam/option.{type Option}
 
-// TODO(@han-tyumi): Should probably be opaque.
 /// Provides information about a file and is returned by
 /// [`deno.stat_sync`](../deno.html#stat_sync) and
 /// [`deno.lstat_sync`](../deno.html#lstat_sync) or from calling
