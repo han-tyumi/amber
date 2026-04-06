@@ -16,6 +16,22 @@ export const new_with: typeof $textDecoder.new_with = (label, options) => {
   );
 };
 
+export const encoding: typeof $textDecoder.encoding = (
+  decoder: TextDecoder,
+) => {
+  return decoder.encoding;
+};
+
+export const fatal: typeof $textDecoder.fatal = (decoder: TextDecoder) => {
+  return decoder.fatal;
+};
+
+export const ignore_bom: typeof $textDecoder.ignore_bom = (
+  decoder: TextDecoder,
+) => {
+  return decoder.ignoreBOM;
+};
+
 export const decode_chunk: typeof $textDecoder.decode_chunk = (
   decoder: TextDecoder,
   input: ArrayBuffer,
