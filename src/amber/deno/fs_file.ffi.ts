@@ -1,13 +1,13 @@
 import type { Error$ } from "$/amber/amber/deno/error.mjs";
 import type * as $fsFile from "$/amber/amber/deno/fs_file.mjs";
 import * as $seekMode from "$/amber/amber/deno/seek_mode.mjs";
-import * as $setRaw from "$/amber/amber/deno/set_raw.mjs";
 import * as $result from "$/gleam_stdlib/gleam/result.mjs";
 import type { Result } from "$/prelude.mjs";
 import { toArray } from "~/utils/list.ts";
 import { toBytesRead } from "./bytes_read.ts";
 import { fromThrows } from "./error.ts";
 import { toGleamFileInfo } from "./file_info.ts";
+import { toSetRawOptions } from "./set_raw.ts";
 
 export type FsFile$ = Deno.FsFile;
 
@@ -93,18 +93,6 @@ export const utime_sync: typeof $fsFile.utime_sync = (
 export const is_terminal: typeof $fsFile.is_terminal = (file: Deno.FsFile) => {
   return file.isTerminal();
 };
-
-function toSetRawOptions(
-  options: $setRaw.SetRawOption$[],
-): Partial<Deno.SetRawOptions> {
-  const result: Partial<Deno.SetRawOptions> = {};
-  for (const option of options) {
-    if ($setRaw.SetRawOption$isCbreak(option)) {
-      result.cbreak = $setRaw.SetRawOption$Cbreak$0(option);
-    }
-  }
-  return result;
-}
 
 export const set_raw: typeof $fsFile.set_raw = (
   file: Deno.FsFile,
