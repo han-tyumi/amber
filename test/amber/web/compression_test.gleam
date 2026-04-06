@@ -1,0 +1,55 @@
+import amber/web/compression_format
+import amber/web/compression_stream
+import amber/web/decompression_stream
+import amber/web/promise
+import amber/web/readable_stream
+import amber/web/readable_stream/default_controller
+import amber/web/readable_stream/read_result
+import amber/web/readable_stream/reader
+import amber/web/text_decoder
+import amber/web/text_encoder
+import amber/web/uint8_array
+import gleeunit/should
+
+pub fn gzip_round_trip_test() {
+  let data = text_encoder.encode("Hello, compression!")
+
+  let input =
+    readable_stream.from_start(fn(controller) {
+      default_controller.enqueue(controller, data)
+      default_controller.close(controller)
+    })
+
+  let compressor = compression_stream.new(compression_format.Gzip)
+  let decompressor = decompression_stream.new(compression_format.Gzip)
+
+  let output =
+    input
+    |> readable_stream.pipe_through(
+      #(
+        compression_stream.readable(compressor),
+        compression_stream.writable(compressor),
+      ),
+      [],
+    )
+    |> readable_stream.pipe_through(
+      #(
+        decompression_stream.readable(decompressor),
+        decompression_stream.writable(decompressor),
+      ),
+      [],
+    )
+
+  let reader = readable_stream.get_reader(output)
+
+  use result <- promise.then(reader.read(reader))
+  case result {
+    read_result.Value(chunk) -> {
+      let text = text_decoder.decode(uint8_array.buffer(chunk))
+      should.equal(text, "Hello, compression!")
+    }
+    read_result.Done(_) -> {
+      should.fail()
+    }
+  }
+}
