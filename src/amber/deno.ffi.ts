@@ -1,5 +1,7 @@
 import type * as $deno from "$/amber/amber/deno.mjs";
 import * as $build from "$/amber/amber/deno/build.mjs";
+import { toConnectOptions } from "~/amber/deno/connect_option.ts";
+import { toListenOptions } from "~/amber/deno/listen_option.ts";
 import * as $dirEntry from "$/amber/amber/deno/dir_entry.mjs";
 import * as $makeTemp from "$/amber/amber/deno/make_temp.mjs";
 import * as $mkdir from "$/amber/amber/deno/mkdir.mjs";
@@ -294,6 +296,14 @@ export const inspect: typeof $deno.inspect = (value, options) => {
 
 export const network_interfaces: typeof $deno.network_interfaces = () => {
   return fromArrayMapped(Deno.networkInterfaces(), toNetworkInterfaceInfoType);
+};
+
+export const listen: typeof $deno.listen = (port, options) => {
+  return Deno.listen(toListenOptions(port, toArray(options)));
+};
+
+export const connect: typeof $deno.connect = (port, options) => {
+  return Deno.connect(toConnectOptions(port, toArray(options)));
 };
 
 // Runtime

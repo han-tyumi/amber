@@ -1,14 +1,10 @@
-import * as $netAddr from "$/amber/amber/deno/net_addr.mjs";
 import type * as $serve from "$/amber/amber/deno/serve.mjs";
 import * as $serveHandlerInfo from "$/amber/amber/deno/serve/serve_handler_info.mjs";
 import * as $serveOption from "$/amber/amber/deno/serve/serve_option.mjs";
+import { toNetAddr } from "~/amber/deno/net_addr.ts";
 import { toArray } from "~/utils/list.ts";
 
 export type HttpServer$ = Deno.HttpServer<Deno.NetAddr>;
-
-function toNetAddr(addr: Deno.NetAddr) {
-  return $netAddr.NetAddr$NetAddr(addr.transport, addr.hostname, addr.port);
-}
 
 function toServeHandlerInfo(info: Deno.ServeHandlerInfo<Deno.NetAddr>) {
   return $serveHandlerInfo.ServeHandlerInfo$ServeHandlerInfo(

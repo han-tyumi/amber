@@ -1,4 +1,6 @@
 import amber/deno/build.{type Build}
+import amber/deno/conn/tcp_conn.{type TcpConn}
+import amber/deno/connect_option.{type ConnectOption}
 import amber/deno/console_size.{type ConsoleSize}
 import amber/deno/dir_entry.{type DirEntry}
 import amber/deno/error.{type Error}
@@ -6,6 +8,8 @@ import amber/deno/file_info.{type FileInfo}
 import amber/deno/fs_file.{type FsFile}
 import amber/deno/fs_watcher.{type FsWatcher}
 import amber/deno/inspect_option.{type InspectOption}
+import amber/deno/listen_option.{type ListenOption}
+import amber/deno/listener.{type Listener}
 import amber/deno/make_temp.{type MakeTempOption}
 import amber/deno/memory_usage.{type MemoryUsage}
 import amber/deno/mkdir.{type MkdirOption}
@@ -18,6 +22,7 @@ import amber/deno/system_memory_info.{type SystemMemoryInfo}
 import amber/deno/version.{type Version}
 import amber/deno/watch_fs.{type WatchFsOption}
 import amber/deno/write_file.{type WriteFileOption}
+import amber/web/promise.{type Promise}
 import amber/web/uint8_array.{type Uint8Array}
 import gleam/dynamic.{type Dynamic}
 import gleam/option.{type Option}
@@ -140,6 +145,17 @@ pub fn inspect(value: Dynamic, options: List(InspectOption)) -> String
 ///
 @external(javascript, "./deno.ffi.mjs", "network_interfaces")
 pub fn network_interfaces() -> List(NetworkInterfaceInfo)
+
+/// Listen announces on the local transport address.
+///
+@external(javascript, "./deno.ffi.mjs", "listen")
+pub fn listen(port: Int, options: List(ListenOption)) -> Listener
+
+/// Connects to the hostname (default is "127.0.0.1") and port on the named
+/// transport (default is "tcp"), and resolves to the connection (`TcpConn`).
+///
+@external(javascript, "./deno.ffi.mjs", "connect")
+pub fn connect(port: Int, options: List(ConnectOption)) -> Promise(TcpConn)
 
 // Runtime
 
