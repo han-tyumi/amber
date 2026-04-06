@@ -1,14 +1,36 @@
-// TODO(@han-tyumi): Support creating streams.
-
 import amber/web/async_iterator.{type AsyncIterator}
 import amber/web/promise.{type Promise}
 import amber/web/readable_stream/byob_reader.{type ByobReader}
+import amber/web/readable_stream/default_controller.{type DefaultController}
 import amber/web/readable_stream/reader.{type Reader}
 import amber/web/readable_stream/stream_pipe_option.{type StreamPipeOption}
+import amber/web/readable_stream/underlying_source.{type UnderlyingSource}
 import amber/web/writable_stream.{type WritableStream}
 
 @external(javascript, "./readable_stream.ffi.ts", "ReadableStream$")
 pub type ReadableStream(a)
+
+@external(javascript, "./readable_stream.ffi.mjs", "new_")
+pub fn new(source: List(UnderlyingSource(a))) -> ReadableStream(a)
+
+/// Creates a ReadableStream that pushes data from a start callback.
+///
+pub fn from_start(start: fn(DefaultController(a)) -> Nil) -> ReadableStream(a) {
+  new([underlying_source.Start(start)])
+}
+
+/// Creates a ReadableStream that produces data on demand via a pull callback.
+///
+pub fn from_pull(
+  pull: fn(DefaultController(a)) -> Promise(Nil),
+) -> ReadableStream(a) {
+  new([underlying_source.Pull(pull)])
+}
+
+/// Creates a ReadableStream from an async or sync iterable.
+///
+@external(javascript, "./readable_stream.ffi.mjs", "from")
+pub fn from(iterable: a) -> ReadableStream(b)
 
 @external(javascript, "./readable_stream.ffi.mjs", "locked")
 pub fn locked(stream: ReadableStream(a)) -> Bool

@@ -1,6 +1,12 @@
 import type * as $writableStream from "$/amber/amber/web/writable_stream.mjs";
+import { toUnderlyingSink } from "~/amber/web/writable_stream/underlying_sink.ts";
+import { toArray } from "~/utils/list.ts";
 
 export type WritableStream$<T> = WritableStream<T>;
+
+export const new_: typeof $writableStream.new$ = (sink) => {
+  return new WritableStream(toUnderlyingSink(toArray(sink)));
+};
 
 export const locked: typeof $writableStream.locked = (
   stream: WritableStream,

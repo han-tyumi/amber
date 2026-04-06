@@ -1,7 +1,17 @@
 import type * as $readableStream from "$/amber/amber/web/readable_stream.mjs";
 import { toStreamPipeOptions } from "~/amber/web/readable_stream/stream_pipe_option.ts";
+import { toUnderlyingSource } from "~/amber/web/readable_stream/underlying_source.ts";
+import { toArray } from "~/utils/list.ts";
 
 export type ReadableStream$<T> = ReadableStream<T>;
+
+export const new_: typeof $readableStream.new$ = (source) => {
+  return new ReadableStream(toUnderlyingSource(toArray(source)));
+};
+
+export const from: typeof $readableStream.from = (iterable) => {
+  return ReadableStream.from(iterable);
+};
 
 export const locked: typeof $readableStream.locked = (
   stream: ReadableStream,
