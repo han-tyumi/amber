@@ -3,13 +3,14 @@ import amber/deno/command/command_option.{type CommandOption}
 import amber/deno/command/command_output.{type CommandOutput}
 import amber/deno/error.{type Error}
 
+@external(javascript, "./command.ffi.ts", "Command$")
 pub type Command
 
-@external(javascript, "../../amber__deno__command.ffi.mjs", "new_")
+@external(javascript, "./command.ffi.mjs", "new_")
 pub fn new(command: String, options: List(CommandOption)) -> Command
 
-@external(javascript, "../../amber__deno__command.ffi.mjs", "output_sync")
+@external(javascript, "./command.ffi.mjs", "output_sync")
 pub fn output_sync(command: Command) -> Result(CommandOutput, Error)
 
-@external(javascript, "../../amber__deno__command.ffi.mjs", "spawn")
+@external(javascript, "./command.ffi.mjs", "spawn")
 pub fn spawn(command: Command) -> ChildProcess

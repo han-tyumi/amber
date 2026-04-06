@@ -1,6 +1,8 @@
 import type * as $web from "$/amber/amber/web.mjs";
 import { toOption } from "~/utils/option.ts";
 
+export type Date$ = Date;
+
 export const alert: typeof $web.alert = (message) => {
   globalThis.alert(message);
 };

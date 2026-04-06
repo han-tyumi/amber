@@ -2,30 +2,31 @@ import amber/web/readable_stream.{type ReadableStream}
 import amber/web/text_decoder/text_decoder_option.{type TextDecoderOption}
 import amber/web/writable_stream.{type WritableStream}
 
+@external(javascript, "./text_decoder_stream.ffi.ts", "TextDecoderStream$")
 pub type TextDecoderStream
 
-@external(javascript, "../../amber__web__text_decoder_stream.ffi.mjs", "new_")
+@external(javascript, "./text_decoder_stream.ffi.mjs", "new_")
 pub fn new() -> TextDecoderStream
 
-@external(javascript, "../../amber__web__text_decoder_stream.ffi.mjs", "new_with")
+@external(javascript, "./text_decoder_stream.ffi.mjs", "new_with")
 pub fn new_with(
   label: String,
   options: List(TextDecoderOption),
 ) -> TextDecoderStream
 
-@external(javascript, "../../amber__web__text_decoder_stream.ffi.mjs", "readable")
+@external(javascript, "./text_decoder_stream.ffi.mjs", "readable")
 pub fn readable(decoder: TextDecoderStream) -> ReadableStream(String)
 
-@external(javascript, "../../amber__web__text_decoder_stream.ffi.mjs", "writable")
+@external(javascript, "./text_decoder_stream.ffi.mjs", "writable")
 pub fn writable(decoder: TextDecoderStream) -> WritableStream(w)
 
-@external(javascript, "../../amber__web__text_decoder_stream.ffi.mjs", "encoding")
+@external(javascript, "./text_decoder_stream.ffi.mjs", "encoding")
 pub fn encoding(decoder: TextDecoderStream) -> String
 
-@external(javascript, "../../amber__web__text_decoder_stream.ffi.mjs", "fatal")
+@external(javascript, "./text_decoder_stream.ffi.mjs", "fatal")
 pub fn fatal(decoder: TextDecoderStream) -> Bool
 
-@external(javascript, "../../amber__web__text_decoder_stream.ffi.mjs", "ignore_bom")
+@external(javascript, "./text_decoder_stream.ffi.mjs", "ignore_bom")
 pub fn ignore_bom(decoder: TextDecoderStream) -> Bool
 
 pub fn read_write_pair(

@@ -1,13 +1,11 @@
 import * as $iteratorResult from "$/amber/amber/web/iterator_result.mjs";
 
 export function toIteratorResult<T, TReturn>(
-  result: $iteratorResult.IteratorResult$<TReturn, T>,
+  result: $iteratorResult.IteratorResult$<T, TReturn>,
 ): IteratorResult<T, TReturn> {
   if (result instanceof $iteratorResult.Return) {
-    // @ts-ignore: Gleam generates the order of generics indeterminately.
     return { done: true, value: result.value };
   }
-  // @ts-ignore: Gleam generates the order of generics indeterminately.
   return { done: false, value: result.value };
 }
 

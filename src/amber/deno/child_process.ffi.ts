@@ -4,6 +4,8 @@ import { toCommandStatusType } from "~/amber/deno/command/command_status.ts";
 import { fromThrows } from "~/amber/deno/error.ts";
 import { toSignal } from "~/amber/deno/signal.ts";
 
+export type ChildProcess$ = Deno.ChildProcess;
+
 export const stdin: typeof $childProcess.stdin = (
   process: Deno.ChildProcess,
 ) => {

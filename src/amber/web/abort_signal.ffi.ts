@@ -1,6 +1,8 @@
 import type * as $abortSignal from "$/amber/amber/web/abort_signal.mjs";
 import type { List } from "$/prelude.mjs";
 
+export type AbortSignal$ = AbortSignal;
+
 export const abort: typeof $abortSignal.abort = (reason) => {
   return AbortSignal.abort(reason);
 };

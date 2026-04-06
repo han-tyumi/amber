@@ -1,6 +1,8 @@
 import type * as $textDecoderStream from "$/amber/amber/web/text_decoder_stream.mjs";
 import { toTextDecoderOptions } from "~/amber/web/text_decoder/text_decoder_option.ts";
 
+export type TextDecoderStream$ = TextDecoderStream;
+
 export const new_: typeof $textDecoderStream.new$ = () => {
   return new TextDecoderStream();
 };

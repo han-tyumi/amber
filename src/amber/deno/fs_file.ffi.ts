@@ -10,6 +10,8 @@ import { toBytesRead } from "./bytes_read.ts";
 import { fromThrows } from "./error.ts";
 import { toGleamFileInfo } from "./file_info.ts";
 
+export type FsFile$ = Deno.FsFile;
+
 export const readable: typeof $fsFile.readable = (file: Deno.FsFile) => {
   return file.readable;
 };

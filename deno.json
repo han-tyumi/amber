@@ -4,7 +4,7 @@
     "@std/path": "jsr:@std/path@^1.0.9",
     "~/": "./src/",
     "$/": "./build/dev/javascript/",
-    "esbuild": "npm:esbuild@^0.25.4"
+    "esbuild": "npm:esbuild@~0.28.0"
   },
 
   "compilerOptions": {
@@ -13,11 +13,11 @@
 
   "tasks": {
     "build": "deno run -A build.ts",
-    "clean": "rm -f src/*.mjs"
+    "clean": "find src -name '*.ffi.mjs' -delete"
   },
 
   "fmt": {
-    "exclude": ["./src/*.mjs", "./build/"]
+    "exclude": ["./src/**/*.ffi.mjs", "./build/"]
   },
 
   "lint": {

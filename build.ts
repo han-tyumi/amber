@@ -5,7 +5,9 @@ import { build, type Plugin } from "esbuild";
 import denoConfig from "./deno.json" with { type: "json" };
 
 const srcDir = path.resolve("src");
-const buildDir = path.resolve("build/dev/javascript/amber");
+const buildRoot = path.resolve(denoConfig.imports["$/"]);
+const packageBuildDir = path.resolve(buildRoot, "amber");
+const buildImportRegex = /^\$\//;
 
 const entryPointFiles = fs.expandGlob(path.joinGlobs([srcDir, "**/*.ffi.ts"]), {
   extended: false,
@@ -16,41 +18,47 @@ const entryPoints = await Array.fromAsync(entryPointFiles, (entry) => {
   const { dir, name } = path.parse(path.relative(srcDir, entry.path));
   return {
     in: entry.path,
-    out: path.resolve(srcDir, path.join(dir, name).replaceAll("/", "__")),
+    out: path.resolve(srcDir, path.join(dir, name)),
   };
 });
 
-const buildImportMapper: Plugin = {
-  name: "build-import-mapper",
-  setup: (build) => {
-    const buildImportRegex = /^\$\//;
-    const buildImportPath = path.relative(buildDir, denoConfig.imports["$/"]);
+function createBuildImportMapper(entryPointPath: string): Plugin {
+  const entryDir = path.dirname(entryPointPath);
+  const outputDir = path.resolve(
+    packageBuildDir,
+    path.relative(srcDir, entryDir),
+  );
 
-    build.onResolve({ filter: buildImportRegex }, (args) => {
-      const relativePath = path.relative(
-        buildDir,
-        path.resolve(
-          buildDir,
-          path.join(buildImportPath, args.path.replace(buildImportRegex, "")),
-        ),
-      );
+  return {
+    name: "build-import-mapper",
+    setup: (pluginBuild) => {
+      pluginBuild.onResolve({ filter: buildImportRegex }, (args) => {
+        const targetPath = path.resolve(
+          buildRoot,
+          args.path.replace(buildImportRegex, ""),
+        );
+        const relativePath = path.relative(outputDir, targetPath);
 
-      return {
-        path: (relativePath.startsWith(".") ? "" : "./") + relativePath,
-        external: true,
-      };
-    });
-  },
-};
+        return {
+          path: relativePath.startsWith(".")
+            ? relativePath
+            : `./${relativePath}`,
+          external: true,
+        };
+      });
+    },
+  };
+}
 
-await build({
-  entryPoints,
-  platform: "neutral",
-  outdir: srcDir,
-  outExtension: { ".js": ".mjs" },
-  target: "es2024",
-  bundle: true,
-  splitting: true,
-  alias: { "~": denoConfig.imports["~/"] },
-  plugins: [buildImportMapper],
-});
+await Promise.all(entryPoints.map((entryPoint) =>
+  build({
+    entryPoints: [entryPoint],
+    platform: "neutral",
+    outdir: srcDir,
+    outExtension: { ".js": ".mjs" },
+    target: "esnext",
+    bundle: true,
+    alias: { "~": denoConfig.imports["~/"] },
+    plugins: [createBuildImportMapper(entryPoint.in)],
+  })
+));

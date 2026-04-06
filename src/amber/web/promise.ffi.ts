@@ -2,6 +2,8 @@ import * as $promise from "$/amber/amber/web/promise.mjs";
 import * as $promiseSettledResult from "$/amber/amber/web/promise_settled_result.mjs";
 import { toList } from "$/prelude.mjs";
 
+export type Promise$<T> = Promise<T>;
+
 export const new_: typeof $promise.new$ = (executor) => {
   return new Promise((resolve, reject) => {
     executor(
@@ -67,11 +69,11 @@ export const then: typeof $promise.then$ = <T, U>(
   return promise.then(onfulfilled);
 };
 
-export const catch_: typeof $promise.catch$ = <T, U>(
+export const catch_: typeof $promise.catch$ = <T>(
   promise: Promise<T>,
-  onrejected: Parameters<typeof $promise.catch$<U>>[1],
+  onrejected: (reason: unknown) => undefined,
 ) => {
-  return promise.catch(onrejected);
+  return promise.catch(onrejected) as Promise<T>;
 };
 
 export const finally_: typeof $promise.finally$ = <T>(

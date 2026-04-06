@@ -9,8 +9,8 @@ pub type Json {
   Object(Dict(String, Json))
 }
 
-@external(javascript, "../../amber__web__json.ffi.mjs", "parse")
+@external(javascript, "./json.ffi.mjs", "parse")
 pub fn parse(text: String) -> Result(Json, String)
 
-@external(javascript, "../../amber__web__json.ffi.mjs", "stringify")
+@external(javascript, "./json.ffi.mjs", "stringify")
 pub fn stringify(json: Json) -> String

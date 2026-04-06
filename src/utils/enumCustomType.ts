@@ -14,7 +14,7 @@ export function toEnumCustomType<
   K extends string | number,
   T extends CustomType,
 >(
-  map: Record<K, Constructor<T>>,
+  map: Record<K, () => T>,
 ): (string: K) => T {
-  return (string) => new (map[string])();
+  return (string) => map[string]();
 }

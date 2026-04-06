@@ -1,5 +1,7 @@
 import type * as $uint8Array from "$/amber/amber/web/uint8_array.mjs";
 
+export type Uint8Array$ = Uint8Array;
+
 export const new_: typeof $uint8Array.new$ = () => {
   return new Uint8Array();
 };
@@ -19,7 +21,7 @@ export const from_buffer: typeof $uint8Array.from_buffer = (
 };
 
 export const buffer: typeof $uint8Array.buffer = (uint8Array: Uint8Array) => {
-  return uint8Array.buffer;
+  return uint8Array.buffer as ArrayBuffer;
 };
 
 export const byte_length: typeof $uint8Array.byte_length = (

@@ -5,20 +5,21 @@ import amber/web/readable_stream/byob_reader_read_option.{
 }
 import amber/web/readable_stream/read_result.{type ReadResult}
 
+@external(javascript, "./byob_reader.ffi.ts", "ByobReader$")
 pub type ByobReader(a)
 
-@external(javascript, "../../../amber__web__readable_stream__byob_reader.ffi.mjs", "closed")
+@external(javascript, "./byob_reader.ffi.mjs", "closed")
 pub fn closed(reader: ByobReader(a)) -> Promise(Nil)
 
-@external(javascript, "../../../amber__web__readable_stream__byob_reader.ffi.mjs", "cancel")
+@external(javascript, "./byob_reader.ffi.mjs", "cancel")
 pub fn cancel(reader: ByobReader(a), reason: r) -> Promise(Nil)
 
-@external(javascript, "../../../amber__web__readable_stream__byob_reader.ffi.mjs", "read")
+@external(javascript, "./byob_reader.ffi.mjs", "read")
 pub fn read(
   reader: ByobReader(a),
   view: ArrayBufferView,
   options: List(ByobReaderReadOption),
 ) -> Promise(ReadResult(ArrayBufferView))
 
-@external(javascript, "../../../amber__web__readable_stream__byob_reader.ffi.mjs", "release_lock")
+@external(javascript, "./byob_reader.ffi.mjs", "release_lock")
 pub fn release_lock(reader: ByobReader(a)) -> ByobReader(a)

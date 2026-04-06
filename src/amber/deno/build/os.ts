@@ -5,13 +5,13 @@ export const toOsType = toEnumCustomType<
   typeof Deno.build["os"],
   $os.Os$
 >({
-  darwin: $os.Darwin,
-  linux: $os.Linux,
-  android: $os.Android,
-  windows: $os.Windows,
-  freebsd: $os.Freebsd,
-  netbsd: $os.Netbsd,
-  aix: $os.Aix,
-  solaris: $os.Solaris,
-  illumos: $os.Illumos,
+  darwin: $os.Os$Darwin,
+  linux: $os.Os$Linux,
+  android: $os.Os$Android,
+  windows: $os.Os$Windows,
+  freebsd: $os.Os$Freebsd,
+  netbsd: $os.Os$Netbsd,
+  aix: $os.Os$Aix,
+  solaris: $os.Os$Solaris,
+  illumos: $os.Os$Illumos,
 });

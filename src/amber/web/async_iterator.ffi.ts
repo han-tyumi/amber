@@ -6,8 +6,14 @@ import {
 } from "~/amber/web/iterator_result.ts";
 import { toOption } from "~/utils/option.ts";
 
-export const new_: typeof $asyncIterator.new$ = <T, TReturn, TNext>(
-  ...[next]: Parameters<typeof $asyncIterator.new$<TNext, TReturn, T>>
+export type AsyncIterator$<T, TReturn, TNext> = AsyncIterator<
+  T,
+  TReturn,
+  TNext
+>;
+
+export const new_: typeof $asyncIterator.new$ = <TNext, T, TReturn>(
+  ...[next]: Parameters<typeof $asyncIterator.new$<TNext, T, TReturn>>
 ) => {
   const iterator: AsyncIterator<T, TReturn, TNext> = {
     next: async (...[value]) => toIteratorResult(await next(toOption(value))),
@@ -21,7 +27,7 @@ export const with_return: typeof $asyncIterator.with_return = <
   TNext,
 >(
   iterator: AsyncIterator<T, TReturn, TNext>,
-  return_: Parameters<typeof $asyncIterator.with_return<TReturn, T, TNext>>[1],
+  return_: Parameters<typeof $asyncIterator.with_return<T, TReturn, TNext>>[1],
 ) => {
   const newIterator: AsyncIterator<T, TReturn, TNext> = {
     ...iterator,
@@ -32,7 +38,7 @@ export const with_return: typeof $asyncIterator.with_return = <
 
 export const with_throw: typeof $asyncIterator.with_throw = <T, TReturn, TNext>(
   iterator: AsyncIterator<T, TReturn, TNext>,
-  throw_: Parameters<typeof $asyncIterator.with_throw<TReturn, T, TNext>>[1],
+  throw_: Parameters<typeof $asyncIterator.with_throw<T, TReturn, TNext>>[1],
 ) => {
   const newIterator: AsyncIterator<T, TReturn, TNext> = {
     ...iterator,

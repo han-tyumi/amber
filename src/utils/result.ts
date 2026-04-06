@@ -1,12 +1,12 @@
-import { Error as Error$, Ok, type Result } from "$/prelude.mjs";
-
-import { isNullish } from "./nullish.ts";
+import { type Result, Result$Error, Result$Ok } from "$/prelude.mjs";
 
 export function toResult<T, E>(
   value: T | null | undefined,
   errorValue: E,
 ): Result<T, E> {
-  return isNullish(value) ? new Error$(errorValue) : new Ok(value);
+  return value === null || value === undefined
+    ? Result$Error(errorValue)
+    : Result$Ok(value);
 }
 
 toResult.fromThrows = function <T, E>(
@@ -14,8 +14,8 @@ toResult.fromThrows = function <T, E>(
   mapError: (error: unknown) => E,
 ): Result<T, E> {
   try {
-    return new Ok(throws());
+    return Result$Ok(throws());
   } catch (error) {
-    return new Error$(mapError(error));
+    return Result$Error(mapError(error));
   }
 };

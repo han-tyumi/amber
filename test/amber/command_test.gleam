@@ -481,14 +481,7 @@ pub fn cwd_not_found_test() {
 pub fn cwd_not_directory_test() {
   command.new(deno.exec_path(), [command_option.Cwd(deno.exec_path())])
   |> command.output_sync()
-  |> fn(result) {
-    case result {
-      Error(error.Other(message)) ->
-        message |> string.contains("Not a directory")
-      _ -> False
-    }
-  }
-  |> should.be_true()
+  |> should.equal(Error(error.NotADirectory))
 }
 
 pub fn command_sync_failed_with_code_test() {

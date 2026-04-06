@@ -3,6 +3,7 @@ import gleam/dynamic.{type Dynamic}
 import gleam/option.{type Option, None, Some}
 
 // TODO(@han-tyumi): Consider adding a type to represent rejections.
+@external(javascript, "./promise.ffi.ts", "Promise$")
 pub type Promise(a)
 
 pub type PromiseWithResolvers(a) {
@@ -18,35 +19,35 @@ pub type PromiseWithResolvers(a) {
 /// resolve the promise with a value, and a reject callback used to reject the
 /// promise with a provided reason or error.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "new_")
+@external(javascript, "./promise.ffi.mjs", "new_")
 pub fn new(executor: fn(fn(a) -> Nil, fn(r) -> Nil) -> Nil) -> Promise(a)
 
 /// Creates a Promise that is resolved with a list of results when all of the
 /// provided Promises resolve, or rejected when any Promise is rejected.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "all")
+@external(javascript, "./promise.ffi.mjs", "all")
 pub fn all(values: List(Promise(a))) -> Promise(List(a))
 
 /// Creates a Promise that is resolved or rejected when any of the provided
 /// Promises are resolved or rejected.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "race")
+@external(javascript, "./promise.ffi.mjs", "race")
 pub fn race(values: List(Promise(a))) -> Promise(a)
 
 /// Creates a new rejected promise for the provided reason.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "reject")
+@external(javascript, "./promise.ffi.mjs", "reject")
 pub fn reject(reason: r) -> Promise(a)
 
 /// Creates a new resolved promise for the provided value.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "resolve")
+@external(javascript, "./promise.ffi.mjs", "resolve")
 pub fn resolve(value: a) -> Promise(a)
 
 /// Creates a Promise that is resolved with a list of `PromiseSettledResult`s
 /// when all of the provided Promises resolve or reject.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "all_settled")
+@external(javascript, "./promise.ffi.mjs", "all_settled")
 pub fn all_settled(
   values: List(Promise(a)),
 ) -> Promise(List(PromiseSettledResult(a)))
@@ -56,30 +57,30 @@ pub fn all_settled(
 /// fulfilled, or rejected with an AggregateError containing a list of
 /// rejection reasons if all of the given promises are rejected.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "any")
+@external(javascript, "./promise.ffi.mjs", "any")
 pub fn any(values: List(Promise(a))) -> Promise(a)
 
 /// Creates a new Promise and returns it in a `PromiseWithResolvers` record,
 /// along with its resolve and reject functions.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "with_resolvers")
+@external(javascript, "./promise.ffi.mjs", "with_resolvers")
 pub fn with_resolvers() -> PromiseWithResolvers(a)
 
 /// Attaches a callback for the resolution of the Promise.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "then")
+@external(javascript, "./promise.ffi.mjs", "then")
 pub fn then(promise: Promise(a), onfulfilled: fn(a) -> b) -> Promise(b)
 
 /// Attaches a callback for the rejection of the Promise.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "catch_")
+@external(javascript, "./promise.ffi.mjs", "catch_")
 pub fn catch(promise: Promise(a), onrejected: fn(r) -> Nil) -> Promise(a)
 
 /// Attaches a callback that is invoked when the Promise is settled
 /// (fulfilled or rejected). The resolved value cannot be modified from the
 /// callback.
 ///
-@external(javascript, "../../amber__web__promise.ffi.mjs", "finally_")
+@external(javascript, "./promise.ffi.mjs", "finally_")
 pub fn finally(promise: Promise(a), onfinally: fn() -> Nil) -> Promise(a)
 
 pub fn from_result(result: Result(a, _)) -> Promise(a) {

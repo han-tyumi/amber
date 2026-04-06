@@ -5,6 +5,6 @@ export const toArchType = toEnumCustomType<
   typeof Deno.build["arch"],
   $arch.Arch$
 >({
-  x86_64: $arch.X8664,
-  aarch64: $arch.Aarch64,
+  x86_64: $arch.Arch$X8664,
+  aarch64: $arch.Arch$Aarch64,
 });

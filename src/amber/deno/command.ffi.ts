@@ -3,6 +3,8 @@ import { toCommandOptions } from "~/amber/deno/command/command_option.ts";
 import { toCommandOutputType } from "~/amber/deno/command/command_output.ts";
 import { fromThrows } from "~/amber/deno/error.ts";
 
+export type Command$ = Deno.Command;
+
 export const new_: typeof $command.new$ = (command, options) => {
   return new Deno.Command(
     command,

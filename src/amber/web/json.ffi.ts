@@ -8,22 +8,22 @@ type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
 
 function gleamJsonReviver(_key: string, value: unknown) {
   if (value === null) {
-    return new $json.Null();
+    return $json.Json$Null();
   }
   if (typeof value === "boolean") {
-    return new $json.Boolean(value);
+    return $json.Json$Boolean(value);
   }
   if (typeof value === "number") {
-    return new $json.Number(value);
+    return $json.Json$Number(value);
   }
   if (typeof value === "string") {
-    return new $json.String(value);
+    return $json.Json$String(value);
   }
   if (Array.isArray(value)) {
-    return new $json.Array(List.fromArray(value));
+    return $json.Json$Array(List.fromArray(value));
   }
   if (typeof value === "object") {
-    return new $json.Object(Dict.fromObject(value as Record<string, unknown>));
+    return $json.Json$Object(Dict.fromObject(value as Record<string, unknown>));
   }
 }
 
@@ -32,21 +32,25 @@ export const parse: typeof $json.parse = (text) => {
 };
 
 function jsonToObject(json: $json.Json$): Json {
-  if (json instanceof $json.Null) {
+  if ($json.Json$isNull(json)) {
     return null;
   }
-  if (
-    json instanceof $json.Boolean ||
-    json instanceof $json.Number ||
-    json instanceof $json.String
-  ) {
-    return json[0];
+  if ($json.Json$isBoolean(json)) {
+    return $json.Json$Boolean$0(json);
   }
-  if (json instanceof $json.Array) {
-    return json[0].toArray().map((child) => jsonToObject(child));
+  if ($json.Json$isNumber(json)) {
+    return $json.Json$Number$0(json);
   }
-  if (json instanceof $json.Object) {
-    return toObjectWithMap(json[0], jsonToObject);
+  if ($json.Json$isString(json)) {
+    return $json.Json$String$0(json);
+  }
+  if ($json.Json$isArray(json)) {
+    return $json.Json$Array$0(json).toArray().map((child) =>
+      jsonToObject(child)
+    );
+  }
+  if ($json.Json$isObject(json)) {
+    return toObjectWithMap($json.Json$Object$0(json), jsonToObject);
   }
   throw new Error("unknown Gleam Json instance");
 }

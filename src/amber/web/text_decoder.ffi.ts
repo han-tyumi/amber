@@ -1,6 +1,8 @@
 import type * as $textDecoder from "$/amber/amber/web/text_decoder.mjs";
 import { toTextDecoderOptions } from "~/amber/web/text_decoder/text_decoder_option.ts";
 
+export type TextDecoder$ = TextDecoder;
+
 const sharedDecoder = new TextDecoder();
 
 export const new_: typeof $textDecoder.new$ = () => {

@@ -1,17 +1,19 @@
 import type * as $reader from "$/amber/amber/web/readable_stream/reader.mjs";
 import { toReadResult } from "~/amber/web/readable_stream/read_result.ts";
 
+export type Reader$<T> = ReadableStreamDefaultReader<T>;
+
 export const closed: typeof $reader.closed = (
   reader: ReadableStreamDefaultReader,
 ) => {
-  return reader.closed;
+  return reader.closed.then(() => undefined);
 };
 
 export const cancel: typeof $reader.cancel = (
   reader: ReadableStreamDefaultReader,
   reason,
 ) => {
-  return reader.cancel(reason);
+  return reader.cancel(reason).then(() => undefined);
 };
 
 export const read: typeof $reader.read = (

@@ -1,11 +1,12 @@
 import gleam/option.{type Option}
 
+@external(javascript, "./web.ffi.ts", "Date$")
 pub type Date
 
-@external(javascript, "../amber__web.ffi.mjs", "alert")
+@external(javascript, "./web.ffi.mjs", "alert")
 pub fn alert(message: String) -> Nil
 
-@external(javascript, "../amber__web.ffi.mjs", "clear_interval")
+@external(javascript, "./web.ffi.mjs", "clear_interval")
 pub fn clear_interval(id: Int) -> Nil
 
 /// Cancels a scheduled action initiated by `set_timeout`.
@@ -18,16 +19,16 @@ pub fn clear_interval(id: Int) -> Nil
 /// web.clear_timeout(id)
 /// ```
 ///
-@external(javascript, "../amber__web.ffi.mjs", "clear_timeout")
+@external(javascript, "./web.ffi.mjs", "clear_timeout")
 pub fn clear_timeout(id: Int) -> Nil
 
-@external(javascript, "../amber__web.ffi.mjs", "close")
+@external(javascript, "./web.ffi.mjs", "close")
 pub fn close() -> Nil
 
-@external(javascript, "../amber__web.ffi.mjs", "confirm")
+@external(javascript, "./web.ffi.mjs", "confirm")
 pub fn confirm(message: String) -> Bool
 
-@external(javascript, "../amber__web.ffi.mjs", "prompt")
+@external(javascript, "./web.ffi.mjs", "prompt")
 pub fn prompt(message: String, default: String) -> Option(String)
 
 /// A microtask is a short function which is executed after the function or
@@ -40,13 +41,13 @@ pub fn prompt(message: String, default: String) -> Option(String)
 /// web.queue_microtask(fn() { io.println("This event loop stack is complete") })
 /// ```
 ///
-@external(javascript, "../amber__web.ffi.mjs", "queue_microtask")
+@external(javascript, "./web.ffi.mjs", "queue_microtask")
 pub fn queue_microtask(func: fn() -> Nil) -> Nil
 
-@external(javascript, "../amber__web.ffi.mjs", "report_error")
+@external(javascript, "./web.ffi.mjs", "report_error")
 pub fn report_error(error: e) -> Nil
 
-@external(javascript, "../amber__web.ffi.mjs", "set_interval")
+@external(javascript, "./web.ffi.mjs", "set_interval")
 pub fn set_interval(delay: Int, callback: fn() -> Nil) -> Int
 
 /// Sets a timer which executes a function once after the delay
@@ -59,5 +60,5 @@ pub fn set_interval(delay: Int, callback: fn() -> Nil) -> Int
 /// web.set_timeout(500, fn() { io.println("hello") })
 /// ```
 ///
-@external(javascript, "../amber__web.ffi.mjs", "set_timeout")
+@external(javascript, "./web.ffi.mjs", "set_timeout")
 pub fn set_timeout(delay: Int, callback: fn() -> Nil) -> Int

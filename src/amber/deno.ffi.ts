@@ -6,7 +6,7 @@ import * as $mkdir from "$/amber/amber/deno/mkdir.mjs";
 import * as $open from "$/amber/amber/deno/open.mjs";
 import * as $remove from "$/amber/amber/deno/remove.mjs";
 import * as $symlink from "$/amber/amber/deno/symlink.mjs";
-import { Version } from "$/amber/amber/deno/version.mjs";
+import * as $version from "$/amber/amber/deno/version.mjs";
 import * as $watchFs from "$/amber/amber/deno/watch_fs.mjs";
 import * as $writeFile from "$/amber/amber/deno/write_file.mjs";
 import { unwrap } from "$/gleam_stdlib/gleam/option.mjs";
@@ -117,7 +117,7 @@ export const read_dir_sync: typeof $deno.read_dir_sync = (path) => {
   return fromArrayMapped(
     Array.from(entries),
     (entry) =>
-      new $dirEntry.DirEntry(
+      $dirEntry.DirEntry$DirEntry(
         entry.name,
         entry.isFile,
         entry.isDirectory,
@@ -310,7 +310,7 @@ export const args: typeof $deno.args = () => {
 };
 
 export const build: typeof $deno.build = () => {
-  return new $build.Build(
+  return $build.Build$Build(
     Deno.build.target,
     toArchType(Deno.build.arch),
     toOsType(Deno.build.os),
@@ -344,7 +344,7 @@ export const ppid: typeof $deno.ppid = () => {
 };
 
 export const version: typeof $deno.version = () => {
-  return new Version(
+  return $version.Version$Version(
     Deno.version.deno,
     Deno.version.v8,
     Deno.version.typescript,

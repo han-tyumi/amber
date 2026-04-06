@@ -1,5 +1,7 @@
 import type * as $arrayBuffer from "$/amber/amber/web/array_buffer.mjs";
 
+export type ArrayBuffer$ = ArrayBuffer;
+
 export const new_: typeof $arrayBuffer.new$ = (byteLength) => {
   return new ArrayBuffer(byteLength);
 };
