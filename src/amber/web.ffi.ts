@@ -1,4 +1,6 @@
 import type * as $web from "$/amber/amber/web.mjs";
+import { toRequestInit } from "~/amber/web/request_init.ts";
+import { toArray } from "~/utils/list.ts";
 import { toOption } from "~/utils/option.ts";
 
 export type Date$ = Date;
@@ -41,4 +43,16 @@ export const set_interval: typeof $web.set_interval = (delay, callback) => {
 
 export const set_timeout: typeof $web.set_timeout = (delay, callback) => {
   return globalThis.setTimeout(callback, delay);
+};
+
+export const fetch_: typeof $web.fetch = (url) => {
+  return globalThis.fetch(url);
+};
+
+export const fetch_with_init: typeof $web.fetch_with_init = (url, init) => {
+  return globalThis.fetch(url, toRequestInit(toArray(init)));
+};
+
+export const fetch_request: typeof $web.fetch_request = (request) => {
+  return globalThis.fetch(request);
 };

@@ -1,7 +1,30 @@
+import amber/web/promise.{type Promise}
+import amber/web/request.{type Request}
+import amber/web/request_init.{type RequestInit}
+import amber/web/response.{type Response}
 import gleam/option.{type Option}
 
 @external(javascript, "./web.ffi.ts", "Date$")
 pub type Date
+
+/// Fetch a resource from the network. It returns a `Promise` that resolves to
+/// the `Response` to that `Request`, whether it is successful or not.
+///
+@external(javascript, "./web.ffi.mjs", "fetch_")
+pub fn fetch(url: String) -> Promise(Response)
+
+/// Fetch a resource from the network with options.
+///
+@external(javascript, "./web.ffi.mjs", "fetch_with_init")
+pub fn fetch_with_init(
+  url: String,
+  init: List(RequestInit),
+) -> Promise(Response)
+
+/// Fetch a resource from the network using a `Request` object.
+///
+@external(javascript, "./web.ffi.mjs", "fetch_request")
+pub fn fetch_request(request: Request) -> Promise(Response)
 
 @external(javascript, "./web.ffi.mjs", "alert")
 pub fn alert(message: String) -> Nil
