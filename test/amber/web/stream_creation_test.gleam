@@ -4,9 +4,12 @@ import amber/web/readable_stream/default_controller
 import amber/web/readable_stream/read_result
 import amber/web/readable_stream/reader
 import amber/web/readable_stream/underlying_source
+import amber/web/transform_stream
+import amber/web/transform_stream/default_controller as transform_controller
 import amber/web/writable_stream
 import amber/web/writable_stream/underlying_sink
 import amber/web/writable_stream/writer
+import gleam/int
 import gleam/option.{None}
 import gleeunit/should
 
@@ -73,6 +76,42 @@ pub fn writable_stream_new_with_options_test() {
   use _ <- promise.then(writer.write(w, "test"))
   use _ <- promise.then(writer.close(w))
   promise.resolve(Nil)
+}
+
+pub fn transform_stream_from_transform_test() {
+  let transform =
+    transform_stream.from_transform(fn(chunk: Int, controller) {
+      transform_controller.enqueue(controller, int.to_string(chunk))
+      promise.resolve(Nil)
+    })
+
+  let readable =
+    readable_stream.from_start(fn(controller) {
+      default_controller.enqueue(controller, 1)
+      default_controller.enqueue(controller, 2)
+      default_controller.close(controller)
+    })
+
+  let transformed =
+    readable_stream.pipe_through(
+      readable,
+      #(
+        transform_stream.readable(transform),
+        transform_stream.writable(transform),
+      ),
+      [],
+    )
+
+  let reader = readable_stream.get_reader(transformed)
+
+  use result <- promise.then(reader.read(reader))
+  should.equal(result, read_result.Value("1"))
+
+  use result <- promise.then(reader.read(reader))
+  should.equal(result, read_result.Value("2"))
+
+  use result <- promise.then(reader.read(reader))
+  should.equal(result, read_result.Done(None))
 }
 
 pub fn readable_pipe_to_writable_test() {

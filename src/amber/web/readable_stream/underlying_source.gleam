@@ -5,5 +5,5 @@ import gleam/dynamic.{type Dynamic}
 pub type UnderlyingSource(a) {
   Start(fn(DefaultController(a)) -> Nil)
   Pull(fn(DefaultController(a)) -> Promise(Nil))
-  Cancel(fn(Dynamic) -> Nil)
+  Cancel(fn(Dynamic) -> Promise(Nil))
 }
