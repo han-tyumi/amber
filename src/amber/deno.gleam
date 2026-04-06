@@ -1,12 +1,15 @@
 import amber/deno/build.{type Build}
+import amber/deno/console_size.{type ConsoleSize}
 import amber/deno/dir_entry.{type DirEntry}
 import amber/deno/error.{type Error}
 import amber/deno/file_info.{type FileInfo}
 import amber/deno/fs_file.{type FsFile}
 import amber/deno/fs_watcher.{type FsWatcher}
+import amber/deno/inspect_option.{type InspectOption}
 import amber/deno/make_temp.{type MakeTempOption}
 import amber/deno/memory_usage.{type MemoryUsage}
 import amber/deno/mkdir.{type MkdirOption}
+import amber/deno/network_interface_info.{type NetworkInterfaceInfo}
 import amber/deno/open.{type OpenOption}
 import amber/deno/remove.{type RemoveOption}
 import amber/deno/signal.{type Signal}
@@ -16,6 +19,7 @@ import amber/deno/version.{type Version}
 import amber/deno/watch_fs.{type WatchFsOption}
 import amber/deno/write_file.{type WriteFileOption}
 import amber/web/uint8_array.{type Uint8Array}
+import gleam/dynamic.{type Dynamic}
 import gleam/option.{type Option}
 
 // File System
@@ -112,6 +116,30 @@ pub fn umask() -> Int
 
 @external(javascript, "./deno.ffi.mjs", "set_umask")
 pub fn set_umask(mask: Int) -> Int
+
+// I/O
+
+/// Gets the size of the console as columns/rows.
+///
+/// This returns the size of the console window as reported by the operating
+/// system. It's not a reflection of how many characters will fit within the
+/// console window, but can be used as part of that calculation.
+///
+@external(javascript, "./deno.ffi.mjs", "console_size")
+pub fn console_size() -> ConsoleSize
+
+/// Converts the input into a string that has the same format as printed by
+/// `console.log()`.
+///
+@external(javascript, "./deno.ffi.mjs", "inspect")
+pub fn inspect(value: Dynamic, options: List(InspectOption)) -> String
+
+// Network
+
+/// Returns an array of the network interface information.
+///
+@external(javascript, "./deno.ffi.mjs", "network_interfaces")
+pub fn network_interfaces() -> List(NetworkInterfaceInfo)
 
 // Runtime
 

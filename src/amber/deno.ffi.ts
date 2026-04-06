@@ -15,6 +15,9 @@ import { toOsType } from "~/amber/deno/build/os.ts";
 import { fromThrows } from "~/amber/deno/error.ts";
 import { toGleamFileInfo } from "~/amber/deno/file_info.ts";
 import { toMemoryUsageType } from "~/amber/deno/memory_usage.ts";
+import { toConsoleSizeType } from "~/amber/deno/console_size.ts";
+import { toInspectOptions } from "~/amber/deno/inspect_option.ts";
+import { toNetworkInterfaceInfoType } from "~/amber/deno/network_interface_info.ts";
 import { toSignal } from "~/amber/deno/signal.ts";
 import { toSystemMemoryInfoType } from "~/amber/deno/system_memory_info.ts";
 import { fromArray, fromArrayMapped, toArray } from "~/utils/list.ts";
@@ -275,6 +278,22 @@ export const umask: typeof $deno.umask = () => {
 
 export const set_umask: typeof $deno.set_umask = (mask) => {
   return Deno.umask(mask);
+};
+
+// I/O
+
+export const console_size: typeof $deno.console_size = () => {
+  return toConsoleSizeType(Deno.consoleSize());
+};
+
+export const inspect: typeof $deno.inspect = (value, options) => {
+  return Deno.inspect(value, toInspectOptions(toArray(options)));
+};
+
+// Network
+
+export const network_interfaces: typeof $deno.network_interfaces = () => {
+  return fromArrayMapped(Deno.networkInterfaces(), toNetworkInterfaceInfoType);
 };
 
 // Runtime
