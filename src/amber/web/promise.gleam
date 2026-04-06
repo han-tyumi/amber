@@ -2,7 +2,6 @@ import amber/web/promise_settled_result.{type PromiseSettledResult}
 import gleam/dynamic.{type Dynamic}
 import gleam/option.{type Option, None, Some}
 
-// TODO(@han-tyumi): Consider adding a type to represent rejections.
 @external(javascript, "./promise.ffi.ts", "Promise$")
 pub type Promise(a)
 
@@ -52,9 +51,8 @@ pub fn all_settled(
   values: List(Promise(a)),
 ) -> Promise(List(PromiseSettledResult(a)))
 
-// TODO(@han-tyumi): Handle errors.
 /// Returns a promise that is fulfilled by the first given promise to be
-/// fulfilled, or rejected with an AggregateError containing a list of
+/// fulfilled, or rejected with an AggregateError containing an array of
 /// rejection reasons if all of the given promises are rejected.
 ///
 @external(javascript, "./promise.ffi.mjs", "any")
@@ -71,10 +69,10 @@ pub fn with_resolvers() -> PromiseWithResolvers(a)
 @external(javascript, "./promise.ffi.mjs", "then")
 pub fn then(promise: Promise(a), onfulfilled: fn(a) -> b) -> Promise(b)
 
-/// Attaches a callback for the rejection of the Promise.
+/// Attaches a callback for only the rejection of the Promise.
 ///
 @external(javascript, "./promise.ffi.mjs", "catch_")
-pub fn catch(promise: Promise(a), onrejected: fn(r) -> Nil) -> Promise(a)
+pub fn catch(promise: Promise(a), onrejected: fn(Dynamic) -> a) -> Promise(a)
 
 /// Attaches a callback that is invoked when the Promise is settled
 /// (fulfilled or rejected). The resolved value cannot be modified from the

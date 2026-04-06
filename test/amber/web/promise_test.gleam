@@ -2,6 +2,7 @@ import amber/web
 import amber/web/promise
 import amber/web/promise_settled_result
 import gleam/dynamic
+import gleam/dynamic/decode
 import gleeunit/async_test
 import gleeunit/should
 import gleeunit/spy
@@ -15,6 +16,7 @@ pub fn resolve_promise_test() {
 pub fn reject_promise_test() {
   let promise = promise.reject("error")
   use reason <- promise.catch(promise)
+  let assert Ok(reason) = decode.run(reason, decode.string)
   should.equal(reason, "error")
 }
 
@@ -35,6 +37,7 @@ pub fn new_promise_reject_test() {
       Nil
     })
   use reason <- promise.catch(promise)
+  let assert Ok(reason) = decode.run(reason, decode.string)
   should.equal(reason, "error")
 }
 
@@ -89,7 +92,10 @@ pub fn then_catch_finally_test() {
 
   promise.resolve(42)
   |> promise.then(spy |> spy.fun)
-  |> promise.catch(fn(_reason) { should.fail() })
+  |> promise.catch(fn(_reason) {
+    should.fail()
+    0
+  })
   |> promise.finally(fn() {
     spy |> spy.has_been_called |> should.be_true
     done()

@@ -62,23 +62,14 @@ export const with_resolvers: typeof $promise.with_resolvers = () => {
   );
 };
 
-export const then: typeof $promise.then$ = <T, U>(
-  promise: Promise<T>,
-  onfulfilled: Parameters<typeof $promise.then$<T, U>>[1],
-) => {
+export const then: typeof $promise.then$ = (promise, onfulfilled) => {
   return promise.then(onfulfilled);
 };
 
-export const catch_: typeof $promise.catch$ = <T>(
-  promise: Promise<T>,
-  onrejected: (reason: unknown) => undefined,
-) => {
-  return promise.catch(onrejected) as Promise<T>;
+export const catch_: typeof $promise.catch$ = (promise, onrejected) => {
+  return promise.catch(onrejected);
 };
 
-export const finally_: typeof $promise.finally$ = <T>(
-  promise: Promise<T>,
-  onfinally: Parameters<typeof $promise.finally$<T>>[1],
-) => {
+export const finally_: typeof $promise.finally$ = (promise, onfinally) => {
   return promise.finally(onfinally);
 };
