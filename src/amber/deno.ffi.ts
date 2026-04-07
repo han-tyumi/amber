@@ -1,7 +1,10 @@
 import type * as $deno from "$/amber/amber/deno.mjs";
 import * as $build from "$/amber/amber/deno/build.mjs";
 import { toConnectOptions } from "~/amber/deno/connect_option.ts";
+import { toConnectTlsOptions } from "~/amber/deno/connect_tls_option.ts";
 import { toListenOptions } from "~/amber/deno/listen_option.ts";
+import { toListenTlsOptions } from "~/amber/deno/listen_tls_option.ts";
+import { toStartTlsOptions } from "~/amber/deno/start_tls_option.ts";
 import { toUpgradeWebSocketOptions } from "~/amber/deno/upgrade_web_socket_option.ts";
 import { toWebSocketUpgrade } from "~/amber/deno/web_socket_upgrade.ts";
 import * as $dirEntry from "$/amber/amber/deno/dir_entry.mjs";
@@ -306,6 +309,24 @@ export const listen: typeof $deno.listen = (port, options) => {
 
 export const connect: typeof $deno.connect = (port, options) => {
   return Deno.connect(toConnectOptions(port, toArray(options)));
+};
+
+export const connect_tls: typeof $deno.connect_tls = (port, options) => {
+  return Deno.connectTls(toConnectTlsOptions(port, toArray(options)));
+};
+
+export const listen_tls: typeof $deno.listen_tls = (
+  port,
+  certifiedKey,
+  options,
+) => {
+  return Deno.listenTls(
+    toListenTlsOptions(port, certifiedKey, toArray(options)),
+  );
+};
+
+export const start_tls: typeof $deno.start_tls = (conn, options) => {
+  return Deno.startTls(conn, toStartTlsOptions(toArray(options)));
 };
 
 // WebSockets

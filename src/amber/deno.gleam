@@ -1,6 +1,8 @@
 import amber/deno/build.{type Build}
 import amber/deno/conn/tcp_conn.{type TcpConn}
+import amber/deno/conn/tls_conn.{type TlsConn}
 import amber/deno/connect_option.{type ConnectOption}
+import amber/deno/connect_tls_option.{type ConnectTlsOption}
 import amber/deno/console_size.{type ConsoleSize}
 import amber/deno/dir_entry.{type DirEntry}
 import amber/deno/error.{type Error}
@@ -9,6 +11,7 @@ import amber/deno/fs_file.{type FsFile}
 import amber/deno/fs_watcher.{type FsWatcher}
 import amber/deno/inspect_option.{type InspectOption}
 import amber/deno/listen_option.{type ListenOption}
+import amber/deno/listen_tls_option.{type ListenTlsOption}
 import amber/deno/listener.{type Listener}
 import amber/deno/make_temp.{type MakeTempOption}
 import amber/deno/memory_usage.{type MemoryUsage}
@@ -17,8 +20,11 @@ import amber/deno/network_interface_info.{type NetworkInterfaceInfo}
 import amber/deno/open.{type OpenOption}
 import amber/deno/remove.{type RemoveOption}
 import amber/deno/signal.{type Signal}
+import amber/deno/start_tls_option.{type StartTlsOption}
 import amber/deno/symlink.{type SymlinkOption}
 import amber/deno/system_memory_info.{type SystemMemoryInfo}
+import amber/deno/tls_certified_key_pem.{type TlsCertifiedKeyPem}
+import amber/deno/tls_listener.{type TlsListener}
 import amber/deno/upgrade_web_socket_option.{type UpgradeWebSocketOption}
 import amber/deno/version.{type Version}
 import amber/deno/watch_fs.{type WatchFsOption}
@@ -159,6 +165,54 @@ pub fn listen(port: Int, options: List(ListenOption)) -> Listener
 ///
 @external(javascript, "./deno.ffi.mjs", "connect")
 pub fn connect(port: Int, options: List(ConnectOption)) -> Promise(TcpConn)
+
+/// Establishes a secure connection over TLS (transport layer security)
+/// using an optional list of CA certs, hostname (default is "127.0.0.1")
+/// and port.
+///
+/// The CA cert list is optional and if not included Mozilla's root
+/// certificates will be used (see also
+/// https://github.com/ctz/webpki-roots for specifics).
+///
+/// Mutual TLS (mTLS or client certificates) are supported by providing a
+/// `CertifiedKey` in the options with PEM-encoded key and cert strings.
+///
+@external(javascript, "./deno.ffi.mjs", "connect_tls")
+pub fn connect_tls(
+  port: Int,
+  options: List(ConnectTlsOption),
+) -> Promise(TlsConn)
+
+/// Listen announces on the local transport address over TLS (transport
+/// layer security).
+///
+@external(javascript, "./deno.ffi.mjs", "listen_tls")
+pub fn listen_tls(
+  port: Int,
+  certified_key: TlsCertifiedKeyPem,
+  options: List(ListenTlsOption),
+) -> TlsListener
+
+/// Start TLS handshake from an existing connection using an optional list
+/// of CA certificates, and hostname (default is "127.0.0.1"). Specifying
+/// CA certs is optional. By default the configured root certificates are
+/// used. Using this function requires that the other end of the connection
+/// is prepared for a TLS handshake.
+///
+/// Note that this function *consumes* the TCP connection passed to it,
+/// thus the original TCP connection will be unusable after calling this.
+/// Additionally, you need to ensure that the TCP connection is not being
+/// used elsewhere when calling this function in order for the TCP
+/// connection to be consumed properly. For instance, if there is a
+/// `Promise` that is waiting for read operation on the TCP connection to
+/// complete, it is considered that the TCP connection is being used
+/// elsewhere. In such a case, this function will fail.
+///
+@external(javascript, "./deno.ffi.mjs", "start_tls")
+pub fn start_tls(
+  conn: TcpConn,
+  options: List(StartTlsOption),
+) -> Promise(TlsConn)
 
 // WebSockets
 
