@@ -2,6 +2,8 @@ import type * as $deno from "$/amber/amber/deno.mjs";
 import * as $build from "$/amber/amber/deno/build.mjs";
 import { toConnectOptions } from "~/amber/deno/connect_option.ts";
 import { toListenOptions } from "~/amber/deno/listen_option.ts";
+import { toUpgradeWebSocketOptions } from "~/amber/deno/upgrade_web_socket_option.ts";
+import { toWebSocketUpgrade } from "~/amber/deno/web_socket_upgrade.ts";
 import * as $dirEntry from "$/amber/amber/deno/dir_entry.mjs";
 import * as $makeTemp from "$/amber/amber/deno/make_temp.mjs";
 import * as $mkdir from "$/amber/amber/deno/mkdir.mjs";
@@ -304,6 +306,23 @@ export const listen: typeof $deno.listen = (port, options) => {
 
 export const connect: typeof $deno.connect = (port, options) => {
   return Deno.connect(toConnectOptions(port, toArray(options)));
+};
+
+// WebSockets
+
+export const upgrade_web_socket: typeof $deno.upgrade_web_socket = (
+  request,
+) => {
+  return toWebSocketUpgrade(Deno.upgradeWebSocket(request));
+};
+
+export const upgrade_web_socket_with: typeof $deno.upgrade_web_socket_with = (
+  request,
+  options,
+) => {
+  return toWebSocketUpgrade(
+    Deno.upgradeWebSocket(request, toUpgradeWebSocketOptions(toArray(options))),
+  );
 };
 
 // Runtime

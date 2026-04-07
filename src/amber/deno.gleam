@@ -19,10 +19,13 @@ import amber/deno/remove.{type RemoveOption}
 import amber/deno/signal.{type Signal}
 import amber/deno/symlink.{type SymlinkOption}
 import amber/deno/system_memory_info.{type SystemMemoryInfo}
+import amber/deno/upgrade_web_socket_option.{type UpgradeWebSocketOption}
 import amber/deno/version.{type Version}
 import amber/deno/watch_fs.{type WatchFsOption}
+import amber/deno/web_socket_upgrade.{type WebSocketUpgrade}
 import amber/deno/write_file.{type WriteFileOption}
 import amber/web/promise.{type Promise}
+import amber/web/request.{type Request}
 import amber/web/uint8_array.{type Uint8Array}
 import gleam/dynamic.{type Dynamic}
 import gleam/option.{type Option}
@@ -156,6 +159,25 @@ pub fn listen(port: Int, options: List(ListenOption)) -> Listener
 ///
 @external(javascript, "./deno.ffi.mjs", "connect")
 pub fn connect(port: Int, options: List(ConnectOption)) -> Promise(TcpConn)
+
+// WebSockets
+
+/// Upgrade an incoming HTTP request to a WebSocket.
+///
+/// Given a `Request`, returns a `WebSocketUpgrade` containing a `WebSocket`
+/// and `Response`. The original request must be responded to with the
+/// returned response for the upgrade to be successful.
+///
+@external(javascript, "./deno.ffi.mjs", "upgrade_web_socket")
+pub fn upgrade_web_socket(request: Request) -> WebSocketUpgrade
+
+/// Upgrade an incoming HTTP request to a WebSocket with options.
+///
+@external(javascript, "./deno.ffi.mjs", "upgrade_web_socket_with")
+pub fn upgrade_web_socket_with(
+  request: Request,
+  options: List(UpgradeWebSocketOption),
+) -> WebSocketUpgrade
 
 // Runtime
 
