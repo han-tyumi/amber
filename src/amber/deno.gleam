@@ -1,4 +1,5 @@
 import amber/deno/build.{type Build}
+import amber/deno/caa_record.{type CaaRecord}
 import amber/deno/conn/tcp_conn.{type TcpConn}
 import amber/deno/conn/tls_conn.{type TlsConn}
 import amber/deno/connect_option.{type ConnectOption}
@@ -16,10 +17,16 @@ import amber/deno/listener.{type Listener}
 import amber/deno/make_temp.{type MakeTempOption}
 import amber/deno/memory_usage.{type MemoryUsage}
 import amber/deno/mkdir.{type MkdirOption}
+import amber/deno/mx_record.{type MxRecord}
+import amber/deno/naptr_record.{type NaptrRecord}
 import amber/deno/network_interface_info.{type NetworkInterfaceInfo}
 import amber/deno/open.{type OpenOption}
+import amber/deno/record_type.{type RecordType}
 import amber/deno/remove.{type RemoveOption}
+import amber/deno/resolve_dns_option.{type ResolveDnsOption}
 import amber/deno/signal.{type Signal}
+import amber/deno/soa_record.{type SoaRecord}
+import amber/deno/srv_record.{type SrvRecord}
 import amber/deno/start_tls_option.{type StartTlsOption}
 import amber/deno/symlink.{type SymlinkOption}
 import amber/deno/system_memory_info.{type SystemMemoryInfo}
@@ -213,6 +220,66 @@ pub fn start_tls(
   conn: TcpConn,
   options: List(StartTlsOption),
 ) -> Promise(TlsConn)
+
+// DNS
+
+/// Performs DNS resolution against the given query, returning resolved
+/// records.
+///
+@external(javascript, "./deno.ffi.mjs", "resolve_dns")
+pub fn resolve_dns(
+  query: String,
+  record_type: RecordType,
+  options: List(ResolveDnsOption),
+) -> Promise(List(String))
+
+/// Performs DNS resolution for CAA records.
+///
+@external(javascript, "./deno.ffi.mjs", "resolve_dns_caa")
+pub fn resolve_dns_caa(
+  query: String,
+  options: List(ResolveDnsOption),
+) -> Promise(List(CaaRecord))
+
+/// Performs DNS resolution for MX records.
+///
+@external(javascript, "./deno.ffi.mjs", "resolve_dns_mx")
+pub fn resolve_dns_mx(
+  query: String,
+  options: List(ResolveDnsOption),
+) -> Promise(List(MxRecord))
+
+/// Performs DNS resolution for NAPTR records.
+///
+@external(javascript, "./deno.ffi.mjs", "resolve_dns_naptr")
+pub fn resolve_dns_naptr(
+  query: String,
+  options: List(ResolveDnsOption),
+) -> Promise(List(NaptrRecord))
+
+/// Performs DNS resolution for SOA records.
+///
+@external(javascript, "./deno.ffi.mjs", "resolve_dns_soa")
+pub fn resolve_dns_soa(
+  query: String,
+  options: List(ResolveDnsOption),
+) -> Promise(List(SoaRecord))
+
+/// Performs DNS resolution for SRV records.
+///
+@external(javascript, "./deno.ffi.mjs", "resolve_dns_srv")
+pub fn resolve_dns_srv(
+  query: String,
+  options: List(ResolveDnsOption),
+) -> Promise(List(SrvRecord))
+
+/// Performs DNS resolution for TXT records.
+///
+@external(javascript, "./deno.ffi.mjs", "resolve_dns_txt")
+pub fn resolve_dns_txt(
+  query: String,
+  options: List(ResolveDnsOption),
+) -> Promise(List(List(String)))
 
 // WebSockets
 

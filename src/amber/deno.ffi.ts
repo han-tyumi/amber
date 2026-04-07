@@ -1,9 +1,16 @@
 import type * as $deno from "$/amber/amber/deno.mjs";
 import * as $build from "$/amber/amber/deno/build.mjs";
+import { toCaaRecord } from "~/amber/deno/caa_record.ts";
 import { toConnectOptions } from "~/amber/deno/connect_option.ts";
 import { toConnectTlsOptions } from "~/amber/deno/connect_tls_option.ts";
 import { toListenOptions } from "~/amber/deno/listen_option.ts";
 import { toListenTlsOptions } from "~/amber/deno/listen_tls_option.ts";
+import { toMxRecord } from "~/amber/deno/mx_record.ts";
+import { toNaptrRecord } from "~/amber/deno/naptr_record.ts";
+import { toRecordType } from "~/amber/deno/record_type.ts";
+import { toResolveDnsOptionsArray } from "~/amber/deno/resolve_dns_option.ts";
+import { toSoaRecord } from "~/amber/deno/soa_record.ts";
+import { toSrvRecord } from "~/amber/deno/srv_record.ts";
 import { toStartTlsOptions } from "~/amber/deno/start_tls_option.ts";
 import { toUpgradeWebSocketOptions } from "~/amber/deno/upgrade_web_socket_option.ts";
 import { toWebSocketUpgrade } from "~/amber/deno/web_socket_upgrade.ts";
@@ -327,6 +334,86 @@ export const listen_tls: typeof $deno.listen_tls = (
 
 export const start_tls: typeof $deno.start_tls = (conn, options) => {
   return Deno.startTls(conn, toStartTlsOptions(toArray(options)));
+};
+
+// DNS
+
+export const resolve_dns: typeof $deno.resolve_dns = (
+  query,
+  recordType,
+  options,
+) => {
+  return Deno.resolveDns(
+    query,
+    toRecordType(recordType),
+    toResolveDnsOptionsArray(options),
+  ).then(fromArray);
+};
+
+export const resolve_dns_caa: typeof $deno.resolve_dns_caa = (
+  query,
+  options,
+) => {
+  return Deno.resolveDns(
+    query,
+    "CAA",
+    toResolveDnsOptionsArray(options),
+  ).then((records) => fromArrayMapped(records, toCaaRecord));
+};
+
+export const resolve_dns_mx: typeof $deno.resolve_dns_mx = (
+  query,
+  options,
+) => {
+  return Deno.resolveDns(
+    query,
+    "MX",
+    toResolveDnsOptionsArray(options),
+  ).then((records) => fromArrayMapped(records, toMxRecord));
+};
+
+export const resolve_dns_naptr: typeof $deno.resolve_dns_naptr = (
+  query,
+  options,
+) => {
+  return Deno.resolveDns(
+    query,
+    "NAPTR",
+    toResolveDnsOptionsArray(options),
+  ).then((records) => fromArrayMapped(records, toNaptrRecord));
+};
+
+export const resolve_dns_soa: typeof $deno.resolve_dns_soa = (
+  query,
+  options,
+) => {
+  return Deno.resolveDns(
+    query,
+    "SOA",
+    toResolveDnsOptionsArray(options),
+  ).then((records) => fromArrayMapped(records, toSoaRecord));
+};
+
+export const resolve_dns_srv: typeof $deno.resolve_dns_srv = (
+  query,
+  options,
+) => {
+  return Deno.resolveDns(
+    query,
+    "SRV",
+    toResolveDnsOptionsArray(options),
+  ).then((records) => fromArrayMapped(records, toSrvRecord));
+};
+
+export const resolve_dns_txt: typeof $deno.resolve_dns_txt = (
+  query,
+  options,
+) => {
+  return Deno.resolveDns(
+    query,
+    "TXT",
+    toResolveDnsOptionsArray(options),
+  ).then((records) => fromArrayMapped(records, fromArray));
 };
 
 // WebSockets
