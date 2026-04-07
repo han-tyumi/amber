@@ -1,11 +1,11 @@
-import amber/deno
-import amber/deno/network_interface_info.{IPv4, IPv6, NetworkInterfaceInfo}
+import amber
+import amber/network_interface_info.{IPv4, IPv6, NetworkInterfaceInfo}
 import gleam/list
 import gleam/option.{None, Some}
 import gleeunit/should
 
 pub fn network_interfaces_test() {
-  let interfaces = deno.network_interfaces()
+  let interfaces = amber.network_interfaces()
   should.be_true(interfaces != [])
 
   list.each(interfaces, fn(info) {

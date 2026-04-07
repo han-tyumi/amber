@@ -1,17 +1,17 @@
-import amber/deno/serve
-import amber/deno/serve/serve_handler_info
-import amber/deno/serve/serve_option
-import amber/web
-import amber/web/abort_controller
-import amber/web/headers
-import amber/web/promise
-import amber/web/request
-import amber/web/request_init
-import amber/web/response
-import amber/web/response_init
+import amber/serve
+import amber/serve/serve_handler_info
+import amber/serve/serve_option
 import gleam/int
 import gleam/option.{Some}
 import gleeunit/should
+import gossamer
+import gossamer/abort_controller
+import gossamer/headers
+import gossamer/promise
+import gossamer/request
+import gossamer/request_init
+import gossamer/response
+import gossamer/response_init
 
 const serve_port = 4511
 
@@ -47,7 +47,7 @@ pub fn http_server_basic_test() {
   let url = "http://127.0.0.1:" <> int.to_string(serve_port) <> "/"
 
   use resp <- promise.then(
-    web.fetch_with_init(url, [
+    gossamer.fetch_with_init(url, [
       request_init.Headers(headers.from_pairs([#("connection", "close")])),
     ]),
   )

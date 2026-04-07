@@ -1,14 +1,14 @@
-import amber/deno
-import amber/deno/conn
-import amber/deno/conn/tls_conn
-import amber/deno/connect_tls_option
-import amber/deno/listen_tls_option
-import amber/deno/tls_certified_key_pem.{TlsCertifiedKeyPem}
-import amber/deno/tls_listener
-import amber/web/promise
-import amber/web/uint8_array
+import amber
+import amber/conn
+import amber/conn/tls_conn
+import amber/connect_tls_option
+import amber/listen_tls_option
+import amber/tls_certified_key_pem.{TlsCertifiedKeyPem}
+import amber/tls_listener
 import gleam/option.{None, Some}
 import gleeunit/should
+import gossamer/promise
+import gossamer/uint8_array
 
 const cert = "test/fixtures/tls/localhost.crt"
 
@@ -18,17 +18,17 @@ const ca_cert = "test/fixtures/tls/ca.crt"
 
 fn certified_key() {
   TlsCertifiedKeyPem(
-    key: deno.read_text_file_sync(key),
-    cert: deno.read_text_file_sync(cert),
+    key: amber.read_text_file_sync(key),
+    cert: amber.read_text_file_sync(cert),
   )
 }
 
 fn ca_certs() {
-  [deno.read_text_file_sync(ca_cert)]
+  [amber.read_text_file_sync(ca_cert)]
 }
 
 pub fn tls_listen_close_test() {
-  let listener = deno.listen_tls(0, certified_key(), [])
+  let listener = amber.listen_tls(0, certified_key(), [])
   let addr = tls_listener.addr(listener)
   should.equal(addr.transport, "tcp")
   tls_listener.close(listener)
@@ -36,7 +36,7 @@ pub fn tls_listen_close_test() {
 
 pub fn tls_connect_test() {
   let listener =
-    deno.listen_tls(0, certified_key(), [
+    amber.listen_tls(0, certified_key(), [
       listen_tls_option.Hostname("localhost"),
     ])
   let port = tls_listener.addr(listener).port
@@ -49,7 +49,7 @@ pub fn tls_connect_test() {
   })
 
   use client <- promise.then(
-    deno.connect_tls(port, [
+    amber.connect_tls(port, [
       connect_tls_option.Hostname("localhost"),
       connect_tls_option.CaCerts(ca_certs()),
     ]),
@@ -72,7 +72,7 @@ pub fn tls_connect_test() {
 
 pub fn tls_handshake_test() {
   let listener =
-    deno.listen_tls(0, certified_key(), [
+    amber.listen_tls(0, certified_key(), [
       listen_tls_option.Hostname("localhost"),
       listen_tls_option.AlpnProtocols(["h2", "http/1.1"]),
     ])
@@ -86,7 +86,7 @@ pub fn tls_handshake_test() {
   })
 
   use client <- promise.then(
-    deno.connect_tls(port, [
+    amber.connect_tls(port, [
       connect_tls_option.Hostname("localhost"),
       connect_tls_option.CaCerts(ca_certs()),
       connect_tls_option.AlpnProtocols(["h2", "http/1.1"]),

@@ -1,10 +1,10 @@
-import amber/deno/stderr
-import amber/deno/stdin
-import amber/deno/stdout
-import amber/web/promise
-import amber/web/uint8_array
+import amber/stderr
+import amber/stdin
+import amber/stdout
 import gleam/option.{Some}
 import gleeunit/should
+import gossamer/promise
+import gossamer/uint8_array
 
 pub fn stdio_stdin_read_test() {
   use nread <- promise.then(stdin.read(uint8_array.new()))

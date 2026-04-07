@@ -1,40 +1,40 @@
-import amber/deno
-import amber/deno/build/os
-import amber/deno/child_process
-import amber/deno/command
-import amber/deno/command/command_option
-import amber/deno/command/command_output.{CommandOutput}
-import amber/deno/error
-import amber/deno/fs_file
-import amber/deno/make_temp
-import amber/deno/open
-import amber/deno/remove
-import amber/deno/signal
-import amber/deno/stdio_option
-import amber/web
-import amber/web/abort_controller
-import amber/web/async_iterator
-import amber/web/json
-import amber/web/promise
-import amber/web/readable_stream
-import amber/web/readable_stream/read_result
-import amber/web/readable_stream/reader
-import amber/web/readable_stream/stream_pipe_option
-import amber/web/text_decoder
-import amber/web/text_decoder_stream
-import amber/web/text_encoder
-import amber/web/uint8_array
-import amber/web/writable_stream
-import amber/web/writable_stream/writer
+import amber
+import amber/build/os
+import amber/child_process
+import amber/command
+import amber/command/command_option
+import amber/command/command_output.{CommandOutput}
+import amber/error
+import amber/fs_file
+import amber/make_temp
+import amber/open
+import amber/remove
+import amber/signal
+import amber/stdio_option
 import gleam/bool
 import gleam/dict
 import gleam/int
 import gleam/option.{None, Some}
 import gleam/string
 import gleeunit/should
+import gossamer
+import gossamer/abort_controller
+import gossamer/async_iterator
+import gossamer/json
+import gossamer/promise
+import gossamer/readable_stream
+import gossamer/readable_stream/read_result
+import gossamer/readable_stream/reader
+import gossamer/readable_stream/stream_pipe_option
+import gossamer/text_decoder
+import gossamer/text_decoder_stream
+import gossamer/text_encoder
+import gossamer/uint8_array
+import gossamer/writable_stream
+import gossamer/writable_stream/writer
 
 pub fn command_with_cwd_is_async_test() {
-  let cwd = deno.make_temp_dir_sync([make_temp.Prefix("deno_command_test")])
+  let cwd = amber.make_temp_dir_sync([make_temp.Prefix("deno_command_test")])
 
   let exit_code_file_lock = "deno_was_here.lock"
   let exit_code_file = "deno_was_here"
@@ -57,14 +57,14 @@ async function tryExit() {
 tryExit();
 "
 
-  deno.write_file_sync(
+  amber.write_file_sync(
     cwd <> "/" <> program_file,
     text_encoder.encode(program),
     [],
   )
 
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Cwd(cwd),
       command_option.Args(["run", "-RW", program_file]),
       command_option.Stdout(stdio_option.Inherit),
@@ -75,13 +75,13 @@ tryExit();
   let code = 84
 
   use file <- promise.then(
-    deno.open_sync(cwd <> "/" <> exit_code_file_lock, [open.Write, open.Create])
+    amber.open_sync(cwd <> "/" <> exit_code_file_lock, [open.Write, open.Create])
     |> promise.from_result(),
   )
 
   file |> fs_file.lock_sync(True)
 
-  deno.write_file_sync(
+  amber.write_file_sync(
     cwd <> "/" <> exit_code_file,
     text_encoder.encode(int.to_string(code)),
     [],
@@ -91,7 +91,7 @@ tryExit();
 
   use status <- promise.then(child |> child_process.status())
 
-  deno.remove_sync(cwd, [remove.Recursive])
+  amber.remove_sync(cwd, [remove.Recursive])
 
   should.equal(status.code, code)
   should.equal(status.success, False)
@@ -100,7 +100,7 @@ tryExit();
 
 pub fn command_stdin_piped_test() {
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args([
         "eval",
         "
@@ -145,7 +145,7 @@ if (new TextDecoder().decode(buffer) !== \"hello\") {
 
 pub fn command_stdin_piped_error_test() {
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["info"]),
       command_option.Stdout(stdio_option.Null),
       command_option.Stderr(stdio_option.Null),
@@ -173,7 +173,7 @@ pub fn command_stdin_piped_error_test() {
 
 pub fn command_stdout_piped_test() {
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args([
         "eval", "await Deno.stdout.write(new TextEncoder().encode('hello'))",
       ]),
@@ -217,7 +217,7 @@ pub fn command_stdout_piped_test() {
 
 pub fn command_stderr_piped_test() {
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args([
         "eval", "await Deno.stderr.write(new TextEncoder().encode('hello'))",
       ]),
@@ -260,12 +260,12 @@ pub fn command_stderr_piped_test() {
 }
 
 pub fn command_redirect_stdout_stderr_test() {
-  let temp_dir = deno.make_temp_dir_sync([])
+  let temp_dir = amber.make_temp_dir_sync([])
   let file_name = temp_dir <> "/redirected_stdio.txt"
-  let assert Ok(file) = deno.open_sync(file_name, [open.Create, open.Write])
+  let assert Ok(file) = amber.open_sync(file_name, [open.Create, open.Write])
 
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args([
         "eval",
         "Deno.stderr.write(new TextEncoder().encode('error\\n')); Deno.stdout.write(new TextEncoder().encode('output\\n'));",
@@ -289,7 +289,7 @@ pub fn command_redirect_stdout_stderr_test() {
   )
   use _ <- promise.then(child |> child_process.status())
 
-  let file_contents = deno.read_file_sync(file_name)
+  let file_contents = amber.read_file_sync(file_name)
   let text = text_decoder.decode(file_contents |> uint8_array.buffer())
 
   should.be_true(text |> string.contains("error"))
@@ -297,13 +297,13 @@ pub fn command_redirect_stdout_stderr_test() {
 }
 
 pub fn command_redirect_stdin_test() {
-  let temp_dir = deno.make_temp_dir_sync([])
+  let temp_dir = amber.make_temp_dir_sync([])
   let file_name = temp_dir <> "/redirected_stdio.txt"
-  deno.write_text_file_sync(file_name, "hello", [])
-  let assert Ok(file) = deno.open_sync(file_name, [open.Read])
+  amber.write_text_file_sync(file_name, "hello", [])
+  let assert Ok(file) = amber.open_sync(file_name, [open.Read])
 
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args([
         "eval",
         "
@@ -335,7 +335,7 @@ pub fn command_redirect_stdin_test() {
 
 pub fn command_kill_success_test() {
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["eval", "setTimeout(() => {}, 10000)"]),
       command_option.Stdout(stdio_option.Null),
       command_option.Stderr(stdio_option.Null),
@@ -347,7 +347,7 @@ pub fn command_kill_success_test() {
   use status <- promise.then(child |> child_process.status())
 
   should.equal(status.success, False)
-  case deno.build().os {
+  case amber.build().os {
     os.Windows -> {
       should.equal(status.code, 1)
       should.equal(status.signal, None)
@@ -362,7 +362,7 @@ pub fn command_kill_success_test() {
 pub fn child_process_explicit_resource_management_test() {
   let dead_promise = {
     let command =
-      command.new(deno.exec_path(), [
+      command.new(amber.exec_path(), [
         command_option.Args(["eval", "setTimeout(() => {}, 10000)"]),
         command_option.Stdout(stdio_option.Null),
         command_option.Stderr(stdio_option.Null),
@@ -374,7 +374,7 @@ pub fn child_process_explicit_resource_management_test() {
 
   use dead <- promise.then(dead_promise)
 
-  case deno.build().os {
+  case amber.build().os {
     os.Windows -> {
       should.equal(dead, None)
     }
@@ -386,7 +386,7 @@ pub fn child_process_explicit_resource_management_test() {
 
 pub fn child_process_explicit_resource_management_manual_close_test() {
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["eval", "setTimeout(() => {}, 10000)"]),
       command_option.Stdout(stdio_option.Null),
       command_option.Stderr(stdio_option.Null),
@@ -398,7 +398,7 @@ pub fn child_process_explicit_resource_management_manual_close_test() {
 
 pub fn command_kill_optional_test() {
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["eval", "setTimeout(() => {}, 10000)"]),
       command_option.Stdout(stdio_option.Null),
       command_option.Stderr(stdio_option.Null),
@@ -409,7 +409,7 @@ pub fn command_kill_optional_test() {
   use status <- promise.then(child |> child_process.status())
 
   should.equal(status.success, False)
-  case deno.build().os {
+  case amber.build().os {
     os.Windows -> {
       should.equal(status.code, 1)
       should.equal(status.signal, None)
@@ -424,20 +424,20 @@ pub fn command_kill_optional_test() {
 pub fn command_abort_test() {
   let ac = abort_controller.new()
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["eval", "setTimeout(console.log, 1e8)"]),
       command_option.Signal(ac |> abort_controller.signal()),
       command_option.Stdout(stdio_option.Null),
       command_option.Stderr(stdio_option.Null),
     ])
   let child = command |> command.spawn()
-  web.queue_microtask(fn() {
+  gossamer.queue_microtask(fn() {
     ac |> abort_controller.abort(Nil)
     Nil
   })
   use status <- promise.then(child |> child_process.status())
   should.equal(status.success, False)
-  case deno.build().os {
+  case amber.build().os {
     os.Windows -> {
       should.equal(status.code, 1)
       should.equal(status.signal, None)
@@ -451,7 +451,7 @@ pub fn command_abort_test() {
 
 pub fn command_sync_success_test() {
   let assert Ok(output) =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["eval", "console.log('hello world')"]),
     ])
     |> command.output_sync()
@@ -470,8 +470,8 @@ pub fn command_sync_not_found_test() {
 
 // TODO(@han-tyumi): Errors (e.g., NotFound) are missing additional info.
 pub fn cwd_not_found_test() {
-  command.new(deno.exec_path(), [
-    command_option.Cwd(deno.cwd() <> "/non-existent-directory"),
+  command.new(amber.exec_path(), [
+    command_option.Cwd(amber.cwd() <> "/non-existent-directory"),
   ])
   |> command.output_sync()
   |> should.equal(Error(error.NotFound))
@@ -479,14 +479,14 @@ pub fn cwd_not_found_test() {
 
 // TODO(@han-tyumi): Non-sync version's error is NotFound.
 pub fn cwd_not_directory_test() {
-  command.new(deno.exec_path(), [command_option.Cwd(deno.exec_path())])
+  command.new(amber.exec_path(), [command_option.Cwd(amber.exec_path())])
   |> command.output_sync()
   |> should.equal(Error(error.NotADirectory))
 }
 
 pub fn command_sync_failed_with_code_test() {
   let assert Ok(output) =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["eval", "Deno.exit(41 + 1)"]),
     ])
     |> command.output_sync()
@@ -497,12 +497,12 @@ pub fn command_sync_failed_with_code_test() {
 
 pub fn command_sync_failed_with_signal_test() {
   let assert Ok(output) =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["eval", "Deno.kill(Deno.pid, 'SIGKILL')"]),
     ])
     |> command.output_sync()
   should.equal(output.success, False)
-  case deno.build().os {
+  case amber.build().os {
     os.Windows -> {
       should.equal(output.code, 1)
       should.equal(output.signal, None)
@@ -516,7 +516,7 @@ pub fn command_sync_failed_with_signal_test() {
 
 pub fn command_sync_output_test() {
   let assert Ok(CommandOutput(stdout:, ..)) =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args([
         "eval", "await Deno.stdout.write(new TextEncoder().encode('hello'))",
       ]),
@@ -529,7 +529,7 @@ pub fn command_sync_output_test() {
 
 pub fn command_sync_stderr_output_test() {
   let assert Ok(CommandOutput(stderr:, ..)) =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args([
         "eval", "await Deno.stderr.write(new TextEncoder().encode('error'))",
       ]),
@@ -542,7 +542,7 @@ pub fn command_sync_stderr_output_test() {
 
 pub fn command_sync_env_test() {
   let assert Ok(CommandOutput(stdout:, ..)) =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args([
         "eval",
         "Deno.stdout.write(new TextEncoder().encode(Deno.env.get('FOO') + Deno.env.get('BAR')))",
@@ -557,7 +557,7 @@ pub fn command_sync_env_test() {
 
 pub fn command_sync_clear_env_test() {
   let assert Ok(CommandOutput(stdout:, ..)) =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["eval", "-p", "JSON.stringify(Deno.env.toObject())"]),
       command_option.ClearEnv,
       command_option.Env(dict.from_list([#("FOO", "23147")])),
@@ -576,7 +576,7 @@ pub fn command_sync_clear_env_test() {
 }
 
 pub fn command_sync_uid_test() {
-  use <- bool.guard(when: deno.build().os == os.Windows, return: Nil)
+  use <- bool.guard(when: amber.build().os == os.Windows, return: Nil)
 
   let assert Ok(CommandOutput(stdout:, ..)) =
     command.new("id", [command_option.Args(["-u"])])
@@ -595,7 +595,7 @@ pub fn command_sync_uid_test() {
 }
 
 pub fn command_sync_gid_test() {
-  use <- bool.guard(when: deno.build().os == os.Windows, return: Nil)
+  use <- bool.guard(when: amber.build().os == os.Windows, return: Nil)
 
   let assert Ok(CommandOutput(stdout:, ..)) =
     command.new("id", [command_option.Args(["-g"])])
@@ -625,7 +625,7 @@ pub fn spawn_sync_stdin_piped_fails_test() {
 
 pub fn command_kill_after_status_test() {
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["help"]),
       command_option.Stdout(stdio_option.Null),
       command_option.Stderr(stdio_option.Null),
@@ -645,14 +645,14 @@ pub fn process_name_in_spawn_error_test() {
 }
 
 pub fn command_with_cwd_or_path_test() {
-  let cwd = deno.make_temp_dir_sync([make_temp.Prefix("deno_command_test")])
-  let suffix = case deno.build().os {
+  let cwd = amber.make_temp_dir_sync([make_temp.Prefix("deno_command_test")])
+  let suffix = case amber.build().os {
     os.Windows -> ".exe"
     _ -> ""
   }
 
-  deno.mkdir_sync(cwd <> "/subdir", [])
-  deno.copy_file_sync(deno.exec_path(), cwd <> "/subdir/my_binary" <> suffix)
+  amber.mkdir_sync(cwd <> "/subdir", [])
+  amber.copy_file_sync(amber.exec_path(), cwd <> "/subdir/my_binary" <> suffix)
 
   // cwd
   let output =
@@ -678,12 +678,12 @@ pub fn command_with_cwd_or_path_test() {
     Error(_) -> Nil
   }
 
-  deno.remove_sync(cwd, [remove.Recursive])
+  amber.remove_sync(cwd, [remove.Recursive])
 }
 
 pub fn output_when_manually_consuming_streams_test() {
   let command =
-    command.new(deno.exec_path(), [
+    command.new(amber.exec_path(), [
       command_option.Args(["eval", "console.log('hello world')"]),
       command_option.Stdout(stdio_option.Piped),
       command_option.Stderr(stdio_option.Piped),
