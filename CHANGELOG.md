@@ -1,5 +1,52 @@
 # Changelog
 
+## 1.0.0 (2026-04-08)
+
+### Breaking Changes
+
+- catch callback signature changed.
+- Web API modules moved to the gossamer package. Import paths changed from
+  `amber/web/X` to `gossamer/X`. Deno modules flattened from `amber/deno/X` to
+  `amber/X`. The main `amber/deno` module is now `amber`.
+
+- Web APIs extracted to gossamer (https://hex.pm/packages/gossamer)
+- amber depends on gossamer >= 1.0.0
+- `import amber/deno` → `import amber`
+- `import amber/deno/serve` → `import amber/serve`
+- `import amber/web/promise` → `import gossamer/promise`
+- Use .type.ts files for external type annotations
+- Most function signatures changed. Functions that can fail now return Result.
+  Functions with optional params are split into base + _with variants. env.get
+  returns Result(String, Nil) instead of Option(String). gossamer >= 4.0.1
+  required.
+
+### Features
+
+- add TextDecoder instance properties
+- add consoleSize, inspect, and networkInterfaces
+- add stdin, stdout, and stderr bindings
+- complete Uint8Array API
+- add ReadableStream and WritableStream creation
+- add TransformStream
+- add CompressionStream and DecompressionStream
+- add URL and URLSearchParams
+- add Headers, Request, and Response
+- add fetch
+- add Deno.serve() HTTP server
+- add TCP networking with listen and connect
+- add WebSocket, CloseEvent, MessageEvent, and Deno.upgradeWebSocket
+- add TLS networking with connectTls, listenTls, and startTls
+- add Web Crypto API with typed algorithm parameters
+- add Deno.resolveDns() with typed record results
+- add Blob, File, and FormData
+- extract web APIs to gossamer, flatten module structure
+- comprehensive conventions audit and refactor
+- add global_this module with alert, confirm, prompt, close
+
+### Fixes
+
+- use Dynamic for Promise catch rejection reason
+
 ## 0.6.0 (2026-04-06)
 
 ### Breaking Changes
