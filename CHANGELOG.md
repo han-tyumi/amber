@@ -2,6 +2,8 @@
 
 ## 1.0.0 (2026-04-08)
 
+Tested against Deno 2.7.11.
+
 ### Breaking Changes
 
 - catch callback signature changed.
