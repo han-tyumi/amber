@@ -1,3 +1,4 @@
+import amber/error.{type Error}
 import amber/net_addr.{type NetAddr}
 import amber/serve/serve_handler_info.{type ServeHandlerInfo}
 import amber/serve/serve_option.{type ServeOption}
@@ -12,7 +13,7 @@ pub type HttpServer
 /// the signal passed to `ServeOption.Signal`.
 ///
 @external(javascript, "./serve.ffi.mjs", "finished")
-pub fn finished(server: HttpServer) -> Promise(Nil)
+pub fn finished(server: HttpServer) -> Promise(Result(Nil, Error))
 
 /// The local address this server is listening on.
 ///
@@ -42,23 +43,24 @@ pub fn unref(server: HttpServer) -> Nil
 @external(javascript, "./serve.ffi.mjs", "serve")
 pub fn serve(
   handler: fn(Request, ServeHandlerInfo) -> Promise(Response),
-) -> HttpServer
+) -> Result(HttpServer, Error)
 
 /// Serves HTTP requests with the given options and handler.
 ///
 /// ## Examples
 ///
 /// ```gleam
-/// serve.serve_with(
-///   [serve_option.Port(3000), serve_option.Hostname("127.0.0.1")],
-///   fn(_request, _info) {
-///     promise.resolve(response.new("Hello, world!"))
-///   },
-/// )
+/// let assert Ok(server) =
+///   serve.serve_with(
+///     [serve_option.Port(3000), serve_option.Hostname("127.0.0.1")],
+///     fn(_request, _info) {
+///       promise.resolve(response.new("Hello, world!"))
+///     },
+///   )
 /// ```
 ///
 @external(javascript, "./serve.ffi.mjs", "serve_with")
 pub fn serve_with(
   options: List(ServeOption),
   handler: fn(Request, ServeHandlerInfo) -> Promise(Response),
-) -> HttpServer
+) -> Result(HttpServer, Error)

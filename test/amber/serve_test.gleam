@@ -2,7 +2,6 @@ import amber/serve
 import amber/serve/serve_handler_info
 import amber/serve/serve_option
 import gleam/int
-import gleam/option.{Some}
 import gleeunit/should
 import gossamer
 import gossamer/abort_controller
@@ -19,7 +18,7 @@ pub fn http_server_basic_test() {
   let controller = abort_controller.new()
   let listening = promise.with_resolvers()
 
-  let server =
+  let assert Ok(server) =
     serve.serve_with(
       [
         serve_option.Port(serve_port),
@@ -30,12 +29,17 @@ pub fn http_server_basic_test() {
         let serve_handler_info.ServeHandlerInfo(remote_addr:, ..) = info
         should.equal(remote_addr.hostname, "127.0.0.1")
 
-        use text <- promise.then(request.text(req))
-        should.equal(text, "")
+        request.text(req)
+        |> promise.then(fn(result) {
+          let assert Ok(text) = result
+          should.equal(text, "")
 
-        response.new_with_init("Hello World", [
-          response_init.Headers(headers.from_pairs([#("foo", "bar")])),
-        ])
+          let assert Ok(resp) =
+            response.new_with_init("Hello World", [
+              response_init.Headers(headers.from_pairs([#("foo", "bar")])),
+            ])
+          resp
+        })
       },
     )
 
@@ -46,22 +50,26 @@ pub fn http_server_basic_test() {
 
   let url = "http://127.0.0.1:" <> int.to_string(serve_port) <> "/"
 
-  use resp <- promise.then(
+  use result <- promise.then(
     gossamer.fetch_with_init(url, [
       request_init.Headers(headers.from_pairs([#("connection", "close")])),
     ]),
   )
+  let assert Ok(resp) = result
 
   let clone = response.clone(resp)
 
-  use text <- promise.then(response.text(resp))
+  use result <- promise.then(response.text(resp))
+  let assert Ok(text) = result
   should.equal(text, "Hello World")
-  headers.get(response.headers(resp), "foo") |> should.equal(Some("bar"))
+  headers.get(response.headers(resp), "foo") |> should.equal(Ok("bar"))
 
-  use clone_text <- promise.then(response.text(clone))
+  use result <- promise.then(response.text(clone))
+  let assert Ok(clone_text) = result
   should.equal(clone_text, "Hello World")
 
-  abort_controller.abort(controller, "done")
-  use _ <- promise.then(serve.finished(server))
+  abort_controller.abort(controller)
+  use result <- promise.then(serve.finished(server))
+  let assert Ok(_) = result
   promise.resolve(Nil)
 }

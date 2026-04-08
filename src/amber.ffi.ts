@@ -26,7 +26,7 @@ import * as $writeFile from "$/amber/amber/write_file.mjs";
 import { unwrap } from "$/gleam_stdlib/gleam/option.mjs";
 import { toArchType } from "~/amber/build/arch.ts";
 import { toOsType } from "~/amber/build/os.ts";
-import { fromThrows } from "~/amber/error.ts";
+import { fromPromise, fromThrows } from "~/amber/error.ts";
 import { toGleamFileInfo } from "~/amber/file_info.ts";
 import { toMemoryUsageType } from "~/amber/memory_usage.ts";
 import { toConsoleSizeType } from "~/amber/console_size.ts";
@@ -58,7 +58,11 @@ function toOpenOptions(options: $open.OpenOption$[]): Deno.OpenOptions {
   return result;
 }
 
-export const open_sync: typeof $deno.open_sync = (path, options) => {
+export const open_sync: typeof $deno.open_sync = (path) => {
+  return fromThrows(() => Deno.openSync(path));
+};
+
+export const open_sync_with: typeof $deno.open_sync_with = (path, options) => {
   return fromThrows(() => Deno.openSync(path, toOpenOptions(toArray(options))));
 };
 
@@ -75,11 +79,19 @@ function toMkdirOptions(options: $mkdir.MkdirOption$[]): Deno.MkdirOptions {
   return result;
 }
 
-export const mkdir_sync: typeof $deno.mkdir_sync = (
+export const mkdir_sync: typeof $deno.mkdir_sync = (path) => {
+  return fromThrows(() => {
+    Deno.mkdirSync(path);
+  });
+};
+
+export const mkdir_sync_with: typeof $deno.mkdir_sync_with = (
   path,
   options,
 ) => {
-  Deno.mkdirSync(path, toMkdirOptions(toArray(options)));
+  return fromThrows(() => {
+    Deno.mkdirSync(path, toMkdirOptions(toArray(options)));
+  });
 };
 
 function toMakeTempOptions(
@@ -98,28 +110,40 @@ function toMakeTempOptions(
   return result;
 }
 
-export const make_temp_dir_sync: typeof $deno.make_temp_dir_sync = (
-  options,
-) => {
-  return Deno.makeTempDirSync(toMakeTempOptions(toArray(options)));
+export const make_temp_dir_sync: typeof $deno.make_temp_dir_sync = () => {
+  return fromThrows(() => Deno.makeTempDirSync());
 };
 
-export const make_temp_file_sync: typeof $deno.make_temp_file_sync = (
+export const make_temp_dir_sync_with: typeof $deno.make_temp_dir_sync_with = (
   options,
 ) => {
-  return Deno.makeTempFileSync(toMakeTempOptions(toArray(options)));
+  return fromThrows(() =>
+    Deno.makeTempDirSync(toMakeTempOptions(toArray(options)))
+  );
+};
+
+export const make_temp_file_sync: typeof $deno.make_temp_file_sync = () => {
+  return fromThrows(() => Deno.makeTempFileSync());
+};
+
+export const make_temp_file_sync_with: typeof $deno.make_temp_file_sync_with = (
+  options,
+) => {
+  return fromThrows(() =>
+    Deno.makeTempFileSync(toMakeTempOptions(toArray(options)))
+  );
 };
 
 export const chmod_sync: typeof $deno.chmod_sync = (path, mode) => {
-  Deno.chmodSync(path, mode);
+  return fromThrows(() => {
+    Deno.chmodSync(path, mode);
+  });
 };
 
-export const chown_sync: typeof $deno.chown_sync = (
-  path,
-  uid,
-  gid,
-) => {
-  Deno.chownSync(path, unwrap(uid, null), unwrap(gid, null));
+export const chown_sync: typeof $deno.chown_sync = (path, uid, gid) => {
+  return fromThrows(() => {
+    Deno.chownSync(path, unwrap(uid, null), unwrap(gid, null));
+  });
 };
 
 function toRemoveOptions(
@@ -132,53 +156,74 @@ function toRemoveOptions(
   return result;
 }
 
-export const remove_sync: typeof $deno.remove_sync = (
+export const remove_sync: typeof $deno.remove_sync = (path) => {
+  return fromThrows(() => {
+    Deno.removeSync(path);
+  });
+};
+
+export const remove_sync_with: typeof $deno.remove_sync_with = (
   path,
   options,
 ) => {
-  Deno.removeSync(path, toRemoveOptions(toArray(options)));
+  return fromThrows(() => {
+    Deno.removeSync(path, toRemoveOptions(toArray(options)));
+  });
 };
 
 export const rename_sync: typeof $deno.rename_sync = (oldpath, newpath) => {
-  Deno.renameSync(oldpath, newpath);
+  return fromThrows(() => {
+    Deno.renameSync(oldpath, newpath);
+  });
 };
 
-export const read_text_file_sync: typeof $deno.read_text_file_sync =
-  Deno.readTextFileSync;
+export const read_text_file_sync: typeof $deno.read_text_file_sync = (path) => {
+  return fromThrows(() => Deno.readTextFileSync(path));
+};
 
-export const read_file_sync: typeof $deno.read_file_sync = Deno.readFileSync;
+export const read_file_sync: typeof $deno.read_file_sync = (path) => {
+  return fromThrows(() => Deno.readFileSync(path));
+};
 
-export const real_path_sync: typeof $deno.real_path_sync = Deno.realPathSync;
+export const real_path_sync: typeof $deno.real_path_sync = (path) => {
+  return fromThrows(() => Deno.realPathSync(path));
+};
 
 export const read_dir_sync: typeof $deno.read_dir_sync = (path) => {
-  const entries = Deno.readDirSync(path);
-  return fromArrayMapped(
-    Array.from(entries),
-    (entry) =>
-      $dirEntry.DirEntry$DirEntry(
-        entry.name,
-        entry.isFile,
-        entry.isDirectory,
-        entry.isSymlink,
-      ),
-  );
+  return fromThrows(() => {
+    const entries = Deno.readDirSync(path);
+    return fromArrayMapped(
+      Array.from(entries),
+      (entry) =>
+        $dirEntry.DirEntry$DirEntry(
+          entry.name,
+          entry.isFile,
+          entry.isDirectory,
+          entry.isSymlink,
+        ),
+    );
+  });
 };
 
 export const copy_file_sync: typeof $deno.copy_file_sync = (
   from_path,
   to_path,
 ) => {
-  Deno.copyFileSync(from_path, to_path);
+  return fromThrows(() => {
+    Deno.copyFileSync(from_path, to_path);
+  });
 };
 
-export const read_link_sync: typeof $deno.read_link_sync = Deno.readLinkSync;
+export const read_link_sync: typeof $deno.read_link_sync = (path) => {
+  return fromThrows(() => Deno.readLinkSync(path));
+};
 
 export const lstat_sync: typeof $deno.lstat_sync = (path) => {
-  return toGleamFileInfo(Deno.lstatSync(path));
+  return fromThrows(() => toGleamFileInfo(Deno.lstatSync(path)));
 };
 
 export const stat_sync: typeof $deno.stat_sync = (path) => {
-  return toGleamFileInfo(Deno.statSync(path));
+  return fromThrows(() => toGleamFileInfo(Deno.statSync(path)));
 };
 
 function toWriteFileOptions(
@@ -200,32 +245,55 @@ function toWriteFileOptions(
   return result;
 }
 
-export const write_file_sync: typeof $deno.write_file_sync = (
+export const write_file_sync: typeof $deno.write_file_sync = (path, data) => {
+  return fromThrows(() => {
+    Deno.writeFileSync(path, data);
+  });
+};
+
+export const write_file_sync_with: typeof $deno.write_file_sync_with = (
   path,
   data,
   options,
 ) => {
-  Deno.writeFileSync(
-    path,
-    data,
-    toWriteFileOptions(toArray(options)),
-  );
+  return fromThrows(() => {
+    Deno.writeFileSync(path, data, toWriteFileOptions(toArray(options)));
+  });
 };
 
 export const write_text_file_sync: typeof $deno.write_text_file_sync = (
   path,
   data,
-  options,
 ) => {
-  Deno.writeTextFileSync(
-    path,
-    data,
-    toWriteFileOptions(toArray(options)),
-  );
+  return fromThrows(() => {
+    Deno.writeTextFileSync(path, data);
+  });
 };
 
-export const truncate_sync: typeof $deno.truncate_sync = (name, len) => {
-  Deno.truncateSync(name, unwrap(len, undefined));
+export const write_text_file_sync_with: typeof $deno.write_text_file_sync_with =
+  (
+    path,
+    data,
+    options,
+  ) => {
+    return fromThrows(() => {
+      Deno.writeTextFileSync(path, data, toWriteFileOptions(toArray(options)));
+    });
+  };
+
+export const truncate_sync: typeof $deno.truncate_sync = (name) => {
+  return fromThrows(() => {
+    Deno.truncateSync(name);
+  });
+};
+
+export const truncate_to_length_sync: typeof $deno.truncate_to_length_sync = (
+  name,
+  len,
+) => {
+  return fromThrows(() => {
+    Deno.truncateSync(name, len);
+  });
 };
 
 type WatchFsOptions = NonNullable<Parameters<typeof Deno.watchFs>["1"]>;
@@ -242,7 +310,11 @@ function toWatchFsOptions(
   return result;
 }
 
-export const watch_fs: typeof $deno.watch_fs = (paths, options) => {
+export const watch_fs: typeof $deno.watch_fs = (paths) => {
+  return Deno.watchFs(toArray(paths));
+};
+
+export const watch_fs_with: typeof $deno.watch_fs_with = (paths, options) => {
   return Deno.watchFs(
     toArray(paths),
     toWatchFsOptions(toArray(options)) as WatchFsOptions,
@@ -251,11 +323,11 @@ export const watch_fs: typeof $deno.watch_fs = (paths, options) => {
 
 function toSymlinkType(
   instance: $symlink.SymlinkType$,
-): Deno.SymlinkOptions["type"] | undefined {
+): Deno.SymlinkOptions["type"] {
   if ($symlink.SymlinkType$isFile(instance)) return "file";
   if ($symlink.SymlinkType$isDir(instance)) return "dir";
   if ($symlink.SymlinkType$isJunction(instance)) return "junction";
-  return undefined;
+  throw new Error("Unknown SymlinkType variant");
 }
 
 function toSymlinkOptions(
@@ -270,20 +342,30 @@ function toSymlinkOptions(
   return result;
 }
 
-export const symlink_sync: typeof $deno.symlink_sync = (
+export const symlink_sync: typeof $deno.symlink_sync = (oldpath, newpath) => {
+  return fromThrows(() => {
+    Deno.symlinkSync(oldpath, newpath);
+  });
+};
+
+export const symlink_sync_with: typeof $deno.symlink_sync_with = (
   oldpath,
   newpath,
   options,
 ) => {
-  Deno.symlinkSync(
-    oldpath,
-    newpath,
-    toSymlinkOptions(toArray(options)) as Deno.SymlinkOptions,
-  );
+  return fromThrows(() => {
+    Deno.symlinkSync(
+      oldpath,
+      newpath,
+      toSymlinkOptions(toArray(options)) as Deno.SymlinkOptions,
+    );
+  });
 };
 
 export const utime_sync: typeof $deno.utime_sync = (path, atime, mtime) => {
-  Deno.utimeSync(path, atime, mtime);
+  return fromThrows(() => {
+    Deno.utimeSync(path, atime, mtime);
+  });
 };
 
 export const umask: typeof $deno.umask = () => {
@@ -297,123 +379,214 @@ export const set_umask: typeof $deno.set_umask = (mask) => {
 // I/O
 
 export const console_size: typeof $deno.console_size = () => {
-  return toConsoleSizeType(Deno.consoleSize());
+  return fromThrows(() => toConsoleSizeType(Deno.consoleSize()));
 };
 
-export const inspect: typeof $deno.inspect = (value, options) => {
+export const inspect: typeof $deno.inspect = (value) => {
+  return Deno.inspect(value);
+};
+
+export const inspect_with: typeof $deno.inspect_with = (value, options) => {
   return Deno.inspect(value, toInspectOptions(toArray(options)));
 };
 
 // Network
 
 export const network_interfaces: typeof $deno.network_interfaces = () => {
-  return fromArrayMapped(Deno.networkInterfaces(), toNetworkInterfaceInfoType);
+  return fromThrows(() =>
+    fromArrayMapped(Deno.networkInterfaces(), toNetworkInterfaceInfoType)
+  );
 };
 
-export const listen: typeof $deno.listen = (port, options) => {
-  return Deno.listen(toListenOptions(port, toArray(options)));
+export const listen: typeof $deno.listen = (port) => {
+  return fromThrows(() => Deno.listen({ port }));
 };
 
-export const connect: typeof $deno.connect = (port, options) => {
-  return Deno.connect(toConnectOptions(port, toArray(options)));
+export const listen_with: typeof $deno.listen_with = (port, options) => {
+  return fromThrows(() => Deno.listen(toListenOptions(port, toArray(options))));
 };
 
-export const connect_tls: typeof $deno.connect_tls = (port, options) => {
-  return Deno.connectTls(toConnectTlsOptions(port, toArray(options)));
+export const connect: typeof $deno.connect = (port) => {
+  return fromPromise(Deno.connect({ port }));
 };
 
-export const listen_tls: typeof $deno.listen_tls = (
+export const connect_with: typeof $deno.connect_with = (port, options) => {
+  return fromPromise(Deno.connect(toConnectOptions(port, toArray(options))));
+};
+
+export const connect_tls: typeof $deno.connect_tls = (port) => {
+  return fromPromise(Deno.connectTls({ port }));
+};
+
+export const connect_tls_with: typeof $deno.connect_tls_with = (
+  port,
+  options,
+) => {
+  return fromPromise(
+    Deno.connectTls(toConnectTlsOptions(port, toArray(options))),
+  );
+};
+
+export const listen_tls: typeof $deno.listen_tls = (port, certifiedKey) => {
+  return fromThrows(() =>
+    Deno.listenTls(toListenTlsOptions(port, certifiedKey, []))
+  );
+};
+
+export const listen_tls_with: typeof $deno.listen_tls_with = (
   port,
   certifiedKey,
   options,
 ) => {
-  return Deno.listenTls(
-    toListenTlsOptions(port, certifiedKey, toArray(options)),
+  return fromThrows(() =>
+    Deno.listenTls(toListenTlsOptions(port, certifiedKey, toArray(options)))
   );
 };
 
-export const start_tls: typeof $deno.start_tls = (conn, options) => {
-  return Deno.startTls(conn, toStartTlsOptions(toArray(options)));
+export const start_tls: typeof $deno.start_tls = (conn) => {
+  return fromPromise(Deno.startTls(conn, {}));
+};
+
+export const start_tls_with: typeof $deno.start_tls_with = (conn, options) => {
+  return fromPromise(
+    Deno.startTls(conn, toStartTlsOptions(toArray(options))),
+  );
 };
 
 // DNS
 
-export const resolve_dns: typeof $deno.resolve_dns = (
+export const resolve_dns: typeof $deno.resolve_dns = (query, recordType) => {
+  return fromPromise(
+    Deno.resolveDns(query, toRecordType(recordType)).then(fromArray),
+  );
+};
+
+export const resolve_dns_with: typeof $deno.resolve_dns_with = (
   query,
   recordType,
   options,
 ) => {
-  return Deno.resolveDns(
-    query,
-    toRecordType(recordType),
-    toResolveDnsOptionsArray(options),
-  ).then(fromArray);
+  return fromPromise(
+    Deno.resolveDns(
+      query,
+      toRecordType(recordType),
+      toResolveDnsOptionsArray(options),
+    ).then(fromArray),
+  );
 };
 
-export const resolve_dns_caa: typeof $deno.resolve_dns_caa = (
+export const resolve_dns_caa: typeof $deno.resolve_dns_caa = (query) => {
+  return fromPromise(
+    Deno.resolveDns(query, "CAA").then((records) =>
+      fromArrayMapped(records, toCaaRecord)
+    ),
+  );
+};
+
+export const resolve_dns_caa_with: typeof $deno.resolve_dns_caa_with = (
   query,
   options,
 ) => {
-  return Deno.resolveDns(
-    query,
-    "CAA",
-    toResolveDnsOptionsArray(options),
-  ).then((records) => fromArrayMapped(records, toCaaRecord));
+  return fromPromise(
+    Deno.resolveDns(query, "CAA", toResolveDnsOptionsArray(options)).then(
+      (records) => fromArrayMapped(records, toCaaRecord),
+    ),
+  );
 };
 
-export const resolve_dns_mx: typeof $deno.resolve_dns_mx = (
+export const resolve_dns_mx: typeof $deno.resolve_dns_mx = (query) => {
+  return fromPromise(
+    Deno.resolveDns(query, "MX").then((records) =>
+      fromArrayMapped(records, toMxRecord)
+    ),
+  );
+};
+
+export const resolve_dns_mx_with: typeof $deno.resolve_dns_mx_with = (
   query,
   options,
 ) => {
-  return Deno.resolveDns(
-    query,
-    "MX",
-    toResolveDnsOptionsArray(options),
-  ).then((records) => fromArrayMapped(records, toMxRecord));
+  return fromPromise(
+    Deno.resolveDns(query, "MX", toResolveDnsOptionsArray(options)).then(
+      (records) => fromArrayMapped(records, toMxRecord),
+    ),
+  );
 };
 
-export const resolve_dns_naptr: typeof $deno.resolve_dns_naptr = (
+export const resolve_dns_naptr: typeof $deno.resolve_dns_naptr = (query) => {
+  return fromPromise(
+    Deno.resolveDns(query, "NAPTR").then((records) =>
+      fromArrayMapped(records, toNaptrRecord)
+    ),
+  );
+};
+
+export const resolve_dns_naptr_with: typeof $deno.resolve_dns_naptr_with = (
   query,
   options,
 ) => {
-  return Deno.resolveDns(
-    query,
-    "NAPTR",
-    toResolveDnsOptionsArray(options),
-  ).then((records) => fromArrayMapped(records, toNaptrRecord));
+  return fromPromise(
+    Deno.resolveDns(query, "NAPTR", toResolveDnsOptionsArray(options)).then(
+      (records) => fromArrayMapped(records, toNaptrRecord),
+    ),
+  );
 };
 
-export const resolve_dns_soa: typeof $deno.resolve_dns_soa = (
+export const resolve_dns_soa: typeof $deno.resolve_dns_soa = (query) => {
+  return fromPromise(
+    Deno.resolveDns(query, "SOA").then((records) =>
+      fromArrayMapped(records, toSoaRecord)
+    ),
+  );
+};
+
+export const resolve_dns_soa_with: typeof $deno.resolve_dns_soa_with = (
   query,
   options,
 ) => {
-  return Deno.resolveDns(
-    query,
-    "SOA",
-    toResolveDnsOptionsArray(options),
-  ).then((records) => fromArrayMapped(records, toSoaRecord));
+  return fromPromise(
+    Deno.resolveDns(query, "SOA", toResolveDnsOptionsArray(options)).then(
+      (records) => fromArrayMapped(records, toSoaRecord),
+    ),
+  );
 };
 
-export const resolve_dns_srv: typeof $deno.resolve_dns_srv = (
+export const resolve_dns_srv: typeof $deno.resolve_dns_srv = (query) => {
+  return fromPromise(
+    Deno.resolveDns(query, "SRV").then((records) =>
+      fromArrayMapped(records, toSrvRecord)
+    ),
+  );
+};
+
+export const resolve_dns_srv_with: typeof $deno.resolve_dns_srv_with = (
   query,
   options,
 ) => {
-  return Deno.resolveDns(
-    query,
-    "SRV",
-    toResolveDnsOptionsArray(options),
-  ).then((records) => fromArrayMapped(records, toSrvRecord));
+  return fromPromise(
+    Deno.resolveDns(query, "SRV", toResolveDnsOptionsArray(options)).then(
+      (records) => fromArrayMapped(records, toSrvRecord),
+    ),
+  );
 };
 
-export const resolve_dns_txt: typeof $deno.resolve_dns_txt = (
+export const resolve_dns_txt: typeof $deno.resolve_dns_txt = (query) => {
+  return fromPromise(
+    Deno.resolveDns(query, "TXT").then((records) =>
+      fromArrayMapped(records, fromArray)
+    ),
+  );
+};
+
+export const resolve_dns_txt_with: typeof $deno.resolve_dns_txt_with = (
   query,
   options,
 ) => {
-  return Deno.resolveDns(
-    query,
-    "TXT",
-    toResolveDnsOptionsArray(options),
-  ).then((records) => fromArrayMapped(records, fromArray));
+  return fromPromise(
+    Deno.resolveDns(query, "TXT", toResolveDnsOptionsArray(options)).then(
+      (records) => fromArrayMapped(records, fromArray),
+    ),
+  );
 };
 
 // WebSockets
@@ -421,15 +594,20 @@ export const resolve_dns_txt: typeof $deno.resolve_dns_txt = (
 export const upgrade_web_socket: typeof $deno.upgrade_web_socket = (
   request,
 ) => {
-  return toWebSocketUpgrade(Deno.upgradeWebSocket(request));
+  return fromThrows(() => toWebSocketUpgrade(Deno.upgradeWebSocket(request)));
 };
 
 export const upgrade_web_socket_with: typeof $deno.upgrade_web_socket_with = (
   request,
   options,
 ) => {
-  return toWebSocketUpgrade(
-    Deno.upgradeWebSocket(request, toUpgradeWebSocketOptions(toArray(options))),
+  return fromThrows(() =>
+    toWebSocketUpgrade(
+      Deno.upgradeWebSocket(
+        request,
+        toUpgradeWebSocketOptions(toArray(options)),
+      ),
+    )
   );
 };
 
@@ -439,8 +617,7 @@ export const add_signal_listener: typeof $deno.add_signal_listener = (
   signal,
   handler,
 ) => {
-  // deno-lint-ignore no-non-null-assertion
-  Deno.addSignalListener(toSignal(signal)!, handler);
+  Deno.addSignalListener(toSignal(signal), handler);
 };
 
 export const chdir: typeof $deno.chdir = (directory) => {
@@ -450,11 +627,11 @@ export const chdir: typeof $deno.chdir = (directory) => {
 };
 
 export const cwd: typeof $deno.cwd = () => {
-  return Deno.cwd();
+  return fromThrows(() => Deno.cwd());
 };
 
 export const exec_path: typeof $deno.exec_path = () => {
-  return Deno.execPath();
+  return fromThrows(() => Deno.execPath());
 };
 
 export const exit: typeof $deno.exit = () => {
@@ -466,15 +643,15 @@ export const exit_with: typeof $deno.exit_with = (code) => {
 };
 
 export const gid: typeof $deno.gid = () => {
-  return toOption(Deno.gid());
+  return fromThrows(() => toOption(Deno.gid()));
 };
 
 export const hostname: typeof $deno.hostname = () => {
-  return Deno.hostname();
+  return fromThrows(() => Deno.hostname());
 };
 
 export const loadavg: typeof $deno.loadavg = () => {
-  return Deno.loadavg() as [number, number, number];
+  return fromThrows(() => Deno.loadavg() as [number, number, number]);
 };
 
 export const memory_usage: typeof $deno.memory_usage = () => {
@@ -482,11 +659,11 @@ export const memory_usage: typeof $deno.memory_usage = () => {
 };
 
 export const os_release: typeof $deno.os_release = () => {
-  return Deno.osRelease();
+  return fromThrows(() => Deno.osRelease());
 };
 
 export const os_uptime: typeof $deno.os_uptime = () => {
-  return Deno.osUptime();
+  return fromThrows(() => Deno.osUptime());
 };
 
 export const ref_timer: typeof $deno.ref_timer = (id) => {
@@ -497,16 +674,15 @@ export const remove_signal_listener: typeof $deno.remove_signal_listener = (
   signal,
   handler,
 ) => {
-  // deno-lint-ignore no-non-null-assertion
-  Deno.removeSignalListener(toSignal(signal)!, handler);
+  Deno.removeSignalListener(toSignal(signal), handler);
 };
 
 export const system_memory_info: typeof $deno.system_memory_info = () => {
-  return toSystemMemoryInfoType(Deno.systemMemoryInfo());
+  return fromThrows(() => toSystemMemoryInfoType(Deno.systemMemoryInfo()));
 };
 
 export const uid: typeof $deno.uid = () => {
-  return toOption(Deno.uid());
+  return fromThrows(() => toOption(Deno.uid()));
 };
 
 export const unref_timer: typeof $deno.unref_timer = (id) => {
@@ -522,8 +698,8 @@ export const build: typeof $deno.build = () => {
     Deno.build.target,
     toArchType(Deno.build.arch),
     toOsType(Deno.build.os),
-    Deno.build.target,
-    toOption(Deno.build.vendor),
+    Deno.build.vendor,
+    toOption(Deno.build.env),
   );
 };
 
@@ -539,7 +715,7 @@ export const main_module: typeof $deno.main_module = () => {
   return Deno.mainModule;
 };
 
-export const no_color: typeof $deno.no_color = () => {
+export const is_no_color: typeof $deno.is_no_color = () => {
   return Deno.noColor;
 };
 
@@ -562,9 +738,13 @@ export const version: typeof $deno.version = () => {
 // Subprocess
 
 export const kill: typeof $deno.kill = (pid) => {
-  Deno.kill(pid);
+  return fromThrows(() => {
+    Deno.kill(pid);
+  });
 };
 
 export const kill_with: typeof $deno.kill_with = (pid, signal) => {
-  Deno.kill(pid, toSignal(signal));
+  return fromThrows(() => {
+    Deno.kill(pid, toSignal(signal));
+  });
 };

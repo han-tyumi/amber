@@ -1,3 +1,4 @@
+import amber/error.{type Error}
 import amber/set_raw.{type SetRawOption}
 import gleam/option.{type Option}
 import gossamer/promise.{type Promise}
@@ -27,7 +28,7 @@ import gossamer/uint8_array.{type Uint8Array}
 /// ```
 ///
 @external(javascript, "./stdin.ffi.mjs", "read")
-pub fn read(p: Uint8Array) -> Promise(Option(Int))
+pub fn read(p: Uint8Array) -> Promise(Result(Option(Int), Error))
 
 /// Synchronously read from the incoming data from `stdin` into an array
 /// buffer (`p`).
@@ -80,11 +81,22 @@ pub fn readable() -> ReadableStream(Uint8Array)
 /// ## Examples
 ///
 /// ```gleam
-/// stdin.set_raw(True, [set_raw.Cbreak(True)])
+/// stdin.set_raw(True)
 /// ```
 ///
 @external(javascript, "./stdin.ffi.mjs", "set_raw")
-pub fn set_raw(mode: Bool, options: List(SetRawOption)) -> Nil
+pub fn set_raw(mode: Bool) -> Nil
+
+/// Set TTY to be under raw mode or not with options.
+///
+/// ## Examples
+///
+/// ```gleam
+/// stdin.set_raw_with(True, [set_raw.Cbreak(True)])
+/// ```
+///
+@external(javascript, "./stdin.ffi.mjs", "set_raw_with")
+pub fn set_raw_with(mode: Bool, options: List(SetRawOption)) -> Nil
 
 /// Checks if `stdin` is a TTY (terminal).
 ///

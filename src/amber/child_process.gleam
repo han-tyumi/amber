@@ -27,10 +27,10 @@ pub fn stderr(
 pub fn pid(process: ChildProcess) -> Int
 
 @external(javascript, "./child_process.ffi.mjs", "status")
-pub fn status(process: ChildProcess) -> Promise(CommandStatus)
+pub fn status(process: ChildProcess) -> Promise(Result(CommandStatus, Error))
 
 @external(javascript, "./child_process.ffi.mjs", "output")
-pub fn output(process: ChildProcess) -> Promise(CommandOutput)
+pub fn output(process: ChildProcess) -> Promise(Result(CommandOutput, Error))
 
 @external(javascript, "./child_process.ffi.mjs", "kill")
 pub fn kill(process: ChildProcess) -> Result(Nil, Error)

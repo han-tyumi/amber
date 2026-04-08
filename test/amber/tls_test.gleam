@@ -17,85 +17,97 @@ const key = "test/fixtures/tls/localhost.key"
 const ca_cert = "test/fixtures/tls/ca.crt"
 
 fn certified_key() {
-  TlsCertifiedKeyPem(
-    key: amber.read_text_file_sync(key),
-    cert: amber.read_text_file_sync(cert),
-  )
+  let assert Ok(key_text) = amber.read_text_file_sync(key)
+  let assert Ok(cert_text) = amber.read_text_file_sync(cert)
+  TlsCertifiedKeyPem(key: key_text, cert: cert_text)
 }
 
 fn ca_certs() {
-  [amber.read_text_file_sync(ca_cert)]
+  let assert Ok(ca_cert_text) = amber.read_text_file_sync(ca_cert)
+  [ca_cert_text]
 }
 
 pub fn tls_listen_close_test() {
-  let listener = amber.listen_tls(0, certified_key(), [])
+  let assert Ok(listener) = amber.listen_tls(0, certified_key())
   let addr = tls_listener.addr(listener)
   should.equal(addr.transport, "tcp")
-  tls_listener.close(listener)
+  let assert Ok(_) = tls_listener.close(listener)
 }
 
 pub fn tls_connect_test() {
-  let listener =
-    amber.listen_tls(0, certified_key(), [
+  let assert Ok(listener) =
+    amber.listen_tls_with(0, certified_key(), [
       listen_tls_option.Hostname("localhost"),
     ])
   let port = tls_listener.addr(listener).port
 
-  promise.then(tls_listener.accept(listener), fn(accepted) {
+  promise.then(tls_listener.accept(listener), fn(result) {
+    let assert Ok(accepted) = result
     let server = tls_conn.to_conn(accepted)
-    use _ <- promise.then(conn.write(server, uint8_array.from_list([1, 2, 3])))
-    conn.close(server)
+    use result <- promise.then(conn.write(
+      server,
+      uint8_array.from_list([1, 2, 3]),
+    ))
+    let assert Ok(_) = result
+    let assert Ok(_) = conn.close(server)
     promise.resolve(Nil)
   })
 
-  use client <- promise.then(
-    amber.connect_tls(port, [
+  use result <- promise.then(
+    amber.connect_tls_with(port, [
       connect_tls_option.Hostname("localhost"),
       connect_tls_option.CaCerts(ca_certs()),
     ]),
   )
+  let assert Ok(client) = result
   let client_conn = tls_conn.to_conn(client)
 
   let buf = uint8_array.from_length(1024)
-  use read_result <- promise.then(conn.read(client_conn, buf))
+  use result <- promise.then(conn.read(client_conn, buf))
+  let assert Ok(read_result) = result
   should.equal(read_result, Some(3))
-  should.equal(uint8_array.at(buf, 0), Some(1))
-  should.equal(uint8_array.at(buf, 1), Some(2))
-  should.equal(uint8_array.at(buf, 2), Some(3))
+  should.equal(uint8_array.at(buf, 0), Ok(1))
+  should.equal(uint8_array.at(buf, 1), Ok(2))
+  should.equal(uint8_array.at(buf, 2), Ok(3))
 
-  use read_result2 <- promise.then(conn.read(client_conn, buf))
+  use result <- promise.then(conn.read(client_conn, buf))
+  let assert Ok(read_result2) = result
   should.equal(read_result2, None)
 
-  tls_listener.close(listener)
-  conn.close(client_conn)
+  let assert Ok(_) = tls_listener.close(listener)
+  let assert Ok(_) = conn.close(client_conn)
 }
 
 pub fn tls_handshake_test() {
-  let listener =
-    amber.listen_tls(0, certified_key(), [
+  let assert Ok(listener) =
+    amber.listen_tls_with(0, certified_key(), [
       listen_tls_option.Hostname("localhost"),
       listen_tls_option.AlpnProtocols(["h2", "http/1.1"]),
     ])
   let port = tls_listener.addr(listener).port
 
-  promise.then(tls_listener.accept(listener), fn(accepted) {
-    use info <- promise.then(tls_conn.handshake(accepted))
+  promise.then(tls_listener.accept(listener), fn(result) {
+    let assert Ok(accepted) = result
+    use result <- promise.then(tls_conn.handshake(accepted))
+    let assert Ok(info) = result
     should.equal(info.alpn_protocol, Some("h2"))
-    conn.close(tls_conn.to_conn(accepted))
+    let assert Ok(_) = conn.close(tls_conn.to_conn(accepted))
     promise.resolve(Nil)
   })
 
-  use client <- promise.then(
-    amber.connect_tls(port, [
+  use result <- promise.then(
+    amber.connect_tls_with(port, [
       connect_tls_option.Hostname("localhost"),
       connect_tls_option.CaCerts(ca_certs()),
       connect_tls_option.AlpnProtocols(["h2", "http/1.1"]),
     ]),
   )
+  let assert Ok(client) = result
 
-  use info <- promise.then(tls_conn.handshake(client))
+  use result <- promise.then(tls_conn.handshake(client))
+  let assert Ok(info) = result
   should.equal(info.alpn_protocol, Some("h2"))
 
-  conn.close(tls_conn.to_conn(client))
-  tls_listener.close(listener)
+  let assert Ok(_) = conn.close(tls_conn.to_conn(client))
+  let assert Ok(_) = tls_listener.close(listener)
 }

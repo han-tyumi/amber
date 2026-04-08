@@ -1,3 +1,4 @@
+import amber/error.{type Error}
 import gossamer/promise.{type Promise}
 import gossamer/uint8_array.{type Uint8Array}
 import gossamer/writable_stream.{type WritableStream}
@@ -13,12 +14,13 @@ import gossamer/writable_stream.{type WritableStream}
 ///
 /// ```gleam
 /// let data = text_encoder.encode("Hello world")
-/// use bytes_written <- promise.then(stderr.write(data))
+/// use result <- promise.then(stderr.write(data))
+/// let assert Ok(bytes_written) = result
 /// // bytes_written == 11
 /// ```
 ///
 @external(javascript, "./stderr.ffi.mjs", "write")
-pub fn write(p: Uint8Array) -> Promise(Int)
+pub fn write(p: Uint8Array) -> Promise(Result(Int, Error))
 
 /// Synchronously write the contents of the array buffer (`p`) to `stderr`.
 ///

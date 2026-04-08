@@ -37,7 +37,6 @@ import amber/version.{type Version}
 import amber/watch_fs.{type WatchFsOption}
 import amber/web_socket_upgrade.{type WebSocketUpgrade}
 import amber/write_file.{type WriteFileOption}
-import gleam/dynamic.{type Dynamic}
 import gleam/option.{type Option}
 import gossamer/promise.{type Promise}
 import gossamer/request.{type Request}
@@ -49,7 +48,10 @@ import gossamer/uint8_array.{type Uint8Array}
 pub fn link_sync(oldpath: String, newpath: String) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "open_sync")
-pub fn open_sync(
+pub fn open_sync(path: String) -> Result(FsFile, Error)
+
+@external(javascript, "./amber.ffi.mjs", "open_sync_with")
+pub fn open_sync_with(
   path: String,
   options: List(OpenOption),
 ) -> Result(FsFile, Error)
@@ -58,79 +60,123 @@ pub fn open_sync(
 pub fn create_sync(path: String) -> Result(FsFile, Error)
 
 @external(javascript, "./amber.ffi.mjs", "mkdir_sync")
-pub fn mkdir_sync(path: String, options: List(MkdirOption)) -> Nil
+pub fn mkdir_sync(path: String) -> Result(Nil, Error)
+
+@external(javascript, "./amber.ffi.mjs", "mkdir_sync_with")
+pub fn mkdir_sync_with(
+  path: String,
+  options: List(MkdirOption),
+) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "make_temp_dir_sync")
-pub fn make_temp_dir_sync(options: List(MakeTempOption)) -> String
+pub fn make_temp_dir_sync() -> Result(String, Error)
+
+@external(javascript, "./amber.ffi.mjs", "make_temp_dir_sync_with")
+pub fn make_temp_dir_sync_with(
+  options: List(MakeTempOption),
+) -> Result(String, Error)
 
 @external(javascript, "./amber.ffi.mjs", "make_temp_file_sync")
-pub fn make_temp_file_sync(options: List(MakeTempOption)) -> String
+pub fn make_temp_file_sync() -> Result(String, Error)
+
+@external(javascript, "./amber.ffi.mjs", "make_temp_file_sync_with")
+pub fn make_temp_file_sync_with(
+  options: List(MakeTempOption),
+) -> Result(String, Error)
 
 @external(javascript, "./amber.ffi.mjs", "chmod_sync")
-pub fn chmod_sync(path: String, mode: Int) -> Nil
+pub fn chmod_sync(path: String, mode: Int) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "chown_sync")
-pub fn chown_sync(path: String, uid: Option(Int), gid: Option(Int)) -> Nil
+pub fn chown_sync(
+  path: String,
+  uid: Option(Int),
+  gid: Option(Int),
+) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "remove_sync")
-pub fn remove_sync(path: String, options: List(RemoveOption)) -> Nil
+pub fn remove_sync(path: String) -> Result(Nil, Error)
+
+@external(javascript, "./amber.ffi.mjs", "remove_sync_with")
+pub fn remove_sync_with(
+  path: String,
+  options: List(RemoveOption),
+) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "rename_sync")
-pub fn rename_sync(oldpath: String, newpath: String) -> Nil
+pub fn rename_sync(oldpath: String, newpath: String) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "read_text_file_sync")
-pub fn read_text_file_sync(path: String) -> String
+pub fn read_text_file_sync(path: String) -> Result(String, Error)
 
 @external(javascript, "./amber.ffi.mjs", "read_file_sync")
-pub fn read_file_sync(path: String) -> Uint8Array
+pub fn read_file_sync(path: String) -> Result(Uint8Array, Error)
 
 @external(javascript, "./amber.ffi.mjs", "real_path_sync")
-pub fn real_path_sync(path: String) -> String
+pub fn real_path_sync(path: String) -> Result(String, Error)
 
 @external(javascript, "./amber.ffi.mjs", "read_dir_sync")
-pub fn read_dir_sync(path: String) -> List(DirEntry)
+pub fn read_dir_sync(path: String) -> Result(List(DirEntry), Error)
 
 @external(javascript, "./amber.ffi.mjs", "copy_file_sync")
-pub fn copy_file_sync(from_path: String, to_path: String) -> Nil
+pub fn copy_file_sync(from_path: String, to_path: String) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "read_link_sync")
-pub fn read_link_sync(path: String) -> String
+pub fn read_link_sync(path: String) -> Result(String, Error)
 
 @external(javascript, "./amber.ffi.mjs", "lstat_sync")
-pub fn lstat_sync(path: String) -> FileInfo
+pub fn lstat_sync(path: String) -> Result(FileInfo, Error)
 
 @external(javascript, "./amber.ffi.mjs", "stat_sync")
-pub fn stat_sync(path: String) -> FileInfo
+pub fn stat_sync(path: String) -> Result(FileInfo, Error)
 
 @external(javascript, "./amber.ffi.mjs", "write_file_sync")
-pub fn write_file_sync(
+pub fn write_file_sync(path: String, data: Uint8Array) -> Result(Nil, Error)
+
+@external(javascript, "./amber.ffi.mjs", "write_file_sync_with")
+pub fn write_file_sync_with(
   path: String,
   data: Uint8Array,
   options: List(WriteFileOption),
-) -> Nil
+) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "write_text_file_sync")
-pub fn write_text_file_sync(
+pub fn write_text_file_sync(path: String, data: String) -> Result(Nil, Error)
+
+@external(javascript, "./amber.ffi.mjs", "write_text_file_sync_with")
+pub fn write_text_file_sync_with(
   path: String,
   data: String,
   options: List(WriteFileOption),
-) -> Nil
+) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "truncate_sync")
-pub fn truncate_sync(name: String, len: Option(Int)) -> Nil
+pub fn truncate_sync(name: String) -> Result(Nil, Error)
+
+@external(javascript, "./amber.ffi.mjs", "truncate_to_length_sync")
+pub fn truncate_to_length_sync(name: String, len: Int) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "watch_fs")
-pub fn watch_fs(paths: List(String), options: List(WatchFsOption)) -> FsWatcher
+pub fn watch_fs(paths: List(String)) -> FsWatcher
+
+@external(javascript, "./amber.ffi.mjs", "watch_fs_with")
+pub fn watch_fs_with(
+  paths: List(String),
+  options: List(WatchFsOption),
+) -> FsWatcher
 
 @external(javascript, "./amber.ffi.mjs", "symlink_sync")
-pub fn symlink_sync(
+pub fn symlink_sync(oldpath: String, newpath: String) -> Result(Nil, Error)
+
+@external(javascript, "./amber.ffi.mjs", "symlink_sync_with")
+pub fn symlink_sync_with(
   oldpath: String,
   newpath: String,
   options: List(SymlinkOption),
-) -> Nil
+) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "utime_sync")
-pub fn utime_sync(path: String, atime: Int, mtime: Int) -> Nil
+pub fn utime_sync(path: String, atime: Int, mtime: Int) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "umask")
 pub fn umask() -> Int
@@ -147,48 +193,69 @@ pub fn set_umask(mask: Int) -> Int
 /// console window, but can be used as part of that calculation.
 ///
 @external(javascript, "./amber.ffi.mjs", "console_size")
-pub fn console_size() -> ConsoleSize
+pub fn console_size() -> Result(ConsoleSize, Error)
 
 /// Converts the input into a string that has the same format as printed by
 /// `console.log()`.
 ///
 @external(javascript, "./amber.ffi.mjs", "inspect")
-pub fn inspect(value: Dynamic, options: List(InspectOption)) -> String
+pub fn inspect(value: a) -> String
+
+@external(javascript, "./amber.ffi.mjs", "inspect_with")
+pub fn inspect_with(value: a, options: List(InspectOption)) -> String
 
 // Network
 
 /// Returns an array of the network interface information.
 ///
 @external(javascript, "./amber.ffi.mjs", "network_interfaces")
-pub fn network_interfaces() -> List(NetworkInterfaceInfo)
+pub fn network_interfaces() -> Result(List(NetworkInterfaceInfo), Error)
 
 /// Listen announces on the local transport address.
 ///
 @external(javascript, "./amber.ffi.mjs", "listen")
-pub fn listen(port: Int, options: List(ListenOption)) -> Listener
+pub fn listen(port: Int) -> Result(Listener, Error)
+
+/// Listen announces on the local transport address with options.
+///
+@external(javascript, "./amber.ffi.mjs", "listen_with")
+pub fn listen_with(
+  port: Int,
+  options: List(ListenOption),
+) -> Result(Listener, Error)
 
 /// Connects to the hostname (default is "127.0.0.1") and port on the named
 /// transport (default is "tcp"), and resolves to the connection (`TcpConn`).
 ///
 @external(javascript, "./amber.ffi.mjs", "connect")
-pub fn connect(port: Int, options: List(ConnectOption)) -> Promise(TcpConn)
+pub fn connect(port: Int) -> Promise(Result(TcpConn, Error))
 
-/// Establishes a secure connection over TLS (transport layer security)
-/// using an optional list of CA certs, hostname (default is "127.0.0.1")
-/// and port.
+/// Connects to the given hostname and port with options.
 ///
-/// The CA cert list is optional and if not included Mozilla's root
-/// certificates will be used (see also
+@external(javascript, "./amber.ffi.mjs", "connect_with")
+pub fn connect_with(
+  port: Int,
+  options: List(ConnectOption),
+) -> Promise(Result(TcpConn, Error))
+
+/// Establishes a secure connection over TLS (transport layer security).
+///
+/// Uses Mozilla's root certificates by default (see also
 /// https://github.com/ctz/webpki-roots for specifics).
 ///
-/// Mutual TLS (mTLS or client certificates) are supported by providing a
-/// `CertifiedKey` in the options with PEM-encoded key and cert strings.
-///
 @external(javascript, "./amber.ffi.mjs", "connect_tls")
-pub fn connect_tls(
+pub fn connect_tls(port: Int) -> Promise(Result(TlsConn, Error))
+
+/// Establishes a secure connection over TLS with options.
+///
+/// Custom CA certs, hostname, and mutual TLS (mTLS or client certificates)
+/// are supported through the options.
+///
+@external(javascript, "./amber.ffi.mjs", "connect_tls_with")
+pub fn connect_tls_with(
   port: Int,
   options: List(ConnectTlsOption),
-) -> Promise(TlsConn)
+) -> Promise(Result(TlsConn, Error))
 
 /// Listen announces on the local transport address over TLS (transport
 /// layer security).
@@ -197,14 +264,20 @@ pub fn connect_tls(
 pub fn listen_tls(
   port: Int,
   certified_key: TlsCertifiedKeyPem,
-  options: List(ListenTlsOption),
-) -> TlsListener
+) -> Result(TlsListener, Error)
 
-/// Start TLS handshake from an existing connection using an optional list
-/// of CA certificates, and hostname (default is "127.0.0.1"). Specifying
-/// CA certs is optional. By default the configured root certificates are
-/// used. Using this function requires that the other end of the connection
-/// is prepared for a TLS handshake.
+/// Listen announces on the local transport address over TLS with options.
+///
+@external(javascript, "./amber.ffi.mjs", "listen_tls_with")
+pub fn listen_tls_with(
+  port: Int,
+  certified_key: TlsCertifiedKeyPem,
+  options: List(ListenTlsOption),
+) -> Result(TlsListener, Error)
+
+/// Start TLS handshake from an existing connection using the configured
+/// root certificates. Using this function requires that the other end of
+/// the connection is prepared for a TLS handshake.
 ///
 /// Note that this function *consumes* the TCP connection passed to it,
 /// thus the original TCP connection will be unusable after calling this.
@@ -216,10 +289,15 @@ pub fn listen_tls(
 /// elsewhere. In such a case, this function will fail.
 ///
 @external(javascript, "./amber.ffi.mjs", "start_tls")
-pub fn start_tls(
+pub fn start_tls(conn: TcpConn) -> Promise(Result(TlsConn, Error))
+
+/// Start TLS handshake from an existing connection with options.
+///
+@external(javascript, "./amber.ffi.mjs", "start_tls_with")
+pub fn start_tls_with(
   conn: TcpConn,
   options: List(StartTlsOption),
-) -> Promise(TlsConn)
+) -> Promise(Result(TlsConn, Error))
 
 // DNS
 
@@ -230,56 +308,84 @@ pub fn start_tls(
 pub fn resolve_dns(
   query: String,
   record_type: RecordType,
+) -> Promise(Result(List(String), Error))
+
+@external(javascript, "./amber.ffi.mjs", "resolve_dns_with")
+pub fn resolve_dns_with(
+  query: String,
+  record_type: RecordType,
   options: List(ResolveDnsOption),
-) -> Promise(List(String))
+) -> Promise(Result(List(String), Error))
 
 /// Performs DNS resolution for CAA records.
 ///
 @external(javascript, "./amber.ffi.mjs", "resolve_dns_caa")
-pub fn resolve_dns_caa(
+pub fn resolve_dns_caa(query: String) -> Promise(Result(List(CaaRecord), Error))
+
+@external(javascript, "./amber.ffi.mjs", "resolve_dns_caa_with")
+pub fn resolve_dns_caa_with(
   query: String,
   options: List(ResolveDnsOption),
-) -> Promise(List(CaaRecord))
+) -> Promise(Result(List(CaaRecord), Error))
 
 /// Performs DNS resolution for MX records.
 ///
 @external(javascript, "./amber.ffi.mjs", "resolve_dns_mx")
-pub fn resolve_dns_mx(
+pub fn resolve_dns_mx(query: String) -> Promise(Result(List(MxRecord), Error))
+
+@external(javascript, "./amber.ffi.mjs", "resolve_dns_mx_with")
+pub fn resolve_dns_mx_with(
   query: String,
   options: List(ResolveDnsOption),
-) -> Promise(List(MxRecord))
+) -> Promise(Result(List(MxRecord), Error))
 
 /// Performs DNS resolution for NAPTR records.
 ///
 @external(javascript, "./amber.ffi.mjs", "resolve_dns_naptr")
 pub fn resolve_dns_naptr(
   query: String,
+) -> Promise(Result(List(NaptrRecord), Error))
+
+@external(javascript, "./amber.ffi.mjs", "resolve_dns_naptr_with")
+pub fn resolve_dns_naptr_with(
+  query: String,
   options: List(ResolveDnsOption),
-) -> Promise(List(NaptrRecord))
+) -> Promise(Result(List(NaptrRecord), Error))
 
 /// Performs DNS resolution for SOA records.
 ///
 @external(javascript, "./amber.ffi.mjs", "resolve_dns_soa")
-pub fn resolve_dns_soa(
+pub fn resolve_dns_soa(query: String) -> Promise(Result(List(SoaRecord), Error))
+
+@external(javascript, "./amber.ffi.mjs", "resolve_dns_soa_with")
+pub fn resolve_dns_soa_with(
   query: String,
   options: List(ResolveDnsOption),
-) -> Promise(List(SoaRecord))
+) -> Promise(Result(List(SoaRecord), Error))
 
 /// Performs DNS resolution for SRV records.
 ///
 @external(javascript, "./amber.ffi.mjs", "resolve_dns_srv")
-pub fn resolve_dns_srv(
+pub fn resolve_dns_srv(query: String) -> Promise(Result(List(SrvRecord), Error))
+
+@external(javascript, "./amber.ffi.mjs", "resolve_dns_srv_with")
+pub fn resolve_dns_srv_with(
   query: String,
   options: List(ResolveDnsOption),
-) -> Promise(List(SrvRecord))
+) -> Promise(Result(List(SrvRecord), Error))
 
 /// Performs DNS resolution for TXT records.
 ///
 @external(javascript, "./amber.ffi.mjs", "resolve_dns_txt")
 pub fn resolve_dns_txt(
   query: String,
+) -> Promise(Result(List(List(String)), Error))
+
+@external(javascript, "./amber.ffi.mjs", "resolve_dns_txt_with")
+pub fn resolve_dns_txt_with(
+  query: String,
   options: List(ResolveDnsOption),
-) -> Promise(List(List(String)))
+) -> Promise(Result(List(List(String)), Error))
 
 // WebSockets
 
@@ -290,7 +396,7 @@ pub fn resolve_dns_txt(
 /// returned response for the upgrade to be successful.
 ///
 @external(javascript, "./amber.ffi.mjs", "upgrade_web_socket")
-pub fn upgrade_web_socket(request: Request) -> WebSocketUpgrade
+pub fn upgrade_web_socket(request: Request) -> Result(WebSocketUpgrade, Error)
 
 /// Upgrade an incoming HTTP request to a WebSocket with options.
 ///
@@ -298,7 +404,7 @@ pub fn upgrade_web_socket(request: Request) -> WebSocketUpgrade
 pub fn upgrade_web_socket_with(
   request: Request,
   options: List(UpgradeWebSocketOption),
-) -> WebSocketUpgrade
+) -> Result(WebSocketUpgrade, Error)
 
 // Runtime
 
@@ -309,10 +415,10 @@ pub fn add_signal_listener(signal: Signal, handler: fn() -> any) -> Nil
 pub fn chdir(directory: String) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "cwd")
-pub fn cwd() -> String
+pub fn cwd() -> Result(String, Error)
 
 @external(javascript, "./amber.ffi.mjs", "exec_path")
-pub fn exec_path() -> String
+pub fn exec_path() -> Result(String, Error)
 
 @external(javascript, "./amber.ffi.mjs", "exit")
 pub fn exit() -> Nil
@@ -321,22 +427,22 @@ pub fn exit() -> Nil
 pub fn exit_with(code: Int) -> Nil
 
 @external(javascript, "./amber.ffi.mjs", "gid")
-pub fn gid() -> Option(Int)
+pub fn gid() -> Result(Option(Int), Error)
 
 @external(javascript, "./amber.ffi.mjs", "hostname")
-pub fn hostname() -> String
+pub fn hostname() -> Result(String, Error)
 
 @external(javascript, "./amber.ffi.mjs", "loadavg")
-pub fn loadavg() -> #(Float, Float, Float)
+pub fn loadavg() -> Result(#(Float, Float, Float), Error)
 
 @external(javascript, "./amber.ffi.mjs", "memory_usage")
 pub fn memory_usage() -> MemoryUsage
 
 @external(javascript, "./amber.ffi.mjs", "os_release")
-pub fn os_release() -> String
+pub fn os_release() -> Result(String, Error)
 
 @external(javascript, "./amber.ffi.mjs", "os_uptime")
-pub fn os_uptime() -> Int
+pub fn os_uptime() -> Result(Int, Error)
 
 @external(javascript, "./amber.ffi.mjs", "ref_timer")
 pub fn ref_timer(id: Int) -> Nil
@@ -345,10 +451,10 @@ pub fn ref_timer(id: Int) -> Nil
 pub fn remove_signal_listener(signal: Signal, handler: fn() -> any) -> Nil
 
 @external(javascript, "./amber.ffi.mjs", "system_memory_info")
-pub fn system_memory_info() -> SystemMemoryInfo
+pub fn system_memory_info() -> Result(SystemMemoryInfo, Error)
 
 @external(javascript, "./amber.ffi.mjs", "uid")
-pub fn uid() -> Option(Int)
+pub fn uid() -> Result(Option(Int), Error)
 
 @external(javascript, "./amber.ffi.mjs", "unref_timer")
 pub fn unref_timer(id: Int) -> Nil
@@ -368,8 +474,8 @@ pub fn set_exit_code(code: Int) -> Nil
 @external(javascript, "./amber.ffi.mjs", "main_module")
 pub fn main_module() -> String
 
-@external(javascript, "./amber.ffi.mjs", "no_color")
-pub fn no_color() -> Bool
+@external(javascript, "./amber.ffi.mjs", "is_no_color")
+pub fn is_no_color() -> Bool
 
 @external(javascript, "./amber.ffi.mjs", "pid")
 pub fn pid() -> Int
@@ -383,7 +489,7 @@ pub fn version() -> Version
 // Subprocess
 
 @external(javascript, "./amber.ffi.mjs", "kill")
-pub fn kill(pid: Int) -> Nil
+pub fn kill(pid: Int) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "kill_with")
-pub fn kill_with(pid: Int, signal: Signal) -> Nil
+pub fn kill_with(pid: Int, signal: Signal) -> Result(Nil, Error)

@@ -1,7 +1,8 @@
 import type * as $stderr from "$/amber/amber/stderr.mjs";
+import { fromPromise } from "~/amber/error.ts";
 
 export const write: typeof $stderr.write = (p) => {
-  return Deno.stderr.write(p);
+  return fromPromise(Deno.stderr.write(p));
 };
 
 export const write_sync: typeof $stderr.write_sync = (p) => {

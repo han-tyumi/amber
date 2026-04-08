@@ -1,14 +1,17 @@
 import type * as $listener from "$/amber/amber/listener.mjs";
+import { fromPromise, fromThrows } from "~/amber/error.ts";
 import { toNetAddr } from "~/amber/net_addr.ts";
 
 export type Listener$ = Deno.TcpListener;
 
 export const accept: typeof $listener.accept = (listener) => {
-  return listener.accept();
+  return fromPromise(listener.accept());
 };
 
 export const close: typeof $listener.close = (listener) => {
-  listener.close();
+  return fromThrows(() => {
+    listener.close();
+  });
 };
 
 export const addr: typeof $listener.addr = (listener) => {

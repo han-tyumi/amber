@@ -1,4 +1,5 @@
 import amber/conn.{type Conn}
+import amber/error.{type Error}
 import amber/tls_handshake_info.{type TlsHandshakeInfo}
 import gossamer/promise.{type Promise}
 
@@ -10,7 +11,7 @@ pub type TlsConn
 /// will be completed automatically as soon as data is sent or received.
 ///
 @external(javascript, "./tls_conn.ffi.mjs", "handshake")
-pub fn handshake(conn: TlsConn) -> Promise(TlsHandshakeInfo)
+pub fn handshake(conn: TlsConn) -> Promise(Result(TlsHandshakeInfo, Error))
 
 /// Converts a TlsConn to a Conn for use with generic connection functions.
 ///

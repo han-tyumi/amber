@@ -1,4 +1,5 @@
 import amber/conn/tls_conn.{type TlsConn}
+import amber/error.{type Error}
 import amber/net_addr.{type NetAddr}
 import gossamer/promise.{type Promise}
 
@@ -10,13 +11,13 @@ pub type TlsListener
 /// Waits for and resolves to the next connection to the `TlsListener`.
 ///
 @external(javascript, "./tls_listener.ffi.mjs", "accept")
-pub fn accept(listener: TlsListener) -> Promise(TlsConn)
+pub fn accept(listener: TlsListener) -> Promise(Result(TlsConn, Error))
 
 /// Close closes the listener. Any pending accept promises will be rejected
 /// with errors.
 ///
 @external(javascript, "./tls_listener.ffi.mjs", "close")
-pub fn close(listener: TlsListener) -> Nil
+pub fn close(listener: TlsListener) -> Result(Nil, Error)
 
 /// Return the address of the `TlsListener`.
 ///

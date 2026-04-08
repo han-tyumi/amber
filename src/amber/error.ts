@@ -1,5 +1,5 @@
 import * as $error from "$/amber/amber/error.mjs";
-import type { Result } from "$/prelude.mjs";
+import { type Result, Result$Error, Result$Ok } from "$/prelude.mjs";
 import { toResult } from "~/utils/result.ts";
 
 export function toError$(error: unknown): $error.Error$ {
@@ -69,4 +69,13 @@ export function toError$(error: unknown): $error.Error$ {
 
 export function fromThrows<T>(throws: () => T): Result<T, $error.Error$> {
   return toResult.fromThrows(throws, toError$);
+}
+
+export function fromPromise<T>(
+  promise: Promise<T>,
+): Promise<Result<T, $error.Error$>> {
+  return promise.then(
+    (value): Result<T, $error.Error$> => Result$Ok(value),
+    (error): Result<T, $error.Error$> => Result$Error(toError$(error)),
+  );
 }

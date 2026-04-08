@@ -7,7 +7,8 @@ import gossamer/promise
 import gossamer/uint8_array
 
 pub fn stdio_stdin_read_test() {
-  use nread <- promise.then(stdin.read(uint8_array.new()))
+  use result <- promise.then(stdin.read(uint8_array.new()))
+  let assert Ok(nread) = result
   nread |> should.equal(Some(0))
 }
 
@@ -17,7 +18,8 @@ pub fn stdio_stdin_read_sync_test() {
 }
 
 pub fn stdio_stdout_write_test() {
-  use nwritten <- promise.then(stdout.write(uint8_array.new()))
+  use result <- promise.then(stdout.write(uint8_array.new()))
+  let assert Ok(nwritten) = result
   nwritten |> should.equal(0)
 }
 
@@ -27,7 +29,8 @@ pub fn stdio_stdout_write_sync_test() {
 }
 
 pub fn stdio_stderr_write_test() {
-  use nwritten <- promise.then(stderr.write(uint8_array.new()))
+  use result <- promise.then(stderr.write(uint8_array.new()))
+  let assert Ok(nwritten) = result
   nwritten |> should.equal(0)
 }
 

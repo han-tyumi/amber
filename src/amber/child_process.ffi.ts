@@ -1,7 +1,7 @@
 import type * as $childProcess from "$/amber/amber/child_process.mjs";
 import { toCommandOutputType } from "~/amber/command/command_output.ts";
 import { toCommandStatusType } from "~/amber/command/command_status.ts";
-import { fromThrows } from "~/amber/error.ts";
+import { fromPromise, fromThrows } from "~/amber/error.ts";
 import { toSignal } from "~/amber/signal.ts";
 
 export type ChildProcess$ = Deno.ChildProcess;
@@ -28,16 +28,16 @@ export const pid: typeof $childProcess.pid = (process: Deno.ChildProcess) => {
   return process.pid;
 };
 
-export const status: typeof $childProcess.status = async (
+export const status: typeof $childProcess.status = (
   process: Deno.ChildProcess,
 ) => {
-  return toCommandStatusType(await process.status);
+  return fromPromise(process.status.then(toCommandStatusType));
 };
 
-export const output: typeof $childProcess.output = async (
+export const output: typeof $childProcess.output = (
   process: Deno.ChildProcess,
 ) => {
-  return toCommandOutputType(await process.output());
+  return fromPromise(process.output().then(toCommandOutputType));
 };
 
 export const kill: typeof $childProcess.kill = (

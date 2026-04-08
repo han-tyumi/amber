@@ -7,10 +7,13 @@ import amber/error.{type Error}
 pub type Command
 
 @external(javascript, "./command.ffi.mjs", "new_")
-pub fn new(command: String, options: List(CommandOption)) -> Command
+pub fn new(command: String) -> Command
+
+@external(javascript, "./command.ffi.mjs", "new_with_")
+pub fn new_with(command: String, options: List(CommandOption)) -> Command
 
 @external(javascript, "./command.ffi.mjs", "output_sync")
 pub fn output_sync(command: Command) -> Result(CommandOutput, Error)
 
 @external(javascript, "./command.ffi.mjs", "spawn")
-pub fn spawn(command: Command) -> ChildProcess
+pub fn spawn(command: Command) -> Result(ChildProcess, Error)

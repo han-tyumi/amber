@@ -5,7 +5,7 @@ import gleam/option.{None, Some}
 import gleeunit/should
 
 pub fn network_interfaces_test() {
-  let interfaces = amber.network_interfaces()
+  let assert Ok(interfaces) = amber.network_interfaces()
   should.be_true(interfaces != [])
 
   list.each(interfaces, fn(info) {

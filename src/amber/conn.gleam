@@ -1,3 +1,4 @@
+import amber/error.{type Error}
 import amber/net_addr.{type NetAddr}
 import gleam/option.{type Option}
 import gossamer/promise.{type Promise}
@@ -20,7 +21,7 @@ pub type Conn
 /// call.**
 ///
 @external(javascript, "./conn.ffi.mjs", "read")
-pub fn read(conn: Conn, p: Uint8Array) -> Promise(Option(Int))
+pub fn read(conn: Conn, p: Uint8Array) -> Promise(Result(Option(Int), Error))
 
 /// Write the contents of the array buffer (`p`) to the connection.
 ///
@@ -30,12 +31,12 @@ pub fn read(conn: Conn, p: Uint8Array) -> Promise(Option(Int))
 /// call.**
 ///
 @external(javascript, "./conn.ffi.mjs", "write")
-pub fn write(conn: Conn, p: Uint8Array) -> Promise(Int)
+pub fn write(conn: Conn, p: Uint8Array) -> Promise(Result(Int, Error))
 
 /// Closes the connection, freeing the resource.
 ///
 @external(javascript, "./conn.ffi.mjs", "close")
-pub fn close(conn: Conn) -> Nil
+pub fn close(conn: Conn) -> Result(Nil, Error)
 
 /// The local address of the connection.
 ///
@@ -51,11 +52,15 @@ pub fn remote_addr(conn: Conn) -> NetAddr
 /// callers should just use `close()`.
 ///
 @external(javascript, "./conn.ffi.mjs", "close_write")
-pub fn close_write(conn: Conn) -> Promise(Nil)
+pub fn close_write(conn: Conn) -> Promise(Result(Nil, Error))
 
+/// Make the connection block the event loop from finishing.
+///
 @external(javascript, "./conn.ffi.mjs", "ref")
 pub fn ref(conn: Conn) -> Nil
 
+/// Make the connection not block the event loop from finishing.
+///
 @external(javascript, "./conn.ffi.mjs", "unref")
 pub fn unref(conn: Conn) -> Nil
 

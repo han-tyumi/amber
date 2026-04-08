@@ -29,16 +29,20 @@ export const write_sync: typeof $fsFile.write_sync = (
 export const truncate_sync: typeof $fsFile.truncate_sync = (
   file: Deno.FsFile,
 ) => {
-  file.truncateSync();
-  return file;
+  return fromThrows(() => {
+    file.truncateSync();
+    return file;
+  });
 };
 
 export const truncate_to_length_sync: typeof $fsFile.truncate_to_length_sync = (
   file: Deno.FsFile,
   len,
 ) => {
-  file.truncateSync(len);
-  return file;
+  return fromThrows(() => {
+    file.truncateSync(len);
+    return file;
+  });
 };
 
 export const read_sync: typeof $fsFile.read_sync = (
@@ -48,13 +52,11 @@ export const read_sync: typeof $fsFile.read_sync = (
   return fromThrows(() => toBytesRead(file.readSync(p)));
 };
 
-function toSeekMode(
-  instance: $seekMode.SeekMode$,
-): Deno.SeekMode | undefined {
+function toSeekMode(instance: $seekMode.SeekMode$): Deno.SeekMode {
   if ($seekMode.SeekMode$isStart(instance)) return 0;
   if ($seekMode.SeekMode$isCurrent(instance)) return 1;
   if ($seekMode.SeekMode$isEnd(instance)) return 2;
-  return undefined;
+  throw new Error("Unknown SeekMode variant");
 }
 
 export const seek_sync: typeof $fsFile.seek_sync = (
@@ -62,7 +64,7 @@ export const seek_sync: typeof $fsFile.seek_sync = (
   offset,
   whence,
 ) => {
-  return file.seekSync(offset, toSeekMode(whence) as Deno.SeekMode);
+  return fromThrows(() => file.seekSync(offset, toSeekMode(whence)));
 };
 
 export const stat_sync: typeof $fsFile.stat_sync = (file: Deno.FsFile) => {
@@ -70,15 +72,19 @@ export const stat_sync: typeof $fsFile.stat_sync = (file: Deno.FsFile) => {
 };
 
 export const sync_sync: typeof $fsFile.sync_sync = (file: Deno.FsFile) => {
-  file.syncSync();
-  return file;
+  return fromThrows(() => {
+    file.syncSync();
+    return file;
+  });
 };
 
 export const sync_data_sync: typeof $fsFile.sync_data_sync = (
   file: Deno.FsFile,
 ) => {
-  file.syncDataSync();
-  return file;
+  return fromThrows(() => {
+    file.syncDataSync();
+    return file;
+  });
 };
 
 export const utime_sync: typeof $fsFile.utime_sync = (
@@ -86,8 +92,10 @@ export const utime_sync: typeof $fsFile.utime_sync = (
   atime,
   mtime,
 ) => {
-  file.utimeSync(atime, mtime);
-  return file;
+  return fromThrows(() => {
+    file.utimeSync(atime, mtime);
+    return file;
+  });
 };
 
 export const is_terminal: typeof $fsFile.is_terminal = (file: Deno.FsFile) => {
@@ -97,30 +105,48 @@ export const is_terminal: typeof $fsFile.is_terminal = (file: Deno.FsFile) => {
 export const set_raw: typeof $fsFile.set_raw = (
   file: Deno.FsFile,
   mode,
+) => {
+  return fromThrows(() => {
+    file.setRaw(mode);
+    return file;
+  });
+};
+
+export const set_raw_with: typeof $fsFile.set_raw_with = (
+  file: Deno.FsFile,
+  mode,
   options,
 ) => {
-  file.setRaw(
-    mode,
-    toSetRawOptions(toArray(options)) as Deno.SetRawOptions,
-  );
-  return file;
+  return fromThrows(() => {
+    file.setRaw(
+      mode,
+      toSetRawOptions(toArray(options)) as Deno.SetRawOptions,
+    );
+    return file;
+  });
 };
 
 export const lock_sync: typeof $fsFile.lock_sync = (
   file: Deno.FsFile,
   exclusive,
 ) => {
-  file.lockSync(exclusive);
-  return file;
+  return fromThrows(() => {
+    file.lockSync(exclusive);
+    return file;
+  });
 };
 
 export const unlock_sync: typeof $fsFile.unlock_sync = (file: Deno.FsFile) => {
-  file.unlockSync();
-  return file;
+  return fromThrows(() => {
+    file.unlockSync();
+    return file;
+  });
 };
 
 export const close: typeof $fsFile.close = (file: Deno.FsFile) => {
-  file.close();
+  return fromThrows(() => {
+    file.close();
+  });
 };
 
 export const using_: typeof $fsFile.using = <T>(

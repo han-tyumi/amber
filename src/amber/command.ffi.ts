@@ -5,11 +5,12 @@ import { fromThrows } from "~/amber/error.ts";
 
 export type Command$ = Deno.Command;
 
-export const new_: typeof $command.new$ = (command, options) => {
-  return new Deno.Command(
-    command,
-    toCommandOptions(options),
-  );
+export const new_: typeof $command.new$ = (command) => {
+  return new Deno.Command(command);
+};
+
+export const new_with_: typeof $command.new_with = (command, options) => {
+  return new Deno.Command(command, toCommandOptions(options));
 };
 
 export const output_sync: typeof $command.output_sync = (
@@ -19,5 +20,5 @@ export const output_sync: typeof $command.output_sync = (
 };
 
 export const spawn: typeof $command.spawn = (command: Deno.Command) => {
-  return command.spawn();
+  return fromThrows(() => command.spawn());
 };

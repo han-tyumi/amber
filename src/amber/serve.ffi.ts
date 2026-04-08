@@ -1,6 +1,7 @@
 import type * as $serve from "$/amber/amber/serve.mjs";
 import * as $serveHandlerInfo from "$/amber/amber/serve/serve_handler_info.mjs";
 import * as $serveOption from "$/amber/amber/serve/serve_option.mjs";
+import { fromPromise, fromThrows, toError$ } from "~/amber/error.ts";
 import { toNetAddr } from "~/amber/net_addr.ts";
 import { toArray } from "~/utils/list.ts";
 
@@ -34,7 +35,8 @@ function toServeOptions(
       const callback = $serveOption.ServeOption$OnListen$0(option);
       result.onListen = (addr) => callback(toNetAddr(addr));
     } else if ($serveOption.ServeOption$isOnError(option)) {
-      result.onError = $serveOption.ServeOption$OnError$0(option);
+      const callback = $serveOption.ServeOption$OnError$0(option);
+      result.onError = (error) => callback(toError$(error));
     } else if ($serveOption.ServeOption$isReusePort(option)) {
       result.reusePort = true;
     }
@@ -43,7 +45,7 @@ function toServeOptions(
 }
 
 export const finished: typeof $serve.finished = (server) => {
-  return server.finished.then(() => undefined);
+  return fromPromise(server.finished.then(() => undefined));
 };
 
 export const addr: typeof $serve.addr = (server) => {
@@ -59,12 +61,11 @@ export const unref: typeof $serve.unref = (server) => {
 };
 
 export const serve: typeof $serve.serve = (handler) => {
-  return Deno.serve(toServeHandler(handler));
+  return fromThrows(() => Deno.serve(toServeHandler(handler)));
 };
 
 export const serve_with: typeof $serve.serve_with = (options, handler) => {
-  return Deno.serve(
-    toServeOptions(toArray(options)),
-    toServeHandler(handler),
+  return fromThrows(() =>
+    Deno.serve(toServeOptions(toArray(options)), toServeHandler(handler))
   );
 };

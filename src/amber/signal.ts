@@ -74,12 +74,12 @@ export function toSignalType(value: Deno.Signal): $signal.Signal$ {
       return $signal.Signal$SIGXCPU();
     case "SIGXFSZ":
       return $signal.Signal$SIGXFSZ();
+    default:
+      throw new Error(`Unknown signal: ${value}`);
   }
 }
 
-export function toSignal(
-  instance: $signal.Signal$,
-): Deno.Signal | undefined {
+export function toSignal(instance: $signal.Signal$): Deno.Signal {
   if ($signal.Signal$isSIGABRT(instance)) return "SIGABRT";
   if ($signal.Signal$isSIGALRM(instance)) return "SIGALRM";
   if ($signal.Signal$isSIGBREAK(instance)) return "SIGBREAK";
@@ -116,5 +116,5 @@ export function toSignal(
   if ($signal.Signal$isSIGWINCH(instance)) return "SIGWINCH";
   if ($signal.Signal$isSIGXCPU(instance)) return "SIGXCPU";
   if ($signal.Signal$isSIGXFSZ(instance)) return "SIGXFSZ";
-  return undefined;
+  throw new Error("Unknown signal variant");
 }

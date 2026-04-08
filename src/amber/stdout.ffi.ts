@@ -1,7 +1,8 @@
 import type * as $stdout from "$/amber/amber/stdout.mjs";
+import { fromPromise } from "~/amber/error.ts";
 
 export const write: typeof $stdout.write = (p) => {
-  return Deno.stdout.write(p);
+  return fromPromise(Deno.stdout.write(p));
 };
 
 export const write_sync: typeof $stdout.write_sync = (p) => {

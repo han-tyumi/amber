@@ -1,6 +1,3 @@
-/// If `amber.resolve_dns_caa` is called, it will resolve with a list of
-/// objects with this type.
-///
 pub type CaaRecord {
   CaaRecord(
     /// If `true`, indicates that the corresponding property tag must be

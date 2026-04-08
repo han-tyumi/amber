@@ -26,6 +26,8 @@ function toFsEventKind(value: Deno.FsEvent["kind"]): $fsEvent.FsEventKind$ {
       return $fsEvent.FsEventKind$Remove();
     case "other":
       return $fsEvent.FsEventKind$Other();
+    default:
+      throw new Error(`Unknown FsEvent kind: ${value}`);
   }
 }
 
@@ -33,6 +35,8 @@ function toFsEventFlag(value: Deno.FsEventFlag): $fsEvent.FsEventFlag$ {
   switch (value) {
     case "rescan":
       return $fsEvent.FsEventFlag$Rescan();
+    default:
+      throw new Error(`Unknown FsEvent flag: ${value}`);
   }
 }
 

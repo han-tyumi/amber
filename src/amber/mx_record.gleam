@@ -1,6 +1,3 @@
-/// If `amber.resolve_dns_mx` is called, it will return a list of objects
-/// with this type.
-///
 pub type MxRecord {
   MxRecord(
     /// A priority value, which is a relative value compared to the other

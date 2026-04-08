@@ -20,5 +20,7 @@ export function toOsType(value: typeof Deno.build["os"]): $os.Os$ {
       return $os.Os$Solaris();
     case "illumos":
       return $os.Os$Illumos();
+    default:
+      throw new Error(`Unknown OS: ${value}`);
   }
 }
