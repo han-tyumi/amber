@@ -14,6 +14,10 @@ type = "PrepareRelease"
 
 [[workflows.steps]]
 type = "Command"
+command = "deno run -A scripts/note_deno_version.ts"
+
+[[workflows.steps]]
+type = "Command"
 command = 'git commit -m "chore: prepare release $version"'
 
 [[workflows.steps]]
