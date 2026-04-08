@@ -2,6 +2,7 @@
 
 [![Package Version](https://img.shields.io/hexpm/v/amber)](https://hex.pm/packages/amber)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/amber/)
+[![Deno >= 2.7](https://img.shields.io/badge/deno-%3E%3D%202.7-blue?logo=deno)](https://deno.com/)
 
 ✨🦕 [Deno](https://deno.com/) Bindings For [Gleam](https://gleam.run/) 🧡
 
@@ -25,10 +26,12 @@ runtime = "deno"
 ## Usage
 
 ```gleam
-import amber/deno
+import amber
+import gossamer/text_encoder
 
 pub fn main() {
-  deno.write_text_file_sync("amber.txt", "deno bindings for gleam", [])
+  let assert Ok(_) =
+    amber.write_file_sync("amber.txt", text_encoder.encode("deno bindings for gleam"))
 }
 ```
 
