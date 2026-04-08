@@ -14,7 +14,7 @@ type = "PrepareRelease"
 
 [[workflows.steps]]
 type = "Command"
-command = "deno run -A scripts/note_deno_version.ts"
+command = "deno run -A scripts/note_deno_version.ts && git add CHANGELOG.md"
 
 [[workflows.steps]]
 type = "Command"
