@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0 (2026-04-09)
+
+### Features
+
+- add labels, Other(String) variants, and callback widening
+
+### Fixes
+
+- stage changelog after Deno version injection in release workflow
+
 ## 1.0.0 (2026-04-08)
 
 Tested against Deno 2.7.11.
