@@ -47,8 +47,8 @@ pub fn prompt_with(message: String) -> Result(String, Nil)
 ///
 @external(javascript, "./global_this.ffi.mjs", "prompt_with_default")
 pub fn prompt_with_default(
-  message: String,
-  default: String,
+  message message: String,
+  or default: String,
 ) -> Result(String, Nil)
 
 /// Terminates the Deno process.

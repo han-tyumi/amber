@@ -11,32 +11,37 @@ import gossamer/writable_stream.{type WritableStream}
 pub type ChildProcess
 
 @external(javascript, "./child_process.ffi.mjs", "stdin")
-pub fn stdin(process: ChildProcess) -> Result(WritableStream(Uint8Array), Error)
+pub fn stdin(
+  of process: ChildProcess,
+) -> Result(WritableStream(Uint8Array), Error)
 
 @external(javascript, "./child_process.ffi.mjs", "stdout")
 pub fn stdout(
-  process: ChildProcess,
+  of process: ChildProcess,
 ) -> Result(ReadableStream(Uint8Array), Error)
 
 @external(javascript, "./child_process.ffi.mjs", "stderr")
 pub fn stderr(
-  process: ChildProcess,
+  of process: ChildProcess,
 ) -> Result(ReadableStream(Uint8Array), Error)
 
 @external(javascript, "./child_process.ffi.mjs", "pid")
-pub fn pid(process: ChildProcess) -> Int
+pub fn pid(of process: ChildProcess) -> Int
 
 @external(javascript, "./child_process.ffi.mjs", "status")
-pub fn status(process: ChildProcess) -> Promise(Result(CommandStatus, Error))
+pub fn status(of process: ChildProcess) -> Promise(Result(CommandStatus, Error))
 
 @external(javascript, "./child_process.ffi.mjs", "output")
-pub fn output(process: ChildProcess) -> Promise(Result(CommandOutput, Error))
+pub fn output(of process: ChildProcess) -> Promise(Result(CommandOutput, Error))
 
 @external(javascript, "./child_process.ffi.mjs", "kill")
 pub fn kill(process: ChildProcess) -> Result(Nil, Error)
 
 @external(javascript, "./child_process.ffi.mjs", "kill_with")
-pub fn kill_with(process: ChildProcess, signal: Signal) -> Result(Nil, Error)
+pub fn kill_with(
+  process: ChildProcess,
+  with signal: Signal,
+) -> Result(Nil, Error)
 
 @external(javascript, "./child_process.ffi.mjs", "ref")
 pub fn ref(process: ChildProcess) -> ChildProcess
@@ -47,5 +52,5 @@ pub fn unref(process: ChildProcess) -> ChildProcess
 @external(javascript, "./child_process.ffi.mjs", "using_")
 pub fn using(
   process: ChildProcess,
-  fun: fn(ChildProcess) -> Promise(a),
+  apply fun: fn(ChildProcess) -> Promise(a),
 ) -> Promise(a)

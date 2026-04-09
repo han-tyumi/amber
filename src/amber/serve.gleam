@@ -13,12 +13,12 @@ pub type HttpServer
 /// the signal passed to `ServeOption.Signal`.
 ///
 @external(javascript, "./serve.ffi.mjs", "finished")
-pub fn finished(server: HttpServer) -> Promise(Result(Nil, Error))
+pub fn finished(of server: HttpServer) -> Promise(Result(Nil, Error))
 
 /// The local address this server is listening on.
 ///
 @external(javascript, "./serve.ffi.mjs", "addr")
-pub fn addr(server: HttpServer) -> NetAddr
+pub fn addr(of server: HttpServer) -> NetAddr
 
 /// Make the server block the event loop from finishing.
 ///
@@ -61,6 +61,6 @@ pub fn serve(
 ///
 @external(javascript, "./serve.ffi.mjs", "serve_with")
 pub fn serve_with(
-  options: List(ServeOption),
-  handler: fn(Request, ServeHandlerInfo) -> Promise(Response),
+  with options: List(ServeOption),
+  apply handler: fn(Request, ServeHandlerInfo) -> Promise(Response),
 ) -> Result(HttpServer, Error)

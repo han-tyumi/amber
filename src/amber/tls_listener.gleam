@@ -22,7 +22,7 @@ pub fn close(listener: TlsListener) -> Result(Nil, Error)
 /// Return the address of the `TlsListener`.
 ///
 @external(javascript, "./tls_listener.ffi.mjs", "addr")
-pub fn addr(listener: TlsListener) -> NetAddr
+pub fn addr(of listener: TlsListener) -> NetAddr
 
 /// Make the listener block the event loop from finishing.
 ///

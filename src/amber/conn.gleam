@@ -21,7 +21,10 @@ pub type Conn
 /// call.**
 ///
 @external(javascript, "./conn.ffi.mjs", "read")
-pub fn read(conn: Conn, p: Uint8Array) -> Promise(Result(Option(Int), Error))
+pub fn read(
+  conn: Conn,
+  into p: Uint8Array,
+) -> Promise(Result(Option(Int), Error))
 
 /// Write the contents of the array buffer (`p`) to the connection.
 ///
@@ -31,7 +34,7 @@ pub fn read(conn: Conn, p: Uint8Array) -> Promise(Result(Option(Int), Error))
 /// call.**
 ///
 @external(javascript, "./conn.ffi.mjs", "write")
-pub fn write(conn: Conn, p: Uint8Array) -> Promise(Result(Int, Error))
+pub fn write(conn: Conn, from p: Uint8Array) -> Promise(Result(Int, Error))
 
 /// Closes the connection, freeing the resource.
 ///
@@ -41,12 +44,12 @@ pub fn close(conn: Conn) -> Result(Nil, Error)
 /// The local address of the connection.
 ///
 @external(javascript, "./conn.ffi.mjs", "local_addr")
-pub fn local_addr(conn: Conn) -> NetAddr
+pub fn local_addr(of conn: Conn) -> NetAddr
 
 /// The remote address of the connection.
 ///
 @external(javascript, "./conn.ffi.mjs", "remote_addr")
-pub fn remote_addr(conn: Conn) -> NetAddr
+pub fn remote_addr(of conn: Conn) -> NetAddr
 
 /// Shuts down (`shutdown(2)`) the write side of the connection. Most
 /// callers should just use `close()`.
@@ -65,7 +68,7 @@ pub fn ref(conn: Conn) -> Nil
 pub fn unref(conn: Conn) -> Nil
 
 @external(javascript, "./conn.ffi.mjs", "readable")
-pub fn readable(conn: Conn) -> ReadableStream(Uint8Array)
+pub fn readable(of conn: Conn) -> ReadableStream(Uint8Array)
 
 @external(javascript, "./conn.ffi.mjs", "writable")
-pub fn writable(conn: Conn) -> WritableStream(Uint8Array)
+pub fn writable(of conn: Conn) -> WritableStream(Uint8Array)

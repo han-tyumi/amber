@@ -7,7 +7,7 @@ pub fn get(key: String) -> Result(String, Nil)
 /// Sets the value of an environment variable. Mutates the process environment.
 ///
 @external(javascript, "./env.ffi.mjs", "set")
-pub fn set(key: String, value: String) -> Result(Nil, Error)
+pub fn set(key: String, to value: String) -> Result(Nil, Error)
 
 /// Deletes an environment variable. Mutates the process environment.
 ///

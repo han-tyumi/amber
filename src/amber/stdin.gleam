@@ -96,7 +96,7 @@ pub fn set_raw(mode: Bool) -> Nil
 /// ```
 ///
 @external(javascript, "./stdin.ffi.mjs", "set_raw_with")
-pub fn set_raw_with(mode: Bool, options: List(SetRawOption)) -> Nil
+pub fn set_raw_with(mode mode: Bool, with options: List(SetRawOption)) -> Nil
 
 /// Checks if `stdin` is a TTY (terminal).
 ///

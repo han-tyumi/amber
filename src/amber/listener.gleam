@@ -20,7 +20,7 @@ pub fn close(listener: Listener) -> Result(Nil, Error)
 /// Return the address of the `Listener`.
 ///
 @external(javascript, "./listener.ffi.mjs", "addr")
-pub fn addr(listener: Listener) -> NetAddr
+pub fn addr(of listener: Listener) -> NetAddr
 
 /// Make the listener block the event loop from finishing.
 ///

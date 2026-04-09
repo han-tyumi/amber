@@ -7,4 +7,4 @@ pub type FsWatcher
 pub fn close(watcher: FsWatcher) -> Nil
 
 @external(javascript, "./fs_watcher.ffi.mjs", "iterate_async")
-pub fn iterate_async(watcher: FsWatcher, callback: fn(FsEvent) -> Nil) -> Nil
+pub fn iterate_async(watcher: FsWatcher, run callback: fn(FsEvent) -> a) -> Nil

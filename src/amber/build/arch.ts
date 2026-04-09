@@ -7,6 +7,6 @@ export function toArchType(value: typeof Deno.build["arch"]): $arch.Arch$ {
     case "aarch64":
       return $arch.Arch$Aarch64();
     default:
-      throw new Error(`Unknown arch: ${value}`);
+      return $arch.Arch$Other(value);
   }
 }

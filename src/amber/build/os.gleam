@@ -8,4 +8,5 @@ pub type Os {
   Aix
   Solaris
   Illumos
+  Other(String)
 }
