@@ -2,6 +2,8 @@
 
 ## 1.1.0 (2026-04-09)
 
+Tested against Deno 2.7.11.
+
 ### Features
 
 - add labels, Other(String) variants, and callback widening
