@@ -1,5 +1,5 @@
 import gleam/option.{type Option}
-import gossamer.{type Date}
+import gossamer/date.{type Date}
 
 /// Provides information about a file and is returned by
 /// [`amber.stat_sync`](../amber.html#stat_sync) and
