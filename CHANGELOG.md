@@ -1,5 +1,25 @@
 # Changelog
 
+## 3.0.0 (2026-04-10)
+
+Tested against Deno 2.7.12.
+
+### Breaking Changes
+
+- gossamer >= 6.0.0 required.
+- env.get, env.has, env.to_dict, add_signal_listener, remove_signal_listener,
+  stdin.set_raw, stdin.set_raw_with, stdin.close, stdout.close, stderr.close,
+  fs_watcher.close, watch_fs, and watch_fs_with return types changed to Result.
+
+### Features
+
+- upgrade gossamer to 6.x
+- wrap all throwable APIs in Result
+
+### Fixes
+
+- support Deno >= 2.2.10, relax NotADirectory test expectation
+
 ## 2.0.0 (2026-04-10)
 
 Tested against Deno 2.7.11.

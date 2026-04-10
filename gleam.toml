@@ -1,5 +1,5 @@
 name = "amber"
-version = "2.0.0"
+version = "3.0.0"
 gleam = ">= 1.14.0"
 description = "✨🦕 Deno Bindings For Gleam 🧡"
 licences = ["Apache-2.0"]
