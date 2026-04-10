@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.0.0 (2026-04-10)
+
+Tested against Deno 2.7.11.
+
+### Breaking Changes
+
+- stdin.read_sync, stdout.write_sync, stderr.write_sync, umask, and set_umask
+  return types changed to Result.
+
+### Features
+
+- wrap throwable sync APIs in Result
+
 ## 1.3.0 (2026-04-10)
 
 Tested against Deno 2.7.11.
