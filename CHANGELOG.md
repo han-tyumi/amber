@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.3.0 (2026-04-10)
+
+Tested against Deno 2.7.11.
+
+### Features
+
+- add missing API members, doc comments, and env tests
+
+### Fixes
+
+- ensure Deno version note is included in release commit
+- separate git add and commit steps in release workflow
+
 ## 1.2.0 (2026-04-10)
 
 ### Features
