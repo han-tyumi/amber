@@ -20,10 +20,12 @@ function toServeHandler(
   return (request, info) => handler(request, toServeHandlerInfo(info));
 }
 
+type ServeOptions = Deno.ServeTcpOptions & Partial<Deno.TlsCertifiedKeyPem>;
+
 function toServeOptions(
   options: $serveOption.ServeOption$[],
-): Deno.ServeTcpOptions {
-  const result: Deno.ServeTcpOptions = {};
+): ServeOptions {
+  const result: ServeOptions = {};
   for (const option of options) {
     if ($serveOption.ServeOption$isPort(option)) {
       result.port = $serveOption.ServeOption$Port$0(option);
@@ -39,6 +41,10 @@ function toServeOptions(
       result.onError = (error) => callback(toError$(error));
     } else if ($serveOption.ServeOption$isReusePort(option)) {
       result.reusePort = true;
+    } else if ($serveOption.ServeOption$isCert(option)) {
+      result.cert = $serveOption.ServeOption$Cert$0(option);
+    } else if ($serveOption.ServeOption$isKey(option)) {
+      result.key = $serveOption.ServeOption$Key$0(option);
     }
   }
   return result;
@@ -58,6 +64,10 @@ export const ref: typeof $serve.ref = (server) => {
 
 export const unref: typeof $serve.unref = (server) => {
   server.unref();
+};
+
+export const shutdown: typeof $serve.shutdown = (server) => {
+  return fromPromise(server.shutdown().then(() => undefined));
 };
 
 export const serve: typeof $serve.serve = (handler) => {

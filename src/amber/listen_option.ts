@@ -8,6 +8,8 @@ export function toListenOptions(
   for (const option of options) {
     if ($listenOption.ListenOption$isHostname(option)) {
       result.hostname = $listenOption.ListenOption$Hostname$0(option);
+    } else if ($listenOption.ListenOption$isReusePort(option)) {
+      result.reusePort = true;
     }
   }
   return result;

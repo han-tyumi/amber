@@ -30,6 +30,12 @@ pub fn ref(server: HttpServer) -> Nil
 @external(javascript, "./serve.ffi.mjs", "unref")
 pub fn unref(server: HttpServer) -> Nil
 
+/// Gracefully close the server. No more new connections are accepted,
+/// while pending requests are allowed to finish.
+///
+@external(javascript, "./serve.ffi.mjs", "shutdown")
+pub fn shutdown(server: HttpServer) -> Promise(Result(Nil, Error))
+
 /// Serves HTTP requests with the given handler.
 ///
 /// ## Examples

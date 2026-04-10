@@ -97,6 +97,16 @@ pub fn lock_sync(
   exclusive exclusive: Bool,
 ) -> Result(FsFile, Error)
 
+/// Attempts to acquire an advisory file lock without blocking. Returns
+/// an error if the lock cannot be acquired immediately. Mutates the
+/// file in-place and returns it for chaining.
+///
+@external(javascript, "./fs_file.ffi.mjs", "try_lock_sync")
+pub fn try_lock_sync(
+  file: FsFile,
+  exclusive exclusive: Bool,
+) -> Result(FsFile, Error)
+
 /// Releases an advisory file lock. Mutates the file in-place and returns
 /// it for chaining.
 ///

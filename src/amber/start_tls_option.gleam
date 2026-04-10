@@ -14,4 +14,8 @@ pub type StartTlsOption {
   /// in the TLS handshake.
   ///
   AlpnProtocols(List(String))
+  /// Skip hostname verification against the certificate. The certificate
+  /// is still verified against the certificate authority root certificates.
+  ///
+  UnsafelyDisableHostnameVerification
 }

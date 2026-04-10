@@ -19,4 +19,8 @@ pub type ConnectTlsOption {
   /// Key and certificate for mutual TLS (mTLS or client certificates).
   ///
   CertifiedKey(TlsCertifiedKeyPem)
+  /// Skip hostname verification against the certificate. The certificate
+  /// is still verified against the certificate authority root certificates.
+  ///
+  UnsafelyDisableHostnameVerification
 }

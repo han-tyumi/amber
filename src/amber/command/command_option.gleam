@@ -13,5 +13,6 @@ pub type CommandOption {
   Stdin(StdioOption)
   Stdout(StdioOption)
   Stderr(StdioOption)
+  Detached
   WindowsRawArguments
 }

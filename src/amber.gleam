@@ -44,6 +44,8 @@ import gossamer/uint8_array.{type Uint8Array}
 
 // File System
 
+/// Creates a hard link from `oldpath` to `newpath`.
+///
 @external(javascript, "./amber.ffi.mjs", "link_sync")
 pub fn link_sync(from oldpath: String, to newpath: String) -> Result(Nil, Error)
 
@@ -68,6 +70,9 @@ pub fn mkdir_sync_with(
   with options: List(MkdirOption),
 ) -> Result(Nil, Error)
 
+/// Creates a new temporary directory in the default system temp directory and
+/// returns its path.
+///
 @external(javascript, "./amber.ffi.mjs", "make_temp_dir_sync")
 pub fn make_temp_dir_sync() -> Result(String, Error)
 
@@ -76,6 +81,9 @@ pub fn make_temp_dir_sync_with(
   with options: List(MakeTempOption),
 ) -> Result(String, Error)
 
+/// Creates a new temporary file in the default system temp directory and
+/// returns its path.
+///
 @external(javascript, "./amber.ffi.mjs", "make_temp_file_sync")
 pub fn make_temp_file_sync() -> Result(String, Error)
 
@@ -87,6 +95,9 @@ pub fn make_temp_file_sync_with(
 @external(javascript, "./amber.ffi.mjs", "chmod_sync")
 pub fn chmod_sync(path: String, mode mode: Int) -> Result(Nil, Error)
 
+/// Changes the owner of the file specified by path. Either `uid` or `gid` can
+/// be set to `None` to leave that value unchanged.
+///
 @external(javascript, "./amber.ffi.mjs", "chown_sync")
 pub fn chown_sync(
   path: String,
@@ -115,6 +126,9 @@ pub fn read_text_file_sync(path: String) -> Result(String, Error)
 @external(javascript, "./amber.ffi.mjs", "read_file_sync")
 pub fn read_file_sync(path: String) -> Result(Uint8Array, Error)
 
+/// Resolves the given path to an absolute path, resolving all symlinks along
+/// the way.
+///
 @external(javascript, "./amber.ffi.mjs", "real_path_sync")
 pub fn real_path_sync(path: String) -> Result(String, Error)
 
@@ -136,6 +150,9 @@ pub fn lstat_sync(path: String) -> Result(FileInfo, Error)
 @external(javascript, "./amber.ffi.mjs", "stat_sync")
 pub fn stat_sync(path: String) -> Result(FileInfo, Error)
 
+/// Writes the given data to the file at the specified path. Creates the file
+/// if it doesn't exist, and truncates it if it does.
+///
 @external(javascript, "./amber.ffi.mjs", "write_file_sync")
 pub fn write_file_sync(
   to path: String,
@@ -149,6 +166,9 @@ pub fn write_file_sync_with(
   with options: List(WriteFileOption),
 ) -> Result(Nil, Error)
 
+/// Writes the given string data to the file at the specified path. Creates the
+/// file if it doesn't exist, and truncates it if it does.
+///
 @external(javascript, "./amber.ffi.mjs", "write_text_file_sync")
 pub fn write_text_file_sync(
   to path: String,
@@ -168,6 +188,8 @@ pub fn truncate_sync(name: String) -> Result(Nil, Error)
 @external(javascript, "./amber.ffi.mjs", "truncate_to_length_sync")
 pub fn truncate_to_length_sync(name: String, to len: Int) -> Result(Nil, Error)
 
+/// Returns a watcher that yields file system events for the given paths.
+///
 @external(javascript, "./amber.ffi.mjs", "watch_fs")
 pub fn watch_fs(paths: List(String)) -> FsWatcher
 
@@ -177,6 +199,8 @@ pub fn watch_fs_with(
   with options: List(WatchFsOption),
 ) -> FsWatcher
 
+/// Creates a symbolic link from `oldpath` to `newpath`.
+///
 @external(javascript, "./amber.ffi.mjs", "symlink_sync")
 pub fn symlink_sync(
   from oldpath: String,
@@ -190,6 +214,9 @@ pub fn symlink_sync_with(
   with options: List(SymlinkOption),
 ) -> Result(Nil, Error)
 
+/// Changes the access and modification times of the file at the given path.
+/// Timestamps are Unix timestamps in seconds.
+///
 @external(javascript, "./amber.ffi.mjs", "utime_sync")
 pub fn utime_sync(
   path: String,
@@ -197,9 +224,13 @@ pub fn utime_sync(
   mtime mtime: Int,
 ) -> Result(Nil, Error)
 
+/// Returns the process file mode creation mask.
+///
 @external(javascript, "./amber.ffi.mjs", "umask")
 pub fn umask() -> Int
 
+/// Sets the process file mode creation mask and returns the previous value.
+///
 @external(javascript, "./amber.ffi.mjs", "set_umask")
 pub fn set_umask(mask: Int) -> Int
 
@@ -320,8 +351,9 @@ pub fn start_tls_with(
 
 // DNS
 
-/// Performs DNS resolution against the given query, returning resolved
-/// records.
+/// Performs DNS resolution against the given query, returning resolved records
+/// as strings. For structured record types (MX, SRV, etc.), use the
+/// type-specific variants like `resolve_dns_mx`.
 ///
 @external(javascript, "./amber.ffi.mjs", "resolve_dns")
 pub fn resolve_dns(
@@ -427,9 +459,14 @@ pub fn upgrade_web_socket_with(
 
 // Runtime
 
+/// Registers a handler function to be called when the given OS signal is
+/// received.
+///
 @external(javascript, "./amber.ffi.mjs", "add_signal_listener")
 pub fn add_signal_listener(signal: Signal, run handler: fn() -> any) -> Nil
 
+/// Changes the current working directory of the process.
+///
 @external(javascript, "./amber.ffi.mjs", "chdir")
 pub fn chdir(directory: String) -> Result(Nil, Error)
 
@@ -439,9 +476,15 @@ pub fn cwd() -> Result(String, Error)
 @external(javascript, "./amber.ffi.mjs", "exec_path")
 pub fn exec_path() -> Result(String, Error)
 
+/// Terminates the current process with exit code 0. This function never
+/// returns.
+///
 @external(javascript, "./amber.ffi.mjs", "exit")
 pub fn exit() -> Nil
 
+/// Terminates the current process with the given exit code. This function
+/// never returns.
+///
 @external(javascript, "./amber.ffi.mjs", "exit_with")
 pub fn exit_with(code: Int) -> Nil
 
@@ -451,6 +494,8 @@ pub fn gid() -> Result(Option(Int), Error)
 @external(javascript, "./amber.ffi.mjs", "hostname")
 pub fn hostname() -> Result(String, Error)
 
+/// Returns the system load averages for the past 1, 5, and 15 minutes.
+///
 @external(javascript, "./amber.ffi.mjs", "loadavg")
 pub fn loadavg() -> Result(#(Float, Float, Float), Error)
 
@@ -463,9 +508,13 @@ pub fn os_release() -> Result(String, Error)
 @external(javascript, "./amber.ffi.mjs", "os_uptime")
 pub fn os_uptime() -> Result(Int, Error)
 
+/// Makes the timer with the given ID block the event loop from finishing.
+///
 @external(javascript, "./amber.ffi.mjs", "ref_timer")
 pub fn ref_timer(id: Int) -> Nil
 
+/// Removes a previously registered OS signal handler.
+///
 @external(javascript, "./amber.ffi.mjs", "remove_signal_listener")
 pub fn remove_signal_listener(signal: Signal, run handler: fn() -> any) -> Nil
 
@@ -475,6 +524,8 @@ pub fn system_memory_info() -> Result(SystemMemoryInfo, Error)
 @external(javascript, "./amber.ffi.mjs", "uid")
 pub fn uid() -> Result(Option(Int), Error)
 
+/// Makes the timer with the given ID not block the event loop from finishing.
+///
 @external(javascript, "./amber.ffi.mjs", "unref_timer")
 pub fn unref_timer(id: Int) -> Nil
 
@@ -487,6 +538,9 @@ pub fn build() -> Build
 @external(javascript, "./amber.ffi.mjs", "exit_code")
 pub fn exit_code() -> Int
 
+/// Sets the process exit code used when the process exits naturally, without
+/// terminating immediately.
+///
 @external(javascript, "./amber.ffi.mjs", "set_exit_code")
 pub fn set_exit_code(code: Int) -> Nil
 
@@ -507,8 +561,12 @@ pub fn version() -> Version
 
 // Subprocess
 
+/// Sends `SIGTERM` to the process with the given PID.
+///
 @external(javascript, "./amber.ffi.mjs", "kill")
 pub fn kill(pid: Int) -> Result(Nil, Error)
 
+/// Sends the given signal to the process with the given PID.
+///
 @external(javascript, "./amber.ffi.mjs", "kill_with")
 pub fn kill_with(pid: Int, with signal: Signal) -> Result(Nil, Error)

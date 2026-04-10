@@ -136,6 +136,16 @@ export const lock_sync: typeof $fsFile.lock_sync = (
   });
 };
 
+export const try_lock_sync: typeof $fsFile.try_lock_sync = (
+  file: Deno.FsFile,
+  exclusive,
+) => {
+  return fromThrows(() => {
+    file.tryLockSync(exclusive);
+    return file;
+  });
+};
+
 export const unlock_sync: typeof $fsFile.unlock_sync = (file: Deno.FsFile) => {
   return fromThrows(() => {
     file.unlockSync();

@@ -15,6 +15,10 @@ export function toStartTlsOptions(
       result.alpnProtocols = toArray(
         $option.StartTlsOption$AlpnProtocols$0(option),
       );
+    } else if (
+      $option.StartTlsOption$isUnsafelyDisableHostnameVerification(option)
+    ) {
+      result.unsafelyDisableHostnameVerification = true;
     }
   }
 

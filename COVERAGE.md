@@ -100,6 +100,7 @@ version it was tested against.
 | isTerminal   | ✅     |               |
 | setRaw       | ✅     |               |
 | lockSync     | ✅     |               |
+| tryLockSync  | ✅     |               |
 | lock         | ❌     | Async variant |
 | unlockSync   | ✅     |               |
 | unlock       | ❌     | Async variant |
@@ -123,11 +124,11 @@ version it was tested against.
 
 ## HTTP Server
 
-| API                   | Status | Module        | Notes |
-| --------------------- | ------ | ------------- | ----- |
-| Deno.serve            | ✅     | `amber/serve` |       |
-| Deno.HttpServer       | ✅     | `amber/serve` |       |
-| Deno.upgradeWebSocket | ✅     | `amber`       |       |
+| API                   | Status | Module        | Notes                        |
+| --------------------- | ------ | ------------- | ---------------------------- |
+| Deno.serve            | ✅     | `amber/serve` | Including HTTPS via Cert/Key |
+| Deno.HttpServer       | ✅     | `amber/serve` | Including shutdown()         |
+| Deno.upgradeWebSocket | ✅     | `amber`       |                              |
 
 ## Subprocess
 

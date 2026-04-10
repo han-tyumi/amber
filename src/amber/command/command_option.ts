@@ -35,6 +35,8 @@ function toCommandOptionsFromArray(
       result.stderr = toStdioOptionType(
         $commandOption.CommandOption$Stderr$0(option),
       );
+    } else if ($commandOption.CommandOption$isDetached(option)) {
+      result.detached = true;
     } else if ($commandOption.CommandOption$isWindowsRawArguments(option)) {
       result.windowsRawArguments = true;
     }

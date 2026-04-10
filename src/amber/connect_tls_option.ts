@@ -19,6 +19,10 @@ export function toConnectTlsOptions(
       result.alpnProtocols = toArray(
         $option.ConnectTlsOption$AlpnProtocols$0(option),
       );
+    } else if (
+      $option.ConnectTlsOption$isUnsafelyDisableHostnameVerification(option)
+    ) {
+      result.unsafelyDisableHostnameVerification = true;
     } else if ($option.ConnectTlsOption$isCertifiedKey(option)) {
       const certifiedKey = $option.ConnectTlsOption$CertifiedKey$0(option);
       result.key = $keyPem.TlsCertifiedKeyPem$TlsCertifiedKeyPem$key(
