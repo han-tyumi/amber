@@ -18,7 +18,11 @@ command = "deno run -A scripts/note_deno_version.ts"
 
 [[workflows.steps]]
 type = "Command"
-command = 'git add CHANGELOG.md && git commit -m "chore: prepare release $version"'
+command = "git add CHANGELOG.md"
+
+[[workflows.steps]]
+type = "Command"
+command = 'git commit -m "chore: prepare release $version"'
 
 [[workflows.steps]]
 type = "Command"
