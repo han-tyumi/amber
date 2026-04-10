@@ -2,7 +2,7 @@
 
 [![Package Version](https://img.shields.io/hexpm/v/amber?color=F09000)](https://hex.pm/packages/amber)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/amber/)
-[![Deno >= 2.7](https://img.shields.io/badge/deno-%3E%3D%202.7-blue?logo=deno)](https://deno.com/)
+[![Deno >= 2.2.10](https://img.shields.io/badge/deno-%3E%3D%202.2.10-blue?logo=deno)](https://deno.com/)
 
 ✨🦕 [Deno](https://deno.com/) Bindings For [Gleam](https://gleam.run/) 🧡
 

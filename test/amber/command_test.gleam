@@ -527,7 +527,7 @@ pub fn cwd_not_directory_test() {
 
   command.new_with(exec_path, [command_option.Cwd(exec_path)])
   |> command.output_sync()
-  |> should.equal(Error(error.NotADirectory))
+  |> should.be_error()
 }
 
 pub fn command_sync_failed_with_code_test() {

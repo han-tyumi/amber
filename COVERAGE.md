@@ -12,8 +12,9 @@ namespace categories.
 
 ## Deno Version
 
-Developed and tested against **Deno 2.7**. Each amber release will note the Deno
-version it was tested against.
+Requires **Deno >= 2.2.10** (for explicit resource management syntax). Developed
+and tested against **Deno 2.7**. Each amber release will note the Deno version
+it was tested against.
 
 ## Legend
 
