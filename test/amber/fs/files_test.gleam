@@ -23,10 +23,10 @@ pub fn open_sync_mode_test() {
   // Non-windows systems only.
   let assert Ok(stat) = amber.stat_sync(path)
   let assert Some(mode) = stat.mode
-  should.equal(
-    int.bitwise_and(mode, 0o777),
-    int.bitwise_and(0o626, amber.umask() |> int.bitwise_not),
-  )
+  should.equal(int.bitwise_and(mode, 0o777), {
+    let assert Ok(mask) = amber.umask()
+    int.bitwise_and(0o626, mask |> int.bitwise_not)
+  })
 
   Ok(Nil)
 }

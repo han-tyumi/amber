@@ -14,7 +14,7 @@ pub fn stdio_stdin_read_test() {
 
 pub fn stdio_stdin_read_sync_test() {
   stdin.read_sync(uint8_array.new())
-  |> should.equal(Some(0))
+  |> should.equal(Ok(Some(0)))
 }
 
 pub fn stdio_stdout_write_test() {
@@ -25,7 +25,7 @@ pub fn stdio_stdout_write_test() {
 
 pub fn stdio_stdout_write_sync_test() {
   stdout.write_sync(uint8_array.new())
-  |> should.equal(0)
+  |> should.equal(Ok(0))
 }
 
 pub fn stdio_stderr_write_test() {
@@ -36,5 +36,5 @@ pub fn stdio_stderr_write_test() {
 
 pub fn stdio_stderr_write_sync_test() {
   stderr.write_sync(uint8_array.new())
-  |> should.equal(0)
+  |> should.equal(Ok(0))
 }

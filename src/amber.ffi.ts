@@ -369,11 +369,11 @@ export const utime_sync: typeof $deno.utime_sync = (path, atime, mtime) => {
 };
 
 export const umask: typeof $deno.umask = () => {
-  return Deno.umask();
+  return fromThrows(() => Deno.umask());
 };
 
 export const set_umask: typeof $deno.set_umask = (mask) => {
-  return Deno.umask(mask);
+  return fromThrows(() => Deno.umask(mask));
 };
 
 // I/O

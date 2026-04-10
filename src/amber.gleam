@@ -227,12 +227,12 @@ pub fn utime_sync(
 /// Returns the process file mode creation mask.
 ///
 @external(javascript, "./amber.ffi.mjs", "umask")
-pub fn umask() -> Int
+pub fn umask() -> Result(Int, Error)
 
 /// Sets the process file mode creation mask and returns the previous value.
 ///
 @external(javascript, "./amber.ffi.mjs", "set_umask")
-pub fn set_umask(mask: Int) -> Int
+pub fn set_umask(mask: Int) -> Result(Int, Error)
 
 // I/O
 

@@ -33,12 +33,12 @@ pub fn write(p: Uint8Array) -> Promise(Result(Int, Error))
 ///
 /// ```gleam
 /// let data = text_encoder.encode("Hello world")
-/// let bytes_written = stdout.write_sync(data)
+/// let assert Ok(bytes_written) = stdout.write_sync(data)
 /// // bytes_written == 11
 /// ```
 ///
 @external(javascript, "./stdout.ffi.mjs", "write_sync")
-pub fn write_sync(p: Uint8Array) -> Int
+pub fn write_sync(p: Uint8Array) -> Result(Int, Error)
 
 /// Closes `stdout`, freeing the resource.
 ///

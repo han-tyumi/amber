@@ -47,14 +47,14 @@ pub fn read(p: Uint8Array) -> Promise(Result(Option(Int), Error))
 /// ```gleam
 /// // If the text "hello world" is piped into the script:
 /// let buf = uint8_array.from_length(100)
-/// let bytes_read = stdin.read_sync(buf)
+/// let assert Ok(bytes_read) = stdin.read_sync(buf)
 /// // bytes_read == Some(11)
 /// let text = text_decoder.decode(uint8_array.buffer(buf))
 /// // text == "hello world"
 /// ```
 ///
 @external(javascript, "./stdin.ffi.mjs", "read_sync")
-pub fn read_sync(p: Uint8Array) -> Option(Int)
+pub fn read_sync(p: Uint8Array) -> Result(Option(Int), Error)
 
 /// Closes `stdin`, freeing the resource.
 ///

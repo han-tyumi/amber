@@ -1,5 +1,5 @@
 import type * as $stdin from "$/amber/amber/stdin.mjs";
-import { fromPromise } from "~/amber/error.ts";
+import { fromPromise, fromThrows } from "~/amber/error.ts";
 import { toArray } from "~/utils/list.ts";
 import { toOption } from "~/utils/option.ts";
 import { toSetRawOptions } from "./set_raw.ts";
@@ -9,7 +9,7 @@ export const read: typeof $stdin.read = (p) => {
 };
 
 export const read_sync: typeof $stdin.read_sync = (p) => {
-  return toOption(Deno.stdin.readSync(p));
+  return fromThrows(() => toOption(Deno.stdin.readSync(p)));
 };
 
 export const close: typeof $stdin.close = () => {
