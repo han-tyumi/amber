@@ -1,13 +1,16 @@
 import * as $fsEvent from "$/amber/amber/fs_event.mjs";
 import type * as $fsWatcher from "$/amber/amber/fs_watcher.mjs";
 import * as $option from "$/gleam_stdlib/gleam/option.mjs";
+import { fromThrows } from "~/amber/error.ts";
 import { fromArray } from "~/utils/list.ts";
 import { toOption } from "~/utils/option.ts";
 
 export type FsWatcher$ = Deno.FsWatcher;
 
 export const close: typeof $fsWatcher.close = (watcher: Deno.FsWatcher) => {
-  watcher.close();
+  return fromThrows(() => {
+    watcher.close();
+  });
 };
 
 function toFsEventKind(value: Deno.FsEvent["kind"]): $fsEvent.FsEventKind$ {

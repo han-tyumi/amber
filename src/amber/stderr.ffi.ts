@@ -10,7 +10,9 @@ export const write_sync: typeof $stderr.write_sync = (p) => {
 };
 
 export const close: typeof $stderr.close = () => {
-  Deno.stderr.close();
+  return fromThrows(() => {
+    Deno.stderr.close();
+  });
 };
 
 export const writable: typeof $stderr.writable = () => {

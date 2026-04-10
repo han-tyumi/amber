@@ -191,13 +191,13 @@ pub fn truncate_to_length_sync(name: String, to len: Int) -> Result(Nil, Error)
 /// Returns a watcher that yields file system events for the given paths.
 ///
 @external(javascript, "./amber.ffi.mjs", "watch_fs")
-pub fn watch_fs(paths: List(String)) -> FsWatcher
+pub fn watch_fs(paths: List(String)) -> Result(FsWatcher, Error)
 
 @external(javascript, "./amber.ffi.mjs", "watch_fs_with")
 pub fn watch_fs_with(
   paths: List(String),
   with options: List(WatchFsOption),
-) -> FsWatcher
+) -> Result(FsWatcher, Error)
 
 /// Creates a symbolic link from `oldpath` to `newpath`.
 ///
@@ -463,7 +463,10 @@ pub fn upgrade_web_socket_with(
 /// received.
 ///
 @external(javascript, "./amber.ffi.mjs", "add_signal_listener")
-pub fn add_signal_listener(signal: Signal, run handler: fn() -> any) -> Nil
+pub fn add_signal_listener(
+  signal: Signal,
+  run handler: fn() -> any,
+) -> Result(Nil, Error)
 
 /// Changes the current working directory of the process.
 ///
@@ -516,7 +519,10 @@ pub fn ref_timer(id: Int) -> Nil
 /// Removes a previously registered OS signal handler.
 ///
 @external(javascript, "./amber.ffi.mjs", "remove_signal_listener")
-pub fn remove_signal_listener(signal: Signal, run handler: fn() -> any) -> Nil
+pub fn remove_signal_listener(
+  signal: Signal,
+  run handler: fn() -> any,
+) -> Result(Nil, Error)
 
 @external(javascript, "./amber.ffi.mjs", "system_memory_info")
 pub fn system_memory_info() -> Result(SystemMemoryInfo, Error)

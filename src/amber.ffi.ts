@@ -311,13 +311,15 @@ function toWatchFsOptions(
 }
 
 export const watch_fs: typeof $deno.watch_fs = (paths) => {
-  return Deno.watchFs(toArray(paths));
+  return fromThrows(() => Deno.watchFs(toArray(paths)));
 };
 
 export const watch_fs_with: typeof $deno.watch_fs_with = (paths, options) => {
-  return Deno.watchFs(
-    toArray(paths),
-    toWatchFsOptions(toArray(options)) as WatchFsOptions,
+  return fromThrows(() =>
+    Deno.watchFs(
+      toArray(paths),
+      toWatchFsOptions(toArray(options)) as WatchFsOptions,
+    )
   );
 };
 
@@ -617,7 +619,9 @@ export const add_signal_listener: typeof $deno.add_signal_listener = (
   signal,
   handler,
 ) => {
-  Deno.addSignalListener(toSignal(signal), handler);
+  return fromThrows(() => {
+    Deno.addSignalListener(toSignal(signal), handler);
+  });
 };
 
 export const chdir: typeof $deno.chdir = (directory) => {
@@ -674,7 +678,9 @@ export const remove_signal_listener: typeof $deno.remove_signal_listener = (
   signal,
   handler,
 ) => {
-  Deno.removeSignalListener(toSignal(signal), handler);
+  return fromThrows(() => {
+    Deno.removeSignalListener(toSignal(signal), handler);
+  });
 };
 
 export const system_memory_info: typeof $deno.system_memory_info = () => {

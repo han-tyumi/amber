@@ -13,7 +13,9 @@ export const read_sync: typeof $stdin.read_sync = (p) => {
 };
 
 export const close: typeof $stdin.close = () => {
-  Deno.stdin.close();
+  return fromThrows(() => {
+    Deno.stdin.close();
+  });
 };
 
 export const readable: typeof $stdin.readable = () => {
@@ -21,14 +23,18 @@ export const readable: typeof $stdin.readable = () => {
 };
 
 export const set_raw: typeof $stdin.set_raw = (mode) => {
-  Deno.stdin.setRaw(mode);
+  return fromThrows(() => {
+    Deno.stdin.setRaw(mode);
+  });
 };
 
 export const set_raw_with: typeof $stdin.set_raw_with = (mode, options) => {
-  Deno.stdin.setRaw(
-    mode,
-    toSetRawOptions(toArray(options)) as Deno.SetRawOptions,
-  );
+  return fromThrows(() => {
+    Deno.stdin.setRaw(
+      mode,
+      toSetRawOptions(toArray(options)) as Deno.SetRawOptions,
+    );
+  });
 };
 
 export const is_terminal: typeof $stdin.is_terminal = () => {

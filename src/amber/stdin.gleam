@@ -21,7 +21,8 @@ import gossamer/uint8_array.{type Uint8Array}
 /// ```gleam
 /// // If the text "hello world" is piped into the script:
 /// let buf = uint8_array.from_length(100)
-/// use bytes_read <- promise.then(stdin.read(buf))
+/// use result <- promise.then(stdin.read(buf))
+/// let assert Ok(bytes_read) = result
 /// // bytes_read == Some(11)
 /// let text = text_decoder.decode(uint8_array.buffer(buf))
 /// // text == "hello world"
@@ -61,11 +62,11 @@ pub fn read_sync(p: Uint8Array) -> Result(Option(Int), Error)
 /// ## Examples
 ///
 /// ```gleam
-/// stdin.close()
+/// let assert Ok(_) = stdin.close()
 /// ```
 ///
 @external(javascript, "./stdin.ffi.mjs", "close")
-pub fn close() -> Nil
+pub fn close() -> Result(Nil, Error)
 
 /// A readable stream interface to `stdin`.
 ///
@@ -81,22 +82,25 @@ pub fn readable() -> ReadableStream(Uint8Array)
 /// ## Examples
 ///
 /// ```gleam
-/// stdin.set_raw(True)
+/// let assert Ok(_) = stdin.set_raw(True)
 /// ```
 ///
 @external(javascript, "./stdin.ffi.mjs", "set_raw")
-pub fn set_raw(mode: Bool) -> Nil
+pub fn set_raw(mode: Bool) -> Result(Nil, Error)
 
 /// Set TTY to be under raw mode or not with options.
 ///
 /// ## Examples
 ///
 /// ```gleam
-/// stdin.set_raw_with(True, [set_raw.Cbreak(True)])
+/// let assert Ok(_) = stdin.set_raw_with(True, [set_raw.Cbreak(True)])
 /// ```
 ///
 @external(javascript, "./stdin.ffi.mjs", "set_raw_with")
-pub fn set_raw_with(mode mode: Bool, with options: List(SetRawOption)) -> Nil
+pub fn set_raw_with(
+  mode mode: Bool,
+  with options: List(SetRawOption),
+) -> Result(Nil, Error)
 
 /// Checks if `stdin` is a TTY (terminal).
 ///

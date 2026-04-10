@@ -45,11 +45,11 @@ pub fn write_sync(p: Uint8Array) -> Result(Int, Error)
 /// ## Examples
 ///
 /// ```gleam
-/// stdout.close()
+/// let assert Ok(_) = stdout.close()
 /// ```
 ///
 @external(javascript, "./stdout.ffi.mjs", "close")
-pub fn close() -> Nil
+pub fn close() -> Result(Nil, Error)
 
 /// A writable stream interface to `stdout`.
 ///
