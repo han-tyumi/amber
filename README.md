@@ -31,7 +31,10 @@ import gossamer/text_encoder
 
 pub fn main() {
   let assert Ok(_) =
-    amber.write_file_sync("amber.txt", text_encoder.encode("deno bindings for gleam"))
+    amber.write_file_sync(
+      to: "amber.txt",
+      contents: text_encoder.encode("deno bindings for gleam"),
+    )
 }
 ```
 
